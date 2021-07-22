@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ConsultaDocumento {
 
-	@GetMapping("getOrdenes")
+	@GetMapping("/getOrdenes")
 	public ResponseEntity<Object> getOrdenes(Integer tipoDocumento, Integer nroOrden){
 		Map<String, Object> respuesta = new HashMap<>();
 		HttpStatus status = HttpStatus.OK;
