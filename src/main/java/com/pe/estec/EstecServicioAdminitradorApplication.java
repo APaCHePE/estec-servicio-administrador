@@ -9,9 +9,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.pe.estec.model.Proveedor;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+
+import com.pe.estec.model.Catalogo;
 
 @SpringBootApplication
+@EnableEurekaClient
 public class EstecServicioAdminitradorApplication implements CommandLineRunner{
 
 	@Autowired
@@ -23,10 +26,10 @@ public class EstecServicioAdminitradorApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		String sql = "Select id_proveedor, nombre from user_provee  ";
-		List<Proveedor> proveedores = 
-				dao.query(sql, BeanPropertyRowMapper.newInstance(Proveedor.class));
-		proveedores.forEach(System.out :: println);
+		String sql = "  select tcod as idCatalogo, tclave as idGrupo,TDESCRI as nombre from  dbo.CT0002TAGP where TCLAVE='06' ";
+		List<Catalogo> catalogo = 
+				dao.query(sql, BeanPropertyRowMapper.newInstance(Catalogo.class));
+		catalogo.forEach(System.out :: println);
 	}
 
 }
