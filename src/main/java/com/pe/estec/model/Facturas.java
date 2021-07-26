@@ -1,11 +1,14 @@
 package com.pe.estec.model;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
 public class Facturas {
 
-	private Integer idFactura;
+	private String idFactura;
+	private String codCliente;
 	private String nombreCliente;
 	private String fecha;
 	private String numeroFactura;
@@ -16,7 +19,13 @@ public class Facturas {
 	private String detalle;
 	private String subtotal;
 	private String igv;
-	private String total;  
+	private String total;
+	private String moneda;
+	private String simboloMoneda;
+	private String vendedor;
+	private String almacenCa;
+	private String formaVenta;
+	private List<FacturasDetalle> facturasDestalle;
 
 	@Override
 	public String toString() {

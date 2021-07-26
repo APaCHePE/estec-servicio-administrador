@@ -12,9 +12,13 @@ public class FacturasRowMapper implements RowMapper<Facturas>{
 	@Override
 	public Facturas mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Facturas facturas = new Facturas();
-		facturas.setIdFactura(rs.getInt("F6_CNUMDOC"));
+		facturas.setIdFactura(rs.getString("F5_CNUMDOC"));
 		facturas.setNumeroFactura(rs.getString("FACTURA")); 
-//		facturas.set
+		facturas.setFecha(rs.getString("FECHA"));	
+		facturas.setCodCliente(rs.getString("CODIGO_CLIENTE"));
+		facturas.setMoneda(rs.getString("moneda"));
+		facturas.setVendedor(rs.getString("vendedor"));
+		facturas.setFormaVenta(rs.getString("factura"));
 		return facturas;
 	}
 	
