@@ -111,7 +111,7 @@ public class ConsultaDocumentoRepository {
 //		sql.append(" oc_dfecdoc as FECHA_ORDEN ");
 		sql.append(" FROM RSFACCAR15..CO0002MOVD ");
 		sql.append(" where 1=1");
-		if(numeroOrden!=null)sql.append(" and oc_cnumord = '00010002738' ");
+		if(numeroOrden!=null)sql.append(" and oc_cnumord = '"+numeroOrden+"' ");
 		List<OrdenDetalle> users = dao.query(sql.toString(),new OrdenDetalleRowMapper());
 		return users;
 	}
@@ -238,7 +238,7 @@ public class ConsultaDocumentoRepository {
 		return users;
 	}
 	public List<Facturas> getFacturasCabecera( String nroFact, 
-			String fecInicio, String fecFin, Integer estado) {
+			String fecInicio, String fecFin, Integer estado, String nroDocumento) {
 //		addElement();
 		StringBuilder sql = new StringBuilder();
 		sql.append(" ( ");
@@ -252,7 +252,9 @@ public class ConsultaDocumentoRepository {
 		sql.append(" F5_CALMA AS ALMACEN_CA, ");
 		sql.append(" F5_CCODMON as moneda, ");
 		sql.append(" F5_CVENDE AS VENDEDOR ");
-		sql.append(" from RSFACCAR15..FT0002ACUC where F5_CFORVEN <> 'O' AND F5_CESTADO = 'V' and f5_cnumdoc='0001155' ");
+		sql.append(" from RSFACCAR15..FT0002ACUC where F5_CFORVEN <> 'O' AND F5_CESTADO = 'V' ");
+		if(nroFact!= null)sql.append(" and f5_cnumdoc== '"+nroFact+"'");
+		if(nroDocumento!= null)sql.append(" and F5_CCODCLI= '"+nroDocumento+"'");
 		sql.append(" )union ALL  ");
 		sql.append(" ( ");
 		sql.append(" select  ");
@@ -266,7 +268,9 @@ public class ConsultaDocumentoRepository {
 		sql.append(" F5_CCODMON as moneda, ");
 		sql.append(" F5_CVENDE AS VENDEDOR ");
 		sql.append(" from RSFACCAR15..FT0002FACC ");
-		sql.append(" where F5_CFORVEN <> 'O' AND F5_CESTADO = 'V' and f5_cnumdoc='0001155' ");
+		sql.append(" where F5_CFORVEN <> 'O' AND F5_CESTADO = 'V' ");
+		if(nroFact!= null)sql.append(" and f5_cnumdoc== '"+nroFact+"'");
+		if(nroDocumento!= null)sql.append(" and F5_CCODCLI= '"+nroDocumento+"'");
 		sql.append(" ) ");
 		sql.append(" ORDER BY F5_CTD,F5_CNUMSER,F5_CNUMDOC  ");
 		System.out.println(sql);

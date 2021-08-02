@@ -37,12 +37,12 @@ public class ConsultaDocumento {
 	}
 
 	@GetMapping("/getFacturas")
-	public ResponseEntity<Object> getFacturas(String numeroFac, String fecInicio, String fecFin, Integer estado) {
+	public ResponseEntity<Object> getFacturas(String numeroFac, String fecInicio, String fecFin, Integer estado, String nroDocumento) {
 		Map<String, Object> respuesta = new HashMap<>();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			respuesta.put("result",
-					consultaDocumentoServices.consultaFacturas(numeroFac, fecInicio, fecFin, estado));
+					consultaDocumentoServices.consultaFacturas(numeroFac, fecInicio, fecFin, estado, nroDocumento));
 			respuesta.put("status", Boolean.TRUE);
 			respuesta.put("codigo", status.value());
 		} catch (Exception e) {

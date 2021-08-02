@@ -27,9 +27,9 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService{
 
 	@Override
 	public List<Facturas> consultaFacturas(String nroOrden, String fecInicio, String fecFin,
-			Integer estado) {
+			Integer estado, String nroDocumento) {
 		List<Facturas> listaFacturas = consultaDocRepository.getFacturasCabecera( nroOrden, fecInicio,
-				fecFin, estado);
+				fecFin, estado, nroDocumento);
 		for (Facturas facturas : listaFacturas) {
 			facturas.setFacturasDestalle(consultaDocRepository.getFacturasDetalle(facturas.getIdFactura()));
 		}
