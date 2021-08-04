@@ -116,16 +116,14 @@ public class ConsultaDocumentoRepository {
 		sql.append(" FROM RSFACCAR15..CO0002MOVD ");
 		sql.append(" where 1=1");
 		if(numeroOrden!=null)sql.append(" and oc_cnumord = '"+numeroOrden+"' ");
-		System.out.println(sql);
 		List<OrdenDetalle> users = dao.query(sql.toString(),new OrdenDetalleRowMapper());
 		return users;
 	}
-	
 	public List<Facturas> getFacturasCabecera( String nroFact, 
 			String fecInicio, String fecFin, Integer estado, String nroDocumento) {
 //		addElement();
 		StringBuilder sql = new StringBuilder();
-		sql.append(" Select   ");
+ 		sql.append(" Select   ");
 		sql.append(" PROV.CP_CNUMDOC AS NUMERO_FACTURA , ");
 		sql.append(" PROV.CP_CCODIGO AS RUC, ");
 		sql.append(" PROV.CP_CTIPDOC AS TIP_DOC_CODIGO, ");
@@ -167,17 +165,6 @@ public class ConsultaDocumentoRepository {
 		sql.append(" order by CP_CFECDOC desc ");
 		System.out.println(sql);
 		List<Facturas> users = dao.query(sql.toString(),new FacturasRowMapper());
-		return users;
-	}
-	public List<FacturasDetalle> getFacturasDetalle( String nroFact) {
-//		addElement();
-		StringBuilder sql = new StringBuilder();
-
-		sql.append(" (select  ");
-		sql.append(" F6_CCODAGE, F6_CTD,F6_CNUMSER, F6_CNUMDOC,   ");
-
-		System.out.println(sql);
-		List<FacturasDetalle> users = dao.query(sql.toString(),new FacturasDetalleRowMapper());
 		return users;
 	}
 }

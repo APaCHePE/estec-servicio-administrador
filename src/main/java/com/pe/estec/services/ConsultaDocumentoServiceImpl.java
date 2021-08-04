@@ -48,7 +48,7 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService{
 			if(factura.getFechaDocumento()!= null && factura.getFechaDocumento().length()==6) {
 //				factura.getFechaDocumento().si
 			}
-//			facturas.setFacturasDestalle(consultaDocRepository.getFacturasDetalle(facturas.getIdFactura()));
+
 		}
 		return listaFacturas;
 	}
