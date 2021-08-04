@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pe.estec.config.Constantes;
 import com.pe.estec.model.Facturas;
 import com.pe.estec.model.Orden;
 import com.pe.estec.repository.ConsultaDocumentoRepository;
@@ -27,11 +28,27 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService{
 
 	@Override
 	public List<Facturas> consultaFacturas(String nroOrden, String fecInicio, String fecFin,
-			Integer estado) {
+			Integer estado, String nroDocumento) {
 		List<Facturas> listaFacturas = consultaDocRepository.getFacturasCabecera( nroOrden, fecInicio,
-				fecFin, estado);
-		for (Facturas facturas : listaFacturas) {
-			facturas.setFacturasDestalle(consultaDocRepository.getFacturasDetalle(facturas.getIdFactura()));
+				fecFin, estado, nroDocumento);
+		if(listaFacturas.size()==0)return listaFacturas;
+		for (Facturas factura : listaFacturas) {
+			if(factura.getMoneda().equals(Constantes.MONEDA_NACIONAL))
+				factura.setSimboloMoneda("S/");
+			else if(factura.getMoneda().equals(Constantes.MONEDA_DOLAR))
+				factura.setSimboloMoneda("$");
+			
+			if(factura.getFechaDocumento()!= null)
+				factura.setFechaDocumento("20"+factura.getFechaDocumento());
+			if(factura.getFechaVenta()!= null)
+				factura.setFechaVenta("20"+factura.getFechaVenta());
+			if(factura.getFechaRecibido()!= null)
+				factura.setFechaRecibido("20"+factura.getFechaRecibido());
+			
+			if(factura.getFechaDocumento()!= null && factura.getFechaDocumento().length()==6) {
+//				factura.getFechaDocumento().si
+			}
+//			facturas.setFacturasDestalle(consultaDocRepository.getFacturasDetalle(facturas.getIdFactura()));
 		}
 		return listaFacturas;
 	}

@@ -10,10 +10,12 @@ public class Facturas {
 	private String idFactura;
 	private String codCliente;
 	private String nombreCliente;
-	private String fecha;
+	private String fechaDocumento;
+	private String fechaVenta;
+	private String fechaRecibido;
 	private String numeroFactura;
-	private String importeFacturado;
-	private String importePagado;
+	private String importeSoles;
+	private String importeDolares;
 	private String saldo;
 	private String estado ;
 	private String detalle;
@@ -22,7 +24,7 @@ public class Facturas {
 	private String total;
 	private String moneda;
 	private String simboloMoneda;
-	private String vendedor;
+	private String desGasto;
 	private String almacenCa;
 	private String formaVenta;
 	private List<FacturasDetalle> facturasDestalle;

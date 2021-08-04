@@ -22,7 +22,7 @@ public class Orden {
 	private String documentoProveedor;
 	private String nombreProveedor;
 	private String saldo;
-	private String estado;
+	private Integer estado;
 	private String formaPago;
 	private String importeFacturado;
 	private String solicitante;

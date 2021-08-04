@@ -17,5 +17,5 @@ public class OrdenDetalle {
 	private String estadoOrden;
 	private String tipoOrdenItem;
 	private String usuarioSolicitante;
-	private String fecharden;
+	private String fechaOrden;
 }
