@@ -1,8 +1,5 @@
 package com.pe.estec.repository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,7 +124,7 @@ public class UsuarioRepository {
 			sql.append(" and pers.nro_documento = '" + nroDocumento + "' ");
 		if (tipoDocumento != null)
 			sql.append(" and pers.tipo_documento = '" + tipoDocumento + "' ");
-
+		sql.append(" order by 1 asc ");
 		List<Proveedor> listaProveedores = sqlServer.query(sql.toString(), new ProveedorRowMapper());
 		return listaProveedores;
 	}
@@ -143,11 +140,11 @@ public class UsuarioRepository {
 	
 	public List<Proveedor> listarProveedorErp(String nroDocumento ) throws Exception {
 		StringBuilder sql = new StringBuilder();
-		sql.append(" SELECT ac_cnombre as nombre_completo, ac_cdirecc as direccion, "
-				+ " AC_CTELEF1 as telefono_principal, AC_CRUC as nro_Documento ");
-		sql.append(" 		");
+		sql.append(" SELECT ac_cnombre as nombre_completo, ac_cdirecc as direccion,  AC_CTELEF1 as telefono_principal, AC_CRUC as nro_Documento ");
+		sql.append(" from [RSCONCAR].[dbo].[CP0002MAES] ");
 		sql.append(" where '1'=1 ");
 		if(nroDocumento!= null)sql.append(" and AC_CRUC = trim(?) ");
+		sql.append(" order by 1 desc ");
 		
 		Object[] params = new Object[] {nroDocumento};
 		List<Proveedor> listaProveedores = sqlServer.query(sql.toString(), new ProveedorErpRowMapper(), params);

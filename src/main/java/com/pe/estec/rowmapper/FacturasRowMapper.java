@@ -17,7 +17,7 @@ public class FacturasRowMapper implements RowMapper<Facturas>{
 		facturas.setFechaVenta(rs.getString("FECHA_DOCUMENTO"));
 		facturas.setFechaRecibido(rs.getString("FECHA_DOCUMENTO"));
 		facturas.setCodCliente(rs.getString("RUC"));
-		facturas.setEstado(rs.getString("SITUACION_DOCUMENTO"));
+		facturas.setEstado(rs.getString("DESCRI_SITUACION"));
 		facturas.setMoneda(rs.getString("CODIGO_MONEDA"));
 		facturas.setDesGasto(rs.getString("DESCRIPCION_FACTURA"));
 		facturas.setImporteSoles(rs.getString("IMPORTE_SOLES"));

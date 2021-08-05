@@ -7,10 +7,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.pe.estec.model.Facturas;
-import com.pe.estec.model.FacturasDetalle;
 import com.pe.estec.model.Orden;
 import com.pe.estec.model.OrdenDetalle;
-import com.pe.estec.rowmapper.FacturasDetalleRowMapper;
 import com.pe.estec.rowmapper.FacturasRowMapper;
 import com.pe.estec.rowmapper.OrdenDetalleRowMapper;
 import com.pe.estec.rowmapper.OrdenesRowMapper;
