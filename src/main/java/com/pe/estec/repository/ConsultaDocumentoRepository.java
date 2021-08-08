@@ -113,7 +113,7 @@ public class ConsultaDocumentoRepository {
 		sql.append(" oc_dfecdoc as FECHA_ORDEN ");
 		sql.append(" FROM RSFACCAR15..CO0002MOVD ");
 		sql.append(" where 1=1");
-		if(numeroOrden!=null)sql.append(" and oc_cnumord = '"+numeroOrden+"' ");
+		if(numeroOrden!=null&&!numeroOrden.equals("null"))sql.append(" and oc_cnumord = '"+numeroOrden+"' ");
 		List<OrdenDetalle> users = dao.query(sql.toString(),new OrdenDetalleRowMapper());
 		return users;
 	}
@@ -164,5 +164,14 @@ public class ConsultaDocumentoRepository {
 		System.out.println(sql);
 		List<Facturas> users = dao.query(sql.toString(),new FacturasRowMapper());
 		return users;
+	}
+	public void estadoFactura(String numeroFactura) throws Exception {
+		StringBuilder sql = new StringBuilder();
+		System.out.println("numero de factura:"+ numeroFactura);
+		//sql.append(" update pruebas..facturas ");
+		//sql.append(" set  estado= "+numeroFactura+", FEC_MODIFI = GETDATE() ");
+		//sql.append(" where id_proveedor=? ");
+		//Object[] params= new Object[] {numeroFactura};
+		//dao.update(sql.toString(), params);
 	}
 }
