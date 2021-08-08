@@ -8,7 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.pe.estec.model.Comprobante;
+import com.pe.estec.model.ComprobanteDetalle;
 import com.pe.estec.model.Facturas;
+import com.pe.estec.model.request.ServiceResult;
 import com.pe.estec.services.ConsultaDocumentoService;
 
 @RestController
@@ -53,4 +56,27 @@ public class ConsultaDocumento {
 		}
 		return new ResponseEntity(respuesta, status);
 	}
+	
+	@PostMapping("/estado-factura")
+	public ResponseEntity<Object> estadoFactura(
+			@RequestParam("numeroFactura") String numeroFactura,@RequestParam("estado") Integer estado){
+		System.out.println(numeroFactura);
+		System.out.println(estado);
+		ServiceResult<String> response = consultaDocumentoServices.estadoFactura(estado, numeroFactura);
+		return new ResponseEntity(response, HttpStatus.valueOf(response.getHttpStatus()));
+	}
+	
+	@PostMapping("guardar-comprobante")
+	public ResponseEntity<Object> guardarComprobante(@RequestBody Comprobante Comprobante){
+		ServiceResult<String> response = consultaDocumentoServices.guardarComprobante(Comprobante);
+		return new ResponseEntity(response, HttpStatus.valueOf(response.getHttpStatus()));
+	}
+	
+	@PostMapping("guardar-detalle-comprobante")
+	public ResponseEntity<Object> guardarComprobanteDetalle(@RequestBody ComprobanteDetalle ComprobanteDetalle){
+		ServiceResult<String> response = consultaDocumentoServices.guardarComprobanteDetalle(ComprobanteDetalle);
+		return new ResponseEntity(response, HttpStatus.valueOf(response.getHttpStatus()));
+	}
+	
+	
 }

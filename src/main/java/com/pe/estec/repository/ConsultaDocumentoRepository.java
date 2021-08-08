@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.pe.estec.config.Constantes;
+import com.pe.estec.model.Comprobante;
+import com.pe.estec.model.ComprobanteDetalle;
 import com.pe.estec.model.Facturas;
 import com.pe.estec.model.Orden;
 import com.pe.estec.model.OrdenDetalle;
@@ -164,5 +167,34 @@ public class ConsultaDocumentoRepository {
 		System.out.println(sql);
 		List<Facturas> users = dao.query(sql.toString(),new FacturasRowMapper());
 		return users;
+	}
+	
+	
+	public void estadoFactura(Integer estado, String numeroFactura) throws Exception {
+		StringBuilder sql = new StringBuilder();
+		System.out.println("numero de factura:"+ numeroFactura);
+		sql.append(" update dbo.comprobante ");
+		sql.append(" set id_004_estado=? ");
+		sql.append(" where id_comprobante=? ");
+		Object[] params= new Object[] {estado, numeroFactura};
+		dao.update(sql.toString(), params);
+	}
+	
+	public void guardarComprobante(Comprobante Comprobante) throws Exception {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" update dbo.comprobante ");
+		sql.append(" set id_004_estado=? ");
+		sql.append(" where id_comprobante=? ");
+		Object[] params= new Object[] {};
+		dao.update(sql.toString(), params);
+	}
+	
+	public void guardarComprobanteDetalle(ComprobanteDetalle ComprobanteDetalle) throws Exception {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" update dbo.comprobante ");
+		sql.append(" set id_004_estado=? ");
+		sql.append(" where id_comprobante=? ");
+		Object[] params= new Object[] {};
+		dao.update(sql.toString(), params);
 	}
 }

@@ -3,11 +3,16 @@ package com.pe.estec.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.pe.estec.config.Constantes;
+import com.pe.estec.model.Comprobante;
+import com.pe.estec.model.ComprobanteDetalle;
 import com.pe.estec.model.Facturas;
 import com.pe.estec.model.Orden;
+import com.pe.estec.model.Proveedor;
+import com.pe.estec.model.request.ServiceResult;
 import com.pe.estec.repository.ConsultaDocumentoRepository;
 
 @Service
@@ -52,4 +57,56 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService{
 		}
 		return listaFacturas;
 	}
+	
+	
+	@Override
+	public ServiceResult<String> estadoFactura(Integer estado,String numeroFactura) {
+		ServiceResult<String> response = new ServiceResult();
+		try {
+			consultaDocRepository.estadoFactura(estado,numeroFactura);
+			response.setEsCorrecto(true);
+			response.setHttpStatus(HttpStatus.OK.value());
+		}catch (Exception e) {
+			e.printStackTrace();
+			response.setEsCorrecto(false);
+			response.setMensajeError("No se pudo cambiar de estado");
+			response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+		}
+		return response;
+	}
+	
+	@Override
+	public ServiceResult<String> guardarComprobante(Comprobante Comprobante){
+		ServiceResult<String> response = new ServiceResult();
+		try {
+			consultaDocRepository.guardarComprobante(Comprobante);
+			response.setEsCorrecto(true);
+			response.setHttpStatus(HttpStatus.OK.value());
+		}catch (Exception e) {
+			e.printStackTrace();
+			response.setEsCorrecto(false);
+			response.setMensajeError("No se pudo guardar comprobante");
+			response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+		}
+		return response;
+	}
+	
+	@Override
+	public ServiceResult<String> guardarComprobanteDetalle(ComprobanteDetalle ComprobanteDetalle){
+		ServiceResult<String> response = new ServiceResult();
+		try {
+			consultaDocRepository.guardarComprobanteDetalle(ComprobanteDetalle);
+			response.setEsCorrecto(true);
+			response.setHttpStatus(HttpStatus.OK.value());
+		}catch (Exception e) {
+			e.printStackTrace();
+			response.setEsCorrecto(false);
+			response.setMensajeError("No se pudo guardar el detalle del comprobante");
+			response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+		}
+		return response;
+	}
+	
+	
+	
 }
