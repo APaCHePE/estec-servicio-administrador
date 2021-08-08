@@ -14,7 +14,9 @@ public interface ConsultaDocumentoService {
 			String fecInicio, String fecFin, Integer estado, String nroDocumento);
 	public List<Facturas> consultaFacturas( String nroOrden, 
 			String fecInicio, String fecFin, Integer estado, String nroDocumento);
-	
+	////////////////////////////////////////////////////////////////////////////
+	public List<Comprobante> consultarComprobante( String nroOrden, 
+			String fecInicio, String fecFin, Integer estado, String nroDocumento);
 	public ServiceResult<String> estadoFactura(Integer estado,String numeroFactura); 
 	public ServiceResult<String> guardarComprobante(Comprobante Comprobante);
 	public ServiceResult<String> guardarComprobanteDetalle(ComprobanteDetalle ComprobanteDetalle);

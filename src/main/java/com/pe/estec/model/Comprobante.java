@@ -1,6 +1,7 @@
 package com.pe.estec.model;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -34,5 +35,6 @@ public class Comprobante {
 	private String orden_numero;
 	private String orden_contrato;
 	private Integer id_004_estado;
+	private List<ComprobanteDetalle> listaComprobanteDetalle;
 
 }

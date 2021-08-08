@@ -57,6 +57,8 @@ public class ConsultaDocumento {
 		return new ResponseEntity(respuesta, status);
 	}
 	
+	/////////////////////////////////////////////
+	
 	@PostMapping("/estado-factura")
 	public ResponseEntity<Object> estadoFactura(
 			@RequestParam("numeroFactura") String numeroFactura,@RequestParam("estado") Integer estado){
@@ -78,5 +80,22 @@ public class ConsultaDocumento {
 		return new ResponseEntity(response, HttpStatus.valueOf(response.getHttpStatus()));
 	}
 	
+	@GetMapping("/consultar-comprobante")
+	public ResponseEntity<Object> consultarComprobante(String numeroFac, String fecInicio, String fecFin, Integer estado, String nroDocumento) {
+		Map<String, Object> respuesta = new HashMap<>();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			respuesta.put("result",
+					consultaDocumentoServices.consultarComprobante(numeroFac, fecInicio, fecFin, estado, nroDocumento));
+			respuesta.put("status", Boolean.TRUE);
+			respuesta.put("codigo", status.value());
+		} catch (Exception e) {
+			status = HttpStatus.NOT_FOUND;
+			respuesta.put("status", false);
+			respuesta.put("errorMensaje", e.getMessage());
+			respuesta.put("codigo", status.value());
+		}
+		return new ResponseEntity(respuesta, status);
+	}
 	
 }
