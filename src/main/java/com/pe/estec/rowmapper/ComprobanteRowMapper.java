@@ -11,6 +11,7 @@ public class ComprobanteRowMapper implements RowMapper<Comprobante>{
 	@Override
 	public Comprobante mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Comprobante comprobante = new Comprobante();
+		comprobante.setId_comprobante(rs.getInt("id_comprobante"));
 		comprobante.setId_007_tipo_comprobante(rs.getInt("id_007_tipo_comprobante"));
 		comprobante.setSerie(rs.getString("serie"));
 		comprobante.setNumero(rs.getString("numero"));
@@ -38,6 +39,9 @@ public class ComprobanteRowMapper implements RowMapper<Comprobante>{
 		comprobante.setOrden_numero(rs.getString("orden_numero"));
 		comprobante.setOrden_contrato(rs.getString("orden_contrato"));
 		comprobante.setId_004_estado(rs.getInt("id_004_estado"));
+		comprobante.setNombre_moneda(rs.getString("nombre_moneda")); 
+		comprobante.setNombre_estado(rs.getString("nombre_estado")); 
+		
 		return comprobante;
 	}
 
