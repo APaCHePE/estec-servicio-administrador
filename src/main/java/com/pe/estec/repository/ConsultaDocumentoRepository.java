@@ -176,19 +176,25 @@ public class ConsultaDocumentoRepository {
 	/////////////////////////////////////////////////////////////////////
 	
 	
-	public void estadoFactura(Integer estado, Integer idComprobante, String observacion,Integer usuarioModificador) throws Exception {
+	public void estadoFactura(Integer estado, Integer idComprobante) throws Exception {
 		StringBuilder sql = new StringBuilder();
-		System.out.println("numero de factura:"+ idComprobante);
 		sql.append(" update pruebas.dbo.comprobante ");
-		sql.append(" set id_004_estado="+estado+", fecha_modificacion = GETDATE (), ");
-		if(observacion!= null)sql.append(" observacion_estado_usuario = '"+observacion+"', ");
-		if(usuarioModificador!= null)sql.append(" id_usuario_modificador = "+usuarioModificador+" ");
+		sql.append(" set id_004_estado="+estado+" ");
 		sql.append(" where id_comprobante="+idComprobante+" ");
-		//Object[] params= new Object[] {estado, idComprobante};
 		dao.update(sql.toString());
 	}
 	
-	public void guardarComprobante(Comprobante Comprobante) throws Exception {
+	public void estadoFacturaTrazabilidad(Integer idComprobante,Integer id008Trazabilidad, String observacionTra,String usuarioModificador) throws Exception {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" insert into pruebas.dbo.COMPROBANTE_TRAZABILIDAD ");
+		sql.append(" (id_comprobante, id_008_estado_trazabilidad, fecha_registro, observacion ,usuario_registro )");
+		sql.append(" values("+idComprobante+","+id008Trazabilidad+",GETDATE(),'"+observacionTra+"','"+usuarioModificador+"') ");
+		
+		dao.update(sql.toString());
+	}
+	
+	
+	public void guardarComprobante(Comprobante comprobante) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" INSERT INTO pruebas.dbo.COMPROBANTE ");
 		sql.append(" (id_comprobante,id_007_tipo_comprobante,serie,numero,proveedor_id_003_tipo_documento,proveedor_numero_documento ");
@@ -201,20 +207,20 @@ public class ConsultaDocumentoRepository {
 		dao.update(sql.toString(), params);
 	}
 	
-	public void guardarComprobanteDetalle(ComprobanteDetalle ComprobanteDetalle) throws Exception {
+	public void guardarComprobanteDetalle(ComprobanteDetalle comprobanteDetalle) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" INSERT INTO pruebas.dbo.COMPROBANTE_DETALLE ");
 		sql.append(" (id_comprobante_detalle,id_comprobante,cantidad,unidad_medida ");
 		sql.append(" ,descripcion,valor_unitario,icbper) ");
 		sql.append(" VALUES(?,?,?,?,?,?,?) ");
-		Object[] params= new Object[] {};
+		Object[] params= new Object[] {comprobanteDetalle.getId_comprobante_detalle(), comprobanteDetalle.getId_comprobante(), comprobanteDetalle.getCantidad(), 
+				comprobanteDetalle.getUnidad_medida(), comprobanteDetalle.getDescripcion(), comprobanteDetalle.getValor_unitario(), comprobanteDetalle.getIcbper()};
 		dao.update(sql.toString(), params);
 	}
 	
 	public List<Comprobante> consultarComprobante( String nroFact, 
 			String fecInicio, String fecFin, Integer estado, String nroDocumento) {
 		StringBuilder sql = new StringBuilder();
-		System.out.println("entrooooooooooo");
  		sql.append(" Select ");
  		sql.append(" id_comprobante,id_007_tipo_comprobante,serie,numero,proveedor_id_003_tipo_documento,proveedor_numero_documento ");
 		sql.append(" ,proveedor_nombre,proveedor_nombre_comercial,proveedor_direccion,proveedor_zona,fecha_emision ");
