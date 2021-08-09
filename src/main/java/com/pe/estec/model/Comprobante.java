@@ -35,6 +35,8 @@ public class Comprobante {
 	private String orden_numero;
 	private String orden_contrato;
 	private Integer id_004_estado;
+	private String nombre_moneda;
+	private String nombre_estado;
 	private List<ComprobanteDetalle> listaComprobanteDetalle;
 
 }

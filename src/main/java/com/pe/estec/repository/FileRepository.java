@@ -18,6 +18,10 @@ public class FileRepository {
 //		sql.append(" id_comprobante_detalle,id_comprobante,cantidad,unidad_medida ");
 //		sql.append(" ,descripcion,valor_unitario,icbper ");
 		sql.append(" FROM pruebas..archivo_repositorio ");
+		sql.append(" SELECT * FROM pruebas..archivo_repositorio ");
+		sql.append("ORDER BY id_archivo ");
+		sql.append(" OFFSET 1 ROWS ");
+		sql.append(" FETCH NEXT 1 ROWS ONLY");
 //		sql.append(" where 1=1");
 //		if(idComprobante!=null)sql.append(" and id_comprobante = '"+idComprobante+"' ");
 		Archivo archivo = (Archivo) sqlServer.queryForMap(sql.toString(),new Archivo());

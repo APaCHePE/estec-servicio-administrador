@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.pe.estec.model.Archivo;
 
 @Repository
-public class FileRepository implements RowMapper<Archivo>{
+public class FileRowMapper implements RowMapper<Archivo>{
 
 	@Override
 	public Archivo mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -17,6 +17,7 @@ public class FileRepository implements RowMapper<Archivo>{
 		Archivo archivo = new Archivo();
 		archivo.setArchivo(rs.getBytes("archivo"));
 		archivo.setIdArchivo(rs.getInt("idArchivo"));
+		archivo.setNombreArchivo("Factura");
 //		archivo.setNombreArchivo(l);
 		return archivo;
 	}

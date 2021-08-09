@@ -69,12 +69,11 @@ public class ConsultaDocumento {
 		return new ResponseEntity(response, HttpStatus.valueOf(response.getHttpStatus()));
 	}
 	
-	@PostMapping("/estado-factura")
+	@GetMapping("/estado-factura")
 	public ResponseEntity<Object> estadoFactura(
-			@RequestParam("numeroFactura") String numeroFactura,@RequestParam("estado") Integer estado){
-		System.out.println(numeroFactura);
-		System.out.println(estado);
-		ServiceResult<String> response = consultaDocumentoServices.estadoFactura(estado, numeroFactura);
+			@RequestParam("idComprobante") Integer idComprobante,@RequestParam("estado") Integer estado,
+			@RequestParam("observacion") String observacion,@RequestParam("usuarioModificador") Integer usuarioModificador ){
+		ServiceResult<String> response = consultaDocumentoServices.estadoFactura(estado, idComprobante,observacion,usuarioModificador);
 		return new ResponseEntity(response, HttpStatus.valueOf(response.getHttpStatus()));
 	}
 	
