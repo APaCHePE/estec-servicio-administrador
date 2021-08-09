@@ -120,7 +120,7 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService{
 	public static int PRETTY_PRINT_INDENT_FACTOR = 4;
 	private Map<String, Object> leerXml(File archivo) {
 		try {
-			guardarFile( FileUtils.readFileToByteArray(archivo));
+//			guardarFile( FileUtils.readFileToByteArray(archivo));
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
             Document document = documentBuilder.parse(archivo);
@@ -155,7 +155,7 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService{
 				fecFin, estado, nroDocumento);
 		for (Comprobante comprobante : listaFacturas) {
 			comprobante.setListaComprobanteDetalle(consultaDocRepository.consultarComprobanteDetalle(comprobante.getId_comprobante()));
-		}		
+		}
 		return listaFacturas;
 	}
 	

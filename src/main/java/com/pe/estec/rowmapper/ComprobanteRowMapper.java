@@ -21,8 +21,8 @@ public class ComprobanteRowMapper implements RowMapper<Comprobante>{
 		comprobante.setProveedor_nombre_comercial(rs.getString("proveedor_nombre_comercial"));
 		comprobante.setProveedor_direccion(rs.getString("proveedor_direccion"));
 		comprobante.setProveedor_zona(rs.getString("proveedor_zona"));
-		comprobante.setFecha_emision(rs.getDate("fecha_emision"));
-		comprobante.setFecha_vencimiento(rs.getDate("fecha_vencimiento"));
+		comprobante.setFecha_emision(rs.getString("fecha_emision"));
+		comprobante.setFecha_vencimiento(rs.getString("fecha_vencimiento"));
 		comprobante.setId_006_tipo_moneda(rs.getInt("id_006_tipo_moneda"));
 		comprobante.setObservacion(rs.getString("observacion"));
 		comprobante.setImporte_sub_total(rs.getDouble("importe_sub_total"));

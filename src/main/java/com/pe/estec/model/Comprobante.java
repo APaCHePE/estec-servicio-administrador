@@ -17,8 +17,8 @@ public class Comprobante {
 	private String proveedor_nombre_comercial;
 	private String proveedor_direccion;
 	private String proveedor_zona;
-	private Date fecha_emision;
-	private Date fecha_vencimiento;
+	private String fecha_emision;
+	private String fecha_vencimiento;
 	private Integer id_006_tipo_moneda;
 	private String observacion;
 	private Double importe_sub_total;
@@ -39,4 +39,6 @@ public class Comprobante {
 	private String nombre_estado;
 	private List<ComprobanteDetalle> listaComprobanteDetalle;
 
+	private Date fEmi;
+	private Date fVen;
 }
