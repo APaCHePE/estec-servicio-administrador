@@ -160,10 +160,11 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService{
 	}
 	
 	@Override
-	public ServiceResult<String> estadoFactura(Integer estado,Integer idComprobante, String observacion, Integer usuarioModificador) {
+	public ServiceResult<String> estadoFactura(Integer estado,Integer idComprobante,Integer id008Trazabilidad ,String observacion, String usuarioModificador) {
 		ServiceResult<String> response = new ServiceResult();
 		try {
-			consultaDocRepository.estadoFactura(estado,idComprobante, observacion, usuarioModificador);
+			consultaDocRepository.estadoFactura(estado,idComprobante);
+			consultaDocRepository.estadoFacturaTrazabilidad(idComprobante, id008Trazabilidad,observacion, usuarioModificador);
 			response.setEsCorrecto(true);
 			response.setHttpStatus(HttpStatus.OK.value());
 		}catch (Exception e) {
