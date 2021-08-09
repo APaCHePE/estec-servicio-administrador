@@ -177,7 +177,7 @@ public class ConsultaDocumentoRepository {
 	public void estadoFactura(Integer estado, String numeroFactura) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		System.out.println("numero de factura:"+ numeroFactura);
-		sql.append(" update dbo.comprobante ");
+		sql.append(" update pruebas.dbo.comprobante ");
 		sql.append(" set id_004_estado=? ");
 		sql.append(" where id_comprobante=? ");
 		Object[] params= new Object[] {estado, numeroFactura};
@@ -186,7 +186,7 @@ public class ConsultaDocumentoRepository {
 	
 	public void guardarComprobante(Comprobante Comprobante) throws Exception {
 		StringBuilder sql = new StringBuilder();
-		sql.append(" INSERT INTO dbo.COMPROBANTE ");
+		sql.append(" INSERT INTO pruebas.dbo.COMPROBANTE ");
 		sql.append(" (id_007_tipo_comprobante,serie,numero,proveedor_id_003_tipo_documento,proveedor_numero_documento ");
 		sql.append(" ,proveedor_nombre,proveedor_nombre_comercial,proveedor_direccion,proveedor_zona,fecha_emision ");
 		sql.append(" ,fecha_vencimiento,id_006_tipo_moneda,observacion,importe_sub_total,importe_anticipios,importe_descuentos ");
@@ -199,7 +199,7 @@ public class ConsultaDocumentoRepository {
 	
 	public void guardarComprobanteDetalle(ComprobanteDetalle ComprobanteDetalle) throws Exception {
 		StringBuilder sql = new StringBuilder();
-		sql.append(" INSERT INTO dbo.COMPROBANTE_DETALLE ");
+		sql.append(" INSERT INTO pruebas.dbo.COMPROBANTE_DETALLE ");
 		sql.append(" (id_comprobante_detalle,id_comprobante,cantidad,unidad_medida ");
 		sql.append(" ,descripcion,valor_unitario,icbper) ");
 		sql.append(" VALUES(?,?,?,?,?,?,?) ");
@@ -210,13 +210,13 @@ public class ConsultaDocumentoRepository {
 	public List<Comprobante> consultarComprobante( String nroFact, 
 			String fecInicio, String fecFin, Integer estado, String nroDocumento) {
 		StringBuilder sql = new StringBuilder();
- 		sql.append(" Select   ");
+ 		sql.append(" Select ");
  		sql.append(" id_007_tipo_comprobante,serie,numero,proveedor_id_003_tipo_documento,proveedor_numero_documento ");
 		sql.append(" ,proveedor_nombre,proveedor_nombre_comercial,proveedor_direccion,proveedor_zona,fecha_emision ");
 		sql.append(" ,fecha_vencimiento,id_006_tipo_moneda,observacion,importe_sub_total,importe_anticipios,importe_descuentos ");
 		sql.append(" ,importe_valor_venta,importe_isc,importe_igv,importe_icbper,importe_otros_cargos,importe_otros_tributos ");
 		sql.append(" ,importe_monto_redondeo,importe_total,orden_numero,orden_contrato,id_004_estado ");
-		sql.append(" FROM dbo.COMPROBANTE ");
+		sql.append(" FROM pruebas.dbo.COMPROBANTE ");
 		sql.append(" where 1=1");
 		if(nroDocumento!= null)sql.append(" and proveedor_numero_documento = '"+nroDocumento+"' ");
 		if(nroFact!= null)sql.append(" and numero = '"+nroFact+"' ");
@@ -230,7 +230,7 @@ public class ConsultaDocumentoRepository {
 		sql.append(" Select  ");
 		sql.append(" id_comprobante_detalle,id_comprobante,cantidad,unidad_medida ");
 		sql.append(" ,descripcion,valor_unitario,icbper ");
-		sql.append(" FROM dbo.COMPROBANTE_DETALLE ");
+		sql.append(" FROM pruebas.dbo.COMPROBANTE_DETALLE ");
 		sql.append(" where 1=1");
 		if(idComprobante!=null)sql.append(" and id_comprobante = '"+idComprobante+"' ");
 		List<ComprobanteDetalle> users = dao.query(sql.toString(),new ComprobanteDetalleRowMapper());
