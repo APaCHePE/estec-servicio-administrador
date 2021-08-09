@@ -1,35 +1,14 @@
 package com.pe.estec.services;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.json.JSONObject;
-import org.json.XML;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import com.pe.estec.config.Constantes;
-import com.pe.estec.model.Catalogo;
-import com.pe.estec.model.Facturas;
-import com.pe.estec.model.Orden;
-import com.pe.estec.model.request.ServiceResult;
-import com.pe.estec.repository.ConsultaDocumentoRepository;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -38,9 +17,30 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.io.FileUtils;
+import org.json.JSONObject;
+import org.json.XML;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.w3c.dom.Document;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pe.estec.config.Constantes;
+import com.pe.estec.model.Archivo;
+import com.pe.estec.model.Comprobante;
+import com.pe.estec.model.ComprobanteDetalle;
+import com.pe.estec.model.Facturas;
+import com.pe.estec.model.Orden;
+import com.pe.estec.model.request.ServiceResult;
+import com.pe.estec.repository.ConsultaDocumentoRepository;
 
+/**
+ * @author user
+ *
+ */
 @Service
 public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService{
 	@Autowired
@@ -83,7 +83,6 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService{
 		}
 		return listaFacturas;
 	}
-
 	@Override
 	public ServiceResult<Map<String, Object>> guardarZip(MultipartFile dataFile) {
 		byte[] buffer = new byte[1024];
@@ -121,6 +120,7 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService{
 	public static int PRETTY_PRINT_INDENT_FACTOR = 4;
 	private Map<String, Object> leerXml(File archivo) {
 		try {
+			guardarFile( FileUtils.readFileToByteArray(archivo));
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
             Document document = documentBuilder.parse(archivo);
@@ -142,17 +142,66 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService{
             return null;
         }
 	}
+	private void guardarFile(byte[] bites) {
+		Archivo archivo = new Archivo();
+		archivo.setArchivo(bites);
+		archivo.setIdArchivo(1);
+		consultaDocRepository.guardarFile(archivo);
+	}
 	@Override
-	public ServiceResult<String> estadoFactura(String numeroFactura) {
+	public List<Comprobante> consultarComprobante(String nroOrden, String fecInicio, String fecFin,
+			Integer estado, String nroDocumento) {
+		List<Comprobante> listaFacturas = consultaDocRepository.consultarComprobante( nroOrden, fecInicio,
+				fecFin, estado, nroDocumento);
+		for (Comprobante comprobante : listaFacturas) {
+			comprobante.setListaComprobanteDetalle(consultaDocRepository.consultarComprobanteDetalle(comprobante.getId_comprobante()));
+		}		
+		return listaFacturas;
+	}
+	
+	@Override
+	public ServiceResult<String> estadoFactura(Integer estado,String numeroFactura) {
 		ServiceResult<String> response = new ServiceResult();
 		try {
-			consultaDocRepository.estadoFactura(numeroFactura);
+			consultaDocRepository.estadoFactura(estado,numeroFactura);
 			response.setEsCorrecto(true);
 			response.setHttpStatus(HttpStatus.OK.value());
 		}catch (Exception e) {
 			e.printStackTrace();
 			response.setEsCorrecto(false);
 			response.setMensajeError("No se pudo cambiar de estado");
+			response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+		}
+		return response;
+	}
+	
+	@Override
+	public ServiceResult<String> guardarComprobante(Comprobante Comprobante){
+		ServiceResult<String> response = new ServiceResult();
+		try {
+			consultaDocRepository.guardarComprobante(Comprobante);
+			response.setEsCorrecto(true);
+			response.setHttpStatus(HttpStatus.OK.value());
+		}catch (Exception e) {
+			e.printStackTrace();
+			response.setEsCorrecto(false);
+			response.setMensajeError("No se pudo guardar comprobante");
+			response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+		}
+		return response;
+	}
+	
+	@Override
+	public ServiceResult<String> guardarComprobanteDetalle(ComprobanteDetalle ComprobanteDetalle){
+		ServiceResult<String> response = new ServiceResult();
+		try {
+			consultaDocRepository.guardarComprobanteDetalle(ComprobanteDetalle);
+			response.setEsCorrecto(true);
+			response.setHttpStatus(HttpStatus.OK.value());
+		}catch (Exception e) {
+			e.printStackTrace();
+			response.setEsCorrecto(false);
+			response.setMensajeError("No se pudo guardar el detalle del comprobante");
 			response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
 		}
 		return response;
