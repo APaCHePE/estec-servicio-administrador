@@ -1,45 +1,44 @@
 package com.pe.estec.model;
 
-import java.util.Date;
 import java.util.List;
 
 import lombok.Data;
 
 @Data
 public class Comprobante {
-	private Integer id_comprobante;
-	private Integer id_007_tipo_comprobante;
+	
+	private Integer idComprobante;
+	private Integer id007TipoComprobante;
 	private String serie;
 	private String numero;
-	private Integer proveedor_id_003_tipo_documento;
-	private String proveedor_numero_documento;
-	private String proveedor_nombre;
-	private String proveedor_nombre_comercial;
-	private String proveedor_direccion;
-	private String proveedor_zona;
-	private String fecha_emision;
-	private String fecha_vencimiento;
-	private Integer id_006_tipo_moneda;
+	private Integer proveedorId003TipoDocumento;
+	private String proveedorNumeroDocumento;
+	private String proveedorNombre;
+	private String proveedorNombreComercial;
+	private String proveedorDireccion;
+	private String proveedorZona;
+	private String fechaEmision;
+	private String fechaVencimiento;
+	private Integer id006TipoMoneda;
 	private String observacion;
-	private Double importe_sub_total;
-	private Double importe_anticipios;
-	private Double importe_descuentos;
-	private Double importe_valor_venta;
-	private Double importe_isc;
-	private Double importe_igv;
-	private Double importe_icbper;
-	private Double importe_otros_cargos;
-	private Double importe_otros_tributos;
-	private Double importe_monto_redondeo;
-	private Double importe_total;
-	private String orden_numero;
-	private String orden_contrato;
-	private Integer id_004_estado;
-	private String nombre_moneda;
-	private String nombre_estado;
+	private Double importeSubTotal;
+	private Double importeAnticipios;
+	private Double importeDescuentos;
+	private Double importeValorVenta;
+	private Double importeIsc;
+	private Double importeIgv;
+	private Double importeIcbper;
+	private Double importeOtrosCargos;
+	private Double importeOtrosTributos;
+	private Double importeMontoRedondeo;
+	private Double importeTotal;
+	private String ordenNumero;
+	private Integer ordenContrato;
+	private Integer id004Estado;
+	private String nombreMoneda;
+	private String nombreEstado;
+	private String usuarioResponsable;
 	private List<ComprobanteDetalle> listaComprobanteDetalle;
 	private List<ComprobanteTrazabilidad> listaComprobanteTrazabilidad;
 
-	private Date fEmi;
-	private Date fVen;
 }

@@ -4,13 +4,14 @@ import lombok.Data;
 
 @Data
 public class ComprobanteDetalle {
-	
-private Integer id_comprobante_detalle;
-private Integer id_comprobante;
-private Double cantidad;
-private String unidad_medida;
-private String descripcion;
-private Double valor_unitario;
-private Double icbper;
+
+	private Integer idComprobanteDetalle;
+	private Integer idComprobante;
+	private Double cantidad;
+	private String unidadMedida;
+	private String codigo;
+	private String descripcion;
+	private Double valorUnitario;
+	private Double icbper;
 
 }

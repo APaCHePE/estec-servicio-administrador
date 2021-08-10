@@ -20,6 +20,7 @@ import com.pe.estec.rowmapper.ComprobanteTrazabilidadRowMapper;
 import com.pe.estec.rowmapper.FacturasRowMapper;
 import com.pe.estec.rowmapper.OrdenDetalleRowMapper;
 import com.pe.estec.rowmapper.OrdenesRowMapper;
+import com.pe.estec.util.SqlReturning;
 
 @Repository
 public class ConsultaDocumentoRepository {
@@ -51,7 +52,7 @@ public class ConsultaDocumentoRepository {
 		sql.append(" OC_NDSCPIT, OC_NDESCIT, OC_NDSCPAD, OC_NDESCAD, OC_NDSCPOR, "
 				+ " OC_NDESCTO, OC_NIGV, OC_NIGVPOR, OC_NCANSAL, OC_NTOTUS, OC_NTOTMN, OC_COMENTA, ");
 		sql.append(" OC_CESTADO, MOVD.OC_DFECDOC, MOVD.OC_CTIPORD, OC_CCENCOS, OC_CSOLICI,  ");
-		sql.append(" MOVD.OC_DFECENT, OC_CITMPOR, OC_CDSCPOR, OC_CIGVPOR, OC_CISCPOR  ");
+		sql.append(" MOVD.OC_DFECENT, OC_CITMPOR, OC_CDSCPOR, OC_CIGVPOR, OC_CISCPOR,  ");
 		sql.append(" OC_NIMPUS AS IMPORTE_SOLES, OC_NIMPMN AS IMPORTE_DOLARES, "
 				+ "	oc_nimpfac, oc_nimpfob, oc_nimpcf, oc_nimpcif  ");
 		sql.append("  FROM RSFACCAR15..CO0002MOVD AS MOVD  ");
@@ -90,7 +91,7 @@ public class ConsultaDocumentoRepository {
 		sql.append(" TB_TIP_MON.tg_cdescri as nombre_moneda, ");
 		sql.append(" MOVC.OC_CFORPA1 AS FORMA_PAGO, ");
 		sql.append(" MOVC.OC_NTIPCAM AS TIPO_CAMBIO, ");
-		sql.append(" MOVC.OC_CSOLICT AS SOLICITANTE, ");
+		sql.append(" MOVC.OC_CCODSOL AS SOLICITANTE, ");
 		sql.append(" MOVC.OC_CNUMREF AS OBSERVACIONES, ");
 		sql.append(" movc.oc_ctipord as tipo_orden, ");
 		sql.append(" TB_TIP_ORD.tg_cdescri as DESCRIPCION_ORDEN, MOVC.oc_dfecdoc as fecha_orden,");
@@ -232,16 +233,13 @@ public class ConsultaDocumentoRepository {
 	}
 	
 	
-	public void guardarComprobante(Comprobante comprobante) throws Exception {
+	public Integer guardarComprobante(Comprobante comprobante) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		comprobante.setSerie( comprobante.getSerie().substring(0,4) );
-		System.out.println("fec dia  "+comprobante.getFecha_emision().substring(8,10));
-		System.out.println("fec mes "+comprobante.getFecha_emision().substring(5,7));
-		System.out.println("fec anio "+comprobante.getFecha_emision().substring(0,4));
-		String fec1 =  comprobante.getFecha_emision().substring(8,10)+"-"+comprobante.getFecha_emision().substring(5,7)+"-" +comprobante.getFecha_emision().substring(0,4);
-		String fec2 =  comprobante.getFecha_emision().substring(8,10)+"-"+comprobante.getFecha_emision().substring(5,7)+"-" +comprobante.getFecha_emision().substring(0,4);
-		comprobante.setFecha_emision(fec1);
-		comprobante.setFecha_vencimiento(fec2);
+		String fec1 =  comprobante.getFechaEmision().substring(8,10)+"-"+comprobante.getFechaEmision().substring(5,7)+"-" +comprobante.getFechaEmision().substring(0,4);
+		String fec2 =  comprobante.getFechaEmision().substring(8,10)+"-"+comprobante.getFechaEmision().substring(5,7)+"-" +comprobante.getFechaEmision().substring(0,4);
+		comprobante.setFechaEmision(fec1);
+		comprobante.setFechaVencimiento(fec2);
 		
 		sql.append(" INSERT INTO pruebas..COMPROBANTE ");
 		sql.append(
@@ -249,32 +247,33 @@ public class ConsultaDocumentoRepository {
 		sql.append(" ,proveedor_nombre, proveedor_nombre_comercial, fecha_emision ");
 		sql.append(" ,fecha_vencimiento,  id_006_tipo_moneda,  importe_sub_total,  importe_descuentos ");
 		sql.append(" ,importe_valor_venta,  importe_igv ");
-		sql.append(" ,importe_total, id_004_estado) ");
-		sql.append(" VALUES(" + comprobante.getId_007_tipo_comprobante() + ",'" + comprobante.getSerie() + "',"+ comprobante.getNumero());
-		sql.append("," + comprobante.getProveedor_id_003_tipo_documento() + ",");
-		sql.append("'"+comprobante.getProveedor_numero_documento() + "','" + comprobante.getProveedor_nombre()+"'");
-		sql.append(",'" + comprobante.getProveedor_nombre_comercial() + "',CONVERT(datetime, '" + comprobante.getFecha_emision() + "', 103),");
-		sql.append("CONVERT(datetime, '"+comprobante.getFecha_vencimiento()+"', 103)");
-		sql.append("," + comprobante.getId_006_tipo_moneda() + "," + comprobante.getImporte_sub_total() + ","
-				+ comprobante.getImporte_descuentos());
-		sql.append("," + comprobante.getImporte_valor_venta() + "," + comprobante.getImporte_igv() + "," + comprobante.getImporte_total() + "," + 9
-				+ ") ");
-		
+		sql.append(" ,importe_total, id_004_estado, usuario_responsable, orden_numero) ");
+		sql.append(" VALUES(" + comprobante.getId007TipoComprobante() + ",'" + comprobante.getSerie() + "',"+ comprobante.getNumero());
+		sql.append("," + comprobante.getProveedorId003TipoDocumento() + ",");
+		sql.append("'"+comprobante.getProveedorNumeroDocumento() + "','"+comprobante.getProveedorNombre()+"' ");
+		sql.append(",'" + comprobante.getProveedorNombreComercial() + "',CONVERT(datetime, '" + comprobante.getFechaEmision() + "', 103),");
+		sql.append("CONVERT(datetime, '"+comprobante.getFechaVencimiento()+"', 103)");
+		sql.append("," + comprobante.getId006TipoMoneda() + "," + comprobante.getImporteSubTotal() + ","
+		        + comprobante.getImporteDescuentos());
+		sql.append("," + comprobante.getImporteValorVenta() + "," + comprobante.getImporteIgv() + "," + comprobante.getImporteTotal() + ", 9 ,");
+		sql.append(" '" + comprobante.getUsuarioResponsable() + "', '"+comprobante.getOrdenNumero()+"' ) ");
 		System.out.println(sql.toString());
+		SqlReturning db = new SqlReturning(dao);
 
-		dao.update(sql.toString());
+		Long idGenerado = db.insertaDataParams(sql.toString());
+		return idGenerado.intValue();
 	}
 	
-	public void guardarComprobanteDetalle(ComprobanteDetalle comprobanteDetalle) throws Exception {
+	public void guardarComprobanteDetalle(ComprobanteDetalle comprobanteDetalle, Integer idComprobante) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" INSERT INTO pruebas.dbo.COMPROBANTE_DETALLE ");
-		sql.append(" (id_comprobante_detalle,id_comprobante,cantidad,unidad_medida ");
+		sql.append(" (id_comprobante,cantidad,unidad_medida ");
 		sql.append(" ,descripcion,valor_unitario,icbper) ");
-		sql.append(" VALUES(?,?,?,?,?,?,?) ");
-		Object[] params = new Object[] { comprobanteDetalle.getId_comprobante_detalle(),
-				comprobanteDetalle.getId_comprobante(), comprobanteDetalle.getCantidad(),
-				comprobanteDetalle.getUnidad_medida(), comprobanteDetalle.getDescripcion(),
-				comprobanteDetalle.getValor_unitario(), comprobanteDetalle.getIcbper() };
+		sql.append(" VALUES(?,?,?,?,?,?) ");
+		Object[] params = new Object[] { 
+		        idComprobante, comprobanteDetalle.getCantidad(),
+		        comprobanteDetalle.getUnidadMedida(), comprobanteDetalle.getDescripcion(),
+		        comprobanteDetalle.getValorUnitario(), comprobanteDetalle.getIcbper() };
 		dao.update(sql.toString(), params);
 	}
 
@@ -290,6 +289,7 @@ public class ConsultaDocumentoRepository {
 				" ,importe_valor_venta,importe_isc,importe_igv,importe_icbper,importe_otros_cargos,importe_otros_tributos ");
 		sql.append(
 				" ,importe_monto_redondeo,importe_total,orden_numero,orden_contrato,id_004_estado,  p.nombre as nombre_moneda, p2.nombre as nombre_estado ");
+		sql.append(" ,trim(usuario_responsable) as usuario_responsable ");
 		sql.append(" FROM pruebas.dbo.COMPROBANTE com ");
 		sql.append(" left join pruebas.dbo.parametro p on com.id_006_tipo_moneda = p.id_parametro");
 		sql.append(" left join pruebas.dbo.parametro p2 on com.id_004_estado = p2.id_parametro");

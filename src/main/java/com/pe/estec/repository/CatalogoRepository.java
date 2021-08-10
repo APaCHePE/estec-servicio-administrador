@@ -17,7 +17,6 @@ public class CatalogoRepository {
 	
 	public List<Catalogo> obtenerCatalogo(String idElemento, String idGrupo){
 		StringBuilder sql = new StringBuilder();
-		Boolean existe = false;
 		sql.append("  Select case ");
 		sql.append(" From RSCONCAR..CP0002MAES ");
 		sql.append(" where trim(ac_cruc) = ? and ");

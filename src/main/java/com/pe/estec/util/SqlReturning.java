@@ -22,6 +22,11 @@ public class SqlReturning {
 		return keyHolder.getKey().longValue();
 	}
 	
+	public long insertaDataParams(String sql) {
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		jdbctemplate.update(con ->queryDbParams(con, sql), keyHolder);
+		return keyHolder.getKey().longValue();
+	}
 	private PreparedStatement queryDb(Connection con, String sql, Object[] params)throws SQLException {
 		int indice = 1;
 		PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -41,5 +46,9 @@ public class SqlReturning {
 		}
 		return ps;
 	}
-
+	private PreparedStatement queryDbParams(Connection con, String sql )throws SQLException {
+		int indice = 1;
+		PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		return ps;
+	}
 }
