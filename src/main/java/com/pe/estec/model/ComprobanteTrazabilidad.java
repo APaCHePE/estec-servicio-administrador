@@ -6,12 +6,12 @@ import lombok.Data;
 
 @Data
 public class ComprobanteTrazabilidad {
-	private Integer id_comprobante_trazabilidad;
-	private Integer id_comprobante;
-	private Integer id_008_estado_trazabilidad;
-	private Date fecha_registro;
+	private Integer idComprobanteTrazabilidad;
+	private Integer idComprobante;
+	private Integer id008EstadoTrazabilidad;
+	private Date fechaRegistro;
 	private String observacion;
-	private String usuario_registro;
-	private String nombre_estado;
+	private String usuarioRegistro;
+	private String nombreEstado;
 
 }
