@@ -247,16 +247,19 @@ public class ConsultaDocumentoRepository {
 		sql.append(" ,proveedor_nombre, proveedor_nombre_comercial, fecha_emision ");
 		sql.append(" ,fecha_vencimiento,  id_006_tipo_moneda,  importe_sub_total,  importe_descuentos ");
 		sql.append(" ,importe_valor_venta,  importe_igv ");
-		sql.append(" ,importe_total, id_004_estado, usuario_responsable, orden_numero) ");
+		if(comprobante.getImporteIgv()!=null)sql.append(" ,orden_numero ");
+		sql.append(" ,importe_total, id_004_estado, usuario_responsable, proveedor_direccion, proveedor_zona) ");
 		sql.append(" VALUES(" + comprobante.getId007TipoComprobante() + ",'" + comprobante.getSerie() + "',"+ comprobante.getNumero());
 		sql.append("," + comprobante.getProveedorId003TipoDocumento() + ",");
 		sql.append("'"+comprobante.getProveedorNumeroDocumento() + "','"+comprobante.getProveedorNombre()+"' ");
 		sql.append(",'" + comprobante.getProveedorNombreComercial() + "',CONVERT(datetime, '" + comprobante.getFechaEmision() + "', 103),");
 		sql.append("CONVERT(datetime, '"+comprobante.getFechaVencimiento()+"', 103)");
-		sql.append("," + comprobante.getId006TipoMoneda() + "," + comprobante.getImporteSubTotal() + ","
-		        + comprobante.getImporteDescuentos());
-		sql.append("," + comprobante.getImporteValorVenta() + "," + comprobante.getImporteIgv() + "," + comprobante.getImporteTotal() + ", 9 ,");
-		sql.append(" '" + comprobante.getUsuarioResponsable() + "', '"+comprobante.getOrdenNumero()+"' ) ");
+		sql.append("," + comprobante.getId006TipoMoneda() + "," + comprobante.getImporteSubTotal() + ", ");
+		sql.append(comprobante.getImporteDescuentos());
+		if(comprobante.getImporteIgv()!= null)sql.append( "," + comprobante.getImporteIgv()  );
+		sql.append(" ," + comprobante.getImporteValorVenta() +"," + comprobante.getImporteTotal() + ",");
+		sql.append(" 9 , '" + comprobante.getUsuarioResponsable() + "', '"+comprobante.getOrdenNumero()+"' ");
+		sql.append(", '" + comprobante.getProveedorDireccion() + "', '"+comprobante.getProveedorZona()+"' ) ");
 		System.out.println(sql.toString());
 		SqlReturning db = new SqlReturning(dao);
 
