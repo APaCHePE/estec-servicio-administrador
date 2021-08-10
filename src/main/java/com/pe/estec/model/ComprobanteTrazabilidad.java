@@ -12,5 +12,6 @@ public class ComprobanteTrazabilidad {
 	private Date fecha_registro;
 	private String observacion;
 	private String usuario_registro;
+	private String nombre_estado;
 
 }

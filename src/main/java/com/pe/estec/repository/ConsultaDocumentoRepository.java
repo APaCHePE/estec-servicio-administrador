@@ -325,8 +325,9 @@ public class ConsultaDocumentoRepository {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" Select  ");
 		sql.append(" id_comprobante_trazabilidad,id_comprobante,id_008_estado_trazabilidad ");
-		sql.append(" ,fecha_registro,observacion,usuario_registro ");
-		sql.append(" FROM pruebas.dbo.COMPROBANTE_TRAZABILIDAD ");
+		sql.append(" ,fecha_registro,observacion,usuario_registro, p.nombre as nombre_estado ");
+		sql.append(" FROM pruebas.dbo.COMPROBANTE_TRAZABILIDAD tr ");
+		sql.append(" left join pruebas.dbo.parametro p on tr.id_008_estado_trazabilidad = p.id_parametro");
 		sql.append(" where 1=1");
 		if (idComprobante != null)
 			sql.append(" and id_comprobante = '" + idComprobante + "' ");

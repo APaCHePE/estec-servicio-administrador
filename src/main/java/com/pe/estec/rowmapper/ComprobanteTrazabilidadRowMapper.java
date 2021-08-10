@@ -17,6 +17,7 @@ public class ComprobanteTrazabilidadRowMapper implements RowMapper<ComprobanteTr
 		comprobanteTrazabilidad.setFecha_registro(rs.getDate("fecha_registro"));
 		comprobanteTrazabilidad.setObservacion(rs.getString("observacion"));
 		comprobanteTrazabilidad.setUsuario_registro(rs.getString("usuario_registro"));
+		comprobanteTrazabilidad.setNombre_estado(rs.getString("nombre_estado")); 
 		return comprobanteTrazabilidad;
 		}
 
