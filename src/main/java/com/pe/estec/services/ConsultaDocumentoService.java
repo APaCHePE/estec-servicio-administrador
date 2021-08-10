@@ -22,6 +22,6 @@ public interface ConsultaDocumentoService {
 	public ServiceResult<String> guardarComprobante(Comprobante Comprobante);
 	public ServiceResult<String> guardarComprobanteDetalle(ComprobanteDetalle ComprobanteDetalle);
 	public List<Comprobante> consultarComprobante( String nroOrden, 
-			String fecInicio, String fecFin, Integer estado, String nroDocumento);
+			String fecInicio, String fecFin, Integer estado, String nroDocumento, Integer idComprobante);
 	
 }

@@ -10,11 +10,13 @@ import com.pe.estec.config.Constantes;
 import com.pe.estec.model.Archivo;
 import com.pe.estec.model.Comprobante;
 import com.pe.estec.model.ComprobanteDetalle;
+import com.pe.estec.model.ComprobanteTrazabilidad;
 import com.pe.estec.model.Facturas;
 import com.pe.estec.model.Orden;
 import com.pe.estec.model.OrdenDetalle;
 import com.pe.estec.rowmapper.ComprobanteDetalleRowMapper;
 import com.pe.estec.rowmapper.ComprobanteRowMapper;
+import com.pe.estec.rowmapper.ComprobanteTrazabilidadRowMapper;
 import com.pe.estec.rowmapper.FacturasRowMapper;
 import com.pe.estec.rowmapper.OrdenDetalleRowMapper;
 import com.pe.estec.rowmapper.OrdenesRowMapper;
@@ -277,7 +279,7 @@ public class ConsultaDocumentoRepository {
 	}
 
 	public List<Comprobante> consultarComprobante(String nroFact, String fecInicio, String fecFin, Integer estado,
-			String nroDocumento) {
+			String nroDocumento, Integer idComprobante) {
 		StringBuilder sql = new StringBuilder();
  		sql.append(" Select ");
  		sql.append(" id_comprobante,id_007_tipo_comprobante,serie,numero,proveedor_id_003_tipo_documento,proveedor_numero_documento ");
@@ -294,6 +296,8 @@ public class ConsultaDocumentoRepository {
 		sql.append(" where 1=1");
 		if (estado != null)
 			sql.append(" and id_004_estado = " + estado + " ");
+		if (idComprobante != null)
+			sql.append(" and id_comprobante = " + idComprobante + " ");
 		if (nroDocumento != null)
 			sql.append(" and proveedor_numero_documento = '" + nroDocumento + "' ");
 		if (nroFact != null)
@@ -314,6 +318,20 @@ public class ConsultaDocumentoRepository {
 		if (idComprobante != null)
 			sql.append(" and id_comprobante = '" + idComprobante + "' ");
 		List<ComprobanteDetalle> users = dao.query(sql.toString(), new ComprobanteDetalleRowMapper());
+		return users;
+	}
+	
+	public List<ComprobanteTrazabilidad> consultarComprobanteTrazabilidad(Integer idComprobante) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" Select  ");
+		sql.append(" id_comprobante_trazabilidad,id_comprobante,id_008_estado_trazabilidad ");
+		sql.append(" ,fecha_registro,observacion,usuario_registro, p.nombre as nombre_estado ");
+		sql.append(" FROM pruebas.dbo.COMPROBANTE_TRAZABILIDAD tr ");
+		sql.append(" left join pruebas.dbo.parametro p on tr.id_008_estado_trazabilidad = p.id_parametro");
+		sql.append(" where 1=1");
+		if (idComprobante != null)
+			sql.append(" and id_comprobante = '" + idComprobante + "' ");
+		List<ComprobanteTrazabilidad> users = dao.query(sql.toString(), new ComprobanteTrazabilidadRowMapper());
 		return users;
 	}
 

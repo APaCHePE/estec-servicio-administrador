@@ -150,11 +150,14 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService{
 	}
 	@Override
 	public List<Comprobante> consultarComprobante(String nroOrden, String fecInicio, String fecFin,
-			Integer estado, String nroDocumento) {
+			Integer estado, String nroDocumento, Integer idComprobante) {
 		List<Comprobante> listaFacturas = consultaDocRepository.consultarComprobante( nroOrden, fecInicio,
-				fecFin, estado, nroDocumento);
+				fecFin, estado, nroDocumento, idComprobante);
 		for (Comprobante comprobante : listaFacturas) {
 			comprobante.setListaComprobanteDetalle(consultaDocRepository.consultarComprobanteDetalle(comprobante.getId_comprobante()));
+		}
+		for (Comprobante comprobante : listaFacturas) {
+			comprobante.setListaComprobanteTrazabilidad(consultaDocRepository.consultarComprobanteTrazabilidad(comprobante.getId_comprobante()));
 		}
 		return listaFacturas;
 	}

@@ -38,6 +38,7 @@ public class Comprobante {
 	private String nombre_moneda;
 	private String nombre_estado;
 	private List<ComprobanteDetalle> listaComprobanteDetalle;
+	private List<ComprobanteTrazabilidad> listaComprobanteTrazabilidad;
 
 	private Date fEmi;
 	private Date fVen;
