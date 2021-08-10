@@ -90,12 +90,12 @@ public class ConsultaDocumento {
 	}
 	
 	@GetMapping("/consultar-comprobante")
-	public ResponseEntity<Object> consultarComprobante(String numeroFac, String fecInicio, String fecFin, Integer estado, String nroDocumento) {
+	public ResponseEntity<Object> consultarComprobante(String numeroFac, String fecInicio, String fecFin, Integer estado, String nroDocumento, Integer idComprobante) {
 		Map<String, Object> respuesta = new HashMap<>();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			respuesta.put("result",
-					consultaDocumentoServices.consultarComprobante(numeroFac, fecInicio, fecFin, estado, nroDocumento));
+					consultaDocumentoServices.consultarComprobante(numeroFac, fecInicio, fecFin, estado, nroDocumento, idComprobante));
 			respuesta.put("status", Boolean.TRUE);
 			respuesta.put("codigo", status.value());
 		} catch (Exception e) {
