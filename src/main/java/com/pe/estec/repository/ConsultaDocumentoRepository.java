@@ -198,7 +198,7 @@ public class ConsultaDocumentoRepository {
 		return users;
 	}
 
-	public void estadoFactura(Integer estado, Integer idComprobante, String observacion, Integer usuarioModificador)
+	/*public void estadoFactura(String usuarioResponsable, Integer estado, Integer idComprobante, String observacion, Integer usuarioModificador)
 			throws Exception {
 		StringBuilder sql = new StringBuilder();
 		System.out.println("numero de factura:" + idComprobante);
@@ -206,6 +206,8 @@ public class ConsultaDocumentoRepository {
 		sql.append(" set id_004_estado=" + estado + ", fecha_modificacion = GETDATE (), ");
 		if (observacion != null)
 			sql.append(" observacion_estado_usuario = '" + observacion + "', ");
+		if (usuarioResponsable != null)
+			sql.append(" usuario_responsable = '" + usuarioResponsable + "', ");
 		if (usuarioModificador != null)
 			sql.append(" id_usuario_modificador = " + usuarioModificador + " ");
 		sql.append(" where id_comprobante=" + idComprobante + " ");
@@ -213,12 +215,14 @@ public class ConsultaDocumentoRepository {
 		System.out.println(sql.toString());
 		// Object[] params= new Object[] {estado, idComprobante};
 		dao.update(sql.toString());
-	}
+	}*/
 
-	public void estadoFactura(Integer estado, Integer idComprobante) throws Exception {
+	public void estadoFactura(String usuarioResponsable,Integer estado, Integer idComprobante) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" update pruebas.dbo.comprobante ");
 		sql.append(" set id_004_estado="+estado+" ");
+		if (usuarioResponsable != null)
+			sql.append(" ,usuario_responsable = '" + usuarioResponsable + "'");
 		sql.append(" where id_comprobante="+idComprobante+" ");
 		dao.update(sql.toString());
 	}
@@ -280,7 +284,7 @@ public class ConsultaDocumentoRepository {
 		dao.update(sql.toString(), params);
 	}
 
-	public List<Comprobante> consultarComprobante(String nroFact, String fecInicio, String fecFin, Integer estado,
+	public List<Comprobante> consultarComprobante(String usuariosresponsable,String nroFact, String fecInicio, String fecFin, Integer estado,
 			String nroDocumento, Integer idComprobante) {
 		StringBuilder sql = new StringBuilder();
  		sql.append(" Select ");
@@ -297,6 +301,8 @@ public class ConsultaDocumentoRepository {
 		sql.append(" left join pruebas.dbo.parametro p on com.id_006_tipo_moneda = p.id_parametro");
 		sql.append(" left join pruebas.dbo.parametro p2 on com.id_004_estado = p2.id_parametro");
 		sql.append(" where 1=1");
+		if (usuariosresponsable != null)
+			sql.append(" and usuario_responsable = '" + usuariosresponsable + "' ");
 		if (estado != null)
 			sql.append(" and id_004_estado = " + estado + " ");
 		if (idComprobante != null)

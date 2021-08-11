@@ -70,10 +70,10 @@ public class ConsultaDocumento {
 	}
 	
 	@GetMapping("/estado-factura")
-	public ResponseEntity<Object> estadoFactura(
+	public ResponseEntity<Object> estadoFactura(@RequestParam("usuarioResponsable") String usuarioResponsable,
 			@RequestParam("idComprobante") Integer idComprobante,@RequestParam("estado") Integer estado,@RequestParam("id008Trazabilidad") Integer id008Trazabilidad,
 			@RequestParam("observacion") String observacion,@RequestParam("usuarioModificador") String usuarioModificador ){
-		ServiceResult<String> response = consultaDocumentoServices.estadoFactura(estado, idComprobante,id008Trazabilidad,observacion,usuarioModificador);
+		ServiceResult<String> response = consultaDocumentoServices.estadoFactura(usuarioResponsable,estado, idComprobante,id008Trazabilidad,observacion,usuarioModificador);
 		return new ResponseEntity(response, HttpStatus.valueOf(response.getHttpStatus()));
 	}
 	
@@ -84,12 +84,12 @@ public class ConsultaDocumento {
 	}
 	
 	@GetMapping("/consultar-comprobante")
-	public ResponseEntity<Object> consultarComprobante(String numeroFac, String fecInicio, String fecFin, Integer estado, String nroDocumento, Integer idComprobante) {
+	public ResponseEntity<Object> consultarComprobante(String usuariosresponsable, String numeroFac, String fecInicio, String fecFin, Integer estado, String nroDocumento, Integer idComprobante) {
 		Map<String, Object> respuesta = new HashMap<>();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			respuesta.put("result",
-					consultaDocumentoServices.consultarComprobante(numeroFac, fecInicio, fecFin, estado, nroDocumento, idComprobante));
+					consultaDocumentoServices.consultarComprobante(usuariosresponsable, numeroFac, fecInicio, fecFin, estado, nroDocumento, idComprobante));
 			respuesta.put("status", Boolean.TRUE);
 			respuesta.put("codigo", status.value());
 		} catch (Exception e) {
