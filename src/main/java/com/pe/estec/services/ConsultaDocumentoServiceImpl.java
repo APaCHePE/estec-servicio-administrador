@@ -161,9 +161,9 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 	}
 
 	@Override
-	public List<Comprobante> consultarComprobante(String nroOrden, String fecInicio, String fecFin, Integer estado,
+	public List<Comprobante> consultarComprobante( String usuariosresponsable, String nroOrden, String fecInicio, String fecFin, Integer estado,
 			String nroDocumento, Integer idComprobante) {
-		List<Comprobante> listaFacturas = consultaDocRepository.consultarComprobante(nroOrden, fecInicio, fecFin,
+		List<Comprobante> listaFacturas = consultaDocRepository.consultarComprobante(usuariosresponsable, nroOrden, fecInicio, fecFin,
 				estado, nroDocumento, idComprobante);
 		for (Comprobante comprobante : listaFacturas) {
 			comprobante.setListaComprobanteDetalle(
@@ -177,11 +177,11 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 	}
 
 	@Override
-	public ServiceResult<String> estadoFactura(Integer estado, Integer idComprobante, Integer id008Trazabilidad,
+	public ServiceResult<String> estadoFactura(String usuarioResponsable, Integer estado, Integer idComprobante, Integer id008Trazabilidad,
 			String observacion, String usuarioModificador) {
 		ServiceResult<String> response = new ServiceResult();
 		try {
-			consultaDocRepository.estadoFactura(estado, idComprobante);
+			consultaDocRepository.estadoFactura(usuarioResponsable,estado, idComprobante);
 			consultaDocRepository.estadoFacturaTrazabilidad(idComprobante, id008Trazabilidad, observacion,
 					usuarioModificador);
 			response.setEsCorrecto(true);
