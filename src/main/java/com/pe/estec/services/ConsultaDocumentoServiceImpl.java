@@ -38,6 +38,7 @@ import com.pe.estec.model.Orden;
 import com.pe.estec.model.request.ServiceResult;
 import com.pe.estec.repository.ConsultaDocumentoRepository;
 import com.pe.estec.repository.DocumentoOrigenRepository;
+import com.pe.estec.util.Util;
 
 /**
  * @author user
@@ -203,17 +204,17 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 			final List<DocumentoOrigen> listaContratos = docOriginRep.consultaDocumento(comprobante.getOrdenContrato());
 			if (comprobante.getOrdenContrato() != null && comprobante.getOrdenNumero() != null) {
 				response.setEsCorrecto(false);
-				response.setMensajeError("Ingresee nro de orden y/o contrato porfavor");
+				response.setMensajeError("Ingresee número de orden y/o contrato por favor");
 				response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
 				return response;
 			} else if (comprobante.getOrdenContrato() != null && listaContratos.size() == 0) {
 				response.setEsCorrecto(false);
-				response.setMensajeError("No exite nro de contrato Ingresadoe");
+				response.setMensajeError("No exite el número de contrato ingresado");
 				response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
 				return response;
 			} else if (comprobante.getOrdenNumero() != null && listaOrdenes.size() == 0) {
 				response.setEsCorrecto(false);
-				response.setMensajeError("No exite nro de contrato Ingresadoe");
+				response.setMensajeError("No exite el número de orden ingresado");
 				response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
 				return response;
 			}
@@ -226,6 +227,8 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 
 				try {
 					consultaDocRepository.guardarComprobanteDetalle(item, comprobante.getIdComprobante());
+					consultaDocRepository.estadoFacturaTrazabilidad(comprobante.getIdComprobante(), Constantes.EstadoTrazabilidad
+							,"","" );
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

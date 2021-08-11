@@ -22,6 +22,7 @@ public class Constantes {
 	public static String MONEDA_NACIONAL = "MN";
 	public static String MONEDA_DOLAR = "US";
 
+	public static Integer EstadoTrazabilidad = 27;
 	@Value("${config.url.plantilla}")
 	private String urlPlantillabase;
 	@Value("${carpeta.plantilla}")
