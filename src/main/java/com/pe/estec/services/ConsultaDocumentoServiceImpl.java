@@ -3,6 +3,7 @@ package com.pe.estec.services;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
@@ -31,14 +32,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pe.estec.config.Constantes;
 import com.pe.estec.model.Archivo;
 import com.pe.estec.model.Comprobante;
-import com.pe.estec.model.ComprobanteDetalle;
 import com.pe.estec.model.DocumentoOrigen;
 import com.pe.estec.model.Facturas;
 import com.pe.estec.model.Orden;
 import com.pe.estec.model.request.ServiceResult;
 import com.pe.estec.repository.ConsultaDocumentoRepository;
 import com.pe.estec.repository.DocumentoOrigenRepository;
-import com.pe.estec.util.Util;
 
 /**
  * @author user
@@ -92,12 +91,12 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 	}
 
 	@Override
-	public ServiceResult<Map<String, Object>> guardarZip(MultipartFile dataFile) {
+	public ServiceResult<Map<String, Object>> guardarZip(MultipartFile archivoZip, MultipartFile archivoPdf) {
 		byte[] buffer = new byte[1024];
 		ServiceResult<Map<String, Object>> response = new ServiceResult();
 		try {
-			File convFile = new File(System.getProperty("java.io.tmpdir") + "/" + dataFile.getName());
-			dataFile.transferTo(convFile);
+			File convFile = new File(System.getProperty("java.io.tmpdir") + "/" + archivoZip.getName());
+			archivoZip.transferTo(convFile);
 			ZipInputStream zis = new ZipInputStream(new FileInputStream(convFile));
 			ZipEntry ze = zis.getNextEntry();
 			while (ze != null) {
@@ -117,6 +116,7 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 			}
 			zis.closeEntry();
 			zis.close();
+			guardarFile( archivoPdf);
 			System.out.println("Listo");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -129,7 +129,6 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 
 	private Map<String, Object> leerXml(File archivo) {
 		try {
-//			guardarFile( FileUtils.readFileToByteArray(archivo));
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
 			Document document = documentBuilder.parse(archivo);
@@ -153,11 +152,14 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 		}
 	}
 
-	private void guardarFile(byte[] bites) {
+	private void guardarFile(MultipartFile archivoRep) throws IOException {
 		Archivo archivo = new Archivo();
-		archivo.setArchivo(bites);
-		archivo.setIdArchivo(1);
-		consultaDocRepository.guardarFile(archivo);
+		archivo.setNombreArchivo(archivoRep.getName());
+		archivo.setArchivo(archivoRep.getBytes());
+		archivo.setIdParametro(7);
+		archivo.setIdDocumento(10);
+		archivo.setIdArchivo(consultaDocRepository.guardarArchivo(archivo));
+		consultaDocRepository.guardarArchivoRepo(archivo);
 	}
 
 	@Override
@@ -199,12 +201,19 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 	public ServiceResult<String> guardarComprobante(Comprobante comprobante) {
 		ServiceResult<String> response = new ServiceResult();
 		try {
-			final List<Orden> listaOrdenes = consultaDocRepository.getOrdenesCabecera(null, comprobante.getOrdenNumero(),
-					null, null, null);
-			final List<DocumentoOrigen> listaContratos = docOriginRep.consultaDocumento(comprobante.getOrdenContrato());
-			if (comprobante.getOrdenContrato() != null && comprobante.getOrdenNumero() != null) {
+			if (comprobante.getOrdenContrato() == null && comprobante.getOrdenNumero() == null) {
 				response.setEsCorrecto(false);
 				response.setMensajeError("Ingresee número de orden y/o contrato por favor");
+				response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+				return response;
+			}
+			final List<Orden> listaOrdenes = (comprobante.getOrdenNumero()!=null)? consultaDocRepository.getOrdenesCabecera(null, comprobante.getOrdenNumero(),
+					null, null, null): null;
+			final List<DocumentoOrigen> listaContratos = (comprobante.getOrdenContrato()!=null)? 
+					docOriginRep.consultaDocumento(comprobante.getOrdenContrato()): null;
+			if(listaOrdenes == null && listaContratos == null) {
+				response.setEsCorrecto(false);
+				response.setMensajeError("Número de orden y/o contrato ingresado es incorrecto");
 				response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
 				return response;
 			} else if (comprobante.getOrdenContrato() != null && listaContratos.size() == 0) {
@@ -218,8 +227,8 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 				response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
 				return response;
 			}
-			comprobante.setUsuarioResponsable((listaOrdenes.size() > 0) ? listaOrdenes.get(0).getSolicitante()
-					: (listaContratos.size() > 0) ? listaContratos.get(0).getUsuarioResponsable() : null);
+			comprobante.setUsuarioResponsable(((listaOrdenes != null) && (listaOrdenes.size() > 0)) ? listaOrdenes.get(0).getSolicitante()
+					: ((listaContratos != null) && (listaContratos.size() > 0)) ? listaContratos.get(0).getUsuarioResponsable() : null);
 			
 			comprobante.setIdComprobante(consultaDocRepository.guardarComprobante(comprobante));
 			
@@ -237,6 +246,7 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 			response.setEsCorrecto(true);
 			response.setHttpStatus(HttpStatus.OK.value());
 		} catch (Exception e) {
+			System.out.println("catch");
 			e.printStackTrace();
 			response.setEsCorrecto(false);
 			response.setMensajeError("No se pudo guardar comprobante");

@@ -9,7 +9,7 @@ public class Archivo {
 	private String nombreArchivo;
 	private byte[] archivo;
 	private Integer idParametro;
-	private Integer idDocmento;
+	private Integer idDocumento;
 	private Integer idDocumentoArchivo;
 	
 }
