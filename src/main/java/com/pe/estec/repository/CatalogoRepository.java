@@ -15,15 +15,13 @@ public class CatalogoRepository {
 	@Autowired
 	private JdbcTemplate sqlServer;
 	
-	public List<Catalogo> obtenerCatalogo(String idElemento, String idGrupo){
+	public List<Catalogo> consultaParametro(Integer idParametroTipo){
 		StringBuilder sql = new StringBuilder();
-		sql.append("  Select case ");
-		sql.append(" From RSCONCAR..CP0002MAES ");
-		sql.append(" where trim(ac_cruc) = ? and ");
-		sql.append(" Order by AC_CNOMBRE ");
-		Object[] params = new Object[] {idElemento, idGrupo};
+		sql.append("  Select id_parametro, id_parametro_tipo, nombre, abreviatura, estado ");
+		sql.append(" From PRUEBAS.DBO.parametro ");
+		sql.append(" where id_parametro_tipo ="+idParametroTipo);
 		List<Catalogo> listaCatalogo= 
-				sqlServer.query(sql.toString(),new CatalogoRowMapper(), params );
+				sqlServer.query(sql.toString(),new CatalogoRowMapper() );
 		return listaCatalogo;
 	}
 }

@@ -37,6 +37,7 @@ public class Comprobante {
 	private Integer id004Estado;
 	private String nombreMoneda;
 	private String nombreEstado;
+	private String nombreTipoComprobante;
 	private String usuarioResponsable;
 	private List<ComprobanteDetalle> listaComprobanteDetalle;
 	private List<ComprobanteTrazabilidad> listaComprobanteTrazabilidad;

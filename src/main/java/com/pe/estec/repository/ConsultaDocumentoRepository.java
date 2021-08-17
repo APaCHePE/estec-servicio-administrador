@@ -296,7 +296,7 @@ public class ConsultaDocumentoRepository {
 	}
 
 	public List<Comprobante> consultarComprobante(String usuariosresponsable, String nroFact, String fecInicio,
-			String fecFin, Integer estado, String nroDocumento, Integer idComprobante) {
+			String fecFin, Integer estado, String nroDocumento, Integer idComprobante, Integer tipoComprobante) {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" Select ");
 		sql.append(
@@ -307,11 +307,12 @@ public class ConsultaDocumentoRepository {
 		sql.append(
 				" ,importe_valor_venta,importe_isc,importe_igv,importe_icbper,importe_otros_cargos,importe_otros_tributos ");
 		sql.append(
-				" ,importe_monto_redondeo,importe_total,orden_numero,orden_contrato,id_004_estado,  p.nombre as nombre_moneda, p2.nombre as nombre_estado ");
+				" ,importe_monto_redondeo,importe_total,orden_numero,orden_contrato,id_004_estado,  p.nombre as nombre_moneda, p2.nombre as nombre_estado, p3.nombre as nombre_tipo_comprobante");
 		sql.append(" ,trim(usuario_responsable) as usuario_responsable ");
 		sql.append(" FROM pruebas.dbo.COMPROBANTE com ");
 		sql.append(" left join pruebas.dbo.parametro p on com.id_006_tipo_moneda = p.id_parametro");
 		sql.append(" left join pruebas.dbo.parametro p2 on com.id_004_estado = p2.id_parametro");
+		sql.append(" left join pruebas.dbo.parametro p3 on com.id_007_tipo_comprobante = p3.id_parametro");
 		sql.append(" where 1=1");
 		if (usuariosresponsable != null)
 			sql.append(" and usuario_responsable = '" + usuariosresponsable + "' ");
@@ -321,10 +322,13 @@ public class ConsultaDocumentoRepository {
 			sql.append(" and id_comprobante = " + idComprobante + " ");
 		if (nroDocumento != null)
 			sql.append(" and proveedor_numero_documento = '" + nroDocumento + "' ");
+		if (tipoComprobante != null)
+			sql.append(" and id_007_tipo_comprobante =" + tipoComprobante );
 		if (nroFact != null)
 			sql.append(" and numero = '" + nroFact + "' ");
+		if (fecInicio != null && fecFin != null)
+			sql.append(" and fecha_emision BETWEEN '"+fecInicio+"' AND '"+fecFin+"'");
 		sql.append(" order by fecha_emision desc ");
-		System.out.println(sql);
 		List<Comprobante> users = dao.query(sql.toString(), new ComprobanteRowMapper());
 		return users;
 	}

@@ -164,9 +164,10 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 
 	@Override
 	public List<Comprobante> consultarComprobante( String usuariosresponsable, String nroOrden, String fecInicio, String fecFin, Integer estado,
-			String nroDocumento, Integer idComprobante) {
+			String nroDocumento, Integer idComprobante, Integer tipoComprobante) {
+		System.out.println(tipoComprobante);
 		List<Comprobante> listaFacturas = consultaDocRepository.consultarComprobante(usuariosresponsable, nroOrden, fecInicio, fecFin,
-				estado, nroDocumento, idComprobante);
+				estado, nroDocumento, idComprobante, tipoComprobante);
 		for (Comprobante comprobante : listaFacturas) {
 			comprobante.setListaComprobanteDetalle(
 					consultaDocRepository.consultarComprobanteDetalle(comprobante.getIdComprobante()));
@@ -236,13 +237,14 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 
 				try {
 					consultaDocRepository.guardarComprobanteDetalle(item, comprobante.getIdComprobante());
-					consultaDocRepository.estadoFacturaTrazabilidad(comprobante.getIdComprobante(), Constantes.EstadoTrazabilidad
-							,"","" );
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 
 			});
+			consultaDocRepository.estadoFacturaTrazabilidad(comprobante.getIdComprobante(), Constantes.EstadoTrazabilidad
+							,"","" );
 			response.setEsCorrecto(true);
 			response.setHttpStatus(HttpStatus.OK.value());
 		} catch (Exception e) {
