@@ -20,7 +20,7 @@ public interface ConsultaDocumentoService {
 	public ServiceResult<String> estadoFactura(String usuarioResponsable,Integer estado,Integer idComprobante,Integer id008Trazabilidad ,String observacion, String usuarioModificador); 
 	public ServiceResult<String> guardarComprobante(Comprobante Comprobante);
 	public List<Comprobante> consultarComprobante(String usuariosresponsable, String nroOrden, 
-			String fecInicio, String fecFin, Integer estado, String nroDocumento, Integer idComprobante);
+			String fecInicio, String fecFin, Integer estado, String nroDocumento, Integer idComprobante, Integer tipoComprobante);
 	public ServiceResult<Map<String, Object>> cargarFilesHonorarios(MultipartFile archivoZip, MultipartFile archivoPdf);
 	
 }

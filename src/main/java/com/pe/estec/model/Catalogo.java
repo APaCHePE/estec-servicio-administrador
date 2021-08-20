@@ -5,7 +5,9 @@ import lombok.Data;
 @Data
 public class Catalogo {
 
+	private Integer idParametro;
+	private Integer idParametroTipo;
 	private String nombre;
-	private String idCatalogo;
-	private String idGrupo;
+	private String abreviatura;
+	private Integer estado;
 }
