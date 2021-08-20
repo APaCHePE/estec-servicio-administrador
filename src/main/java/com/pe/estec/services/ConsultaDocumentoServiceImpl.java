@@ -4,40 +4,32 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.StringWriter;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.apache.commons.io.FileUtils;
-import org.json.JSONObject;
-import org.json.XML;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.w3c.dom.Document;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pe.estec.config.Constantes;
 import com.pe.estec.model.Archivo;
 import com.pe.estec.model.Comprobante;
+import com.pe.estec.model.ComprobanteDetalle;
 import com.pe.estec.model.DocumentoOrigen;
 import com.pe.estec.model.Facturas;
 import com.pe.estec.model.Orden;
 import com.pe.estec.model.request.ServiceResult;
 import com.pe.estec.repository.ConsultaDocumentoRepository;
 import com.pe.estec.repository.DocumentoOrigenRepository;
+import com.pe.estec.util.FilesUtils;
 
 /**
  * @author user
@@ -109,8 +101,14 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 				while ((len = zis.read(buffer)) > 0) {
 					fos.write(buffer, 0, len);
 				}
-				if (nombreArchivo != null && nombreArchivo.toUpperCase().contains(".XML"))
-					response.setResultado(leerXml(archivoNuevo));
+				if (nombreArchivo != null && nombreArchivo.toUpperCase().contains(".XML")) {
+					try {
+						response.setResultado(FilesUtils.convertirXmlJson(archivoNuevo));
+					}catch (Exception e) {
+						System.out.println("Ocurrió un error al convertir XML en JSON");
+//						logger.error("Ocurrió un error al convertir XML en JSON");
+					}
+				}
 				fos.close();
 				ze = zis.getNextEntry();
 			}
@@ -123,33 +121,6 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 		}
 		response.setHttpStatus(HttpStatus.OK.value());
 		return response;
-	}
-
-	public static int PRETTY_PRINT_INDENT_FACTOR = 4;
-
-	private Map<String, Object> leerXml(File archivo) {
-		try {
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
-			Document document = documentBuilder.parse(archivo);
-			document.getDocumentElement().normalize();
-
-			DOMSource domSource = new DOMSource(document);
-			StringWriter writer = new StringWriter();
-			StreamResult result = new StreamResult(writer);
-			TransformerFactory tf = TransformerFactory.newInstance();
-			Transformer transformer = tf.newTransformer();
-			transformer.transform(domSource, result);
-			JSONObject xmlJSONObj = XML.toJSONObject(writer.toString());
-			String jsonPrettyPrintString = xmlJSONObj.toString(PRETTY_PRINT_INDENT_FACTOR);
-			TypeReference<HashMap<String, Object>> typeRef = new TypeReference<>() {
-			};
-			Map<String, Object> mapping = new ObjectMapper().readValue(jsonPrettyPrintString, typeRef);
-			return mapping;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
 	}
 
 	private void guardarFile(MultipartFile archivoRep) throws IOException {
@@ -253,6 +224,106 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 			response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
 		}
 		return response;
+	}
+
+	@Override
+	public ServiceResult<Map<String, Object>> cargarFilesHonorarios(MultipartFile archivoZip,
+			MultipartFile archivoPdf) {
+		ServiceResult<Map<String, Object>> response = new ServiceResult();
+		response.setHttpStatus(HttpStatus.OK.value());
+		try {
+
+			System.out.println(archivoZip.getOriginalFilename());
+			if(archivoZip.getOriginalFilename().toUpperCase().contains(".XML")) {
+				File convFile = new File(System.getProperty("java.io.tmpdir")+"/"+archivoZip.getName());
+				archivoZip.transferTo(convFile);
+//				response.setResultado(FilesUtils.convertirXmlJson(convFile));
+				response.setResultado(filtrarJsonRecibosHonorarios(
+						(Map<String, Object>)FilesUtils.convertirXmlJson(convFile).get("Invoice")));
+			}else if(archivoZip.getName().contains(".zip")) {
+				response.setResultado(filtrarJsonRecibosHonorarios(
+						(Map<String, Object>)FilesUtils.descromprimirZIP(archivoZip).get("Invoice")));
+			}
+		}catch (Exception e) {
+			
+		}
+		return response;
+	}
+	private Map<String, Object> filtrarJsonRecibosHonorarios(Map<String, Object> xmlCompleto){
+		Map<String, Object> json = new HashMap();
+		try {
+			//RECEPTOR DATOS
+			
+			ComprobanteDetalle detalle = new ComprobanteDetalle();
+            detalle.setDescripcion(((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:InvoiceLine")).get("cac:Item")).get("cbc:Description").toString() );
+			detalle.setCantidad(1.0);
+            
+			json.put("enteContratante" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingCustomerParty")).get("cac:Party")).get("cac:PartyName")).get("cbc:Name"));
+			json.put("enteTipoDocumento" , "RUC");
+			json.put("enteNroDocumento" , ((Map<String, Object>) xmlCompleto.get("cac:AccountingCustomerParty")).get("cbc:CustomerAssignedAccountID"));
+			json.put("enteDireccion" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingCustomerParty")).get("cac:Party")).get("cac:PostalAddress")).get("cbc:StreetName"));
+			//EMISOR DATOS
+			json.put("proveedorNombreCompleto" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PartyName")).get("cbc:Name"));
+			json.put("proveedorNombres" , "ALEXANDERS");
+			json.put("proveedorApeParterno" , "PRADO");
+			json.put("proveedorApeMaterno" , "CHOQUEPATA");
+			json.put("proveedorRuc", ((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cbc:CustomerAssignedAccountID"));
+			json.put("proveedorDireccionCompleta", ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PostalAddress")).get("cbc:StreetName"));
+			json.put("proveedorDireccionDepartamento" , "LIMA");
+			json.put("proveedorDireccionProvincia" , "LIMA");
+			json.put("proveedorTelefono" ,((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:Contact")).get("cbc:Telephone") );
+			json.put("proveedorDireccionDistrito" , "VILLA MARIA DEL TRIUNFO");
+			json.put("proveedorDireccionZona" , ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PostalAddress"));
+			
+			json.put("idRecibo", xmlCompleto.get("cbc:ID"));
+			//MONTOS TOTALES
+			json.put("concepto" , ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:InvoiceLine")).get("cac:Item")).get("cbc:Description") );
+			json.put("observacion" , "-");
+			
+			json.put("retencionTipo" , ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:InvoiceLine")).get("cac:TaxTotal")).get("cac:TaxSubtotal") );
+			json.put("incisoTipo" , "A");
+			json.put("incisoDescripcion" , "DEL ARTÍCULO 33 DE LA LEY DEL IMPUESTO A LA RENTA");
+			json.put("fechaEmisionCompleta" , "10-04-2021");
+			json.put("montoTotal" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:TaxTotal")).get("cac:TaxSubtotal")).get("cbc:TaxableAmount")).get("content"));
+			if(!json.get("montoTotal").toString().contains(".")) {
+				json.put("montoTotal" , json.get("montoTotal")+".00");
+			}
+			json.put("montoRetencion" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:TaxTotal")).get("cac:TaxSubtotal")).get("cbc:TaxAmount")).get("content"));
+			if(!json.get("montoRetencion").toString().contains(".")) {
+				json.put("montoRetencion" , json.get("montoRetencion")+".00");
+			}
+			json.put("montoTotalNeto" ,((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:LegalMonetaryTotal")).get("cbc:PayableAmount")).get("content"));
+			if(!json.get("montoTotalNeto").toString().contains(".")) {
+				json.put("montoTotalNeto" , json.get("montoTotalNeto")+".00");
+			}
+			json.put("tipoMonedaDescripcion" , "SOLES");
+			json.put("tipoMonedaISO" ,((Map<String, Object>) ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:TaxTotal")).get("cac:TaxSubtotal")).get("cbc:TaxAmount")).get("currencyID"));
+			json.put("tipoMonedaSimbolo" , "S/");
+			String[] idRecibo = xmlCompleto.get("cbc:ID").toString().split("-");
+			json.put("serie" , idRecibo[0]);
+			json.put("numero" , idRecibo[1]);
+			json.put("montoRecibidoTexto", xmlCompleto.get("cbc:Note"));
+
+			json.put("fechaEmisionCompleto" , xmlCompleto.get("cbc:IssueDate"));
+			Locale spain=new Locale("es", "ES");
+			DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd", spain); 
+			LocalDate fecha = LocalDate.parse(json.get("fechaEmisionCompleto").toString(), formato); 
+			json.put("fechaEmisionDia" , fecha.getDayOfMonth());
+			json.put("fechaEmisionMes" , fecha.getMonth());
+			json.put("fechaEmisionAnio" , fecha.getYear());
+			json.put("id007TipoComprobante" , 26);
+			
+			json.put("fechaEmision", ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:OrderReference")).get("cac:DocumentReference")).get("cbc:IssueDate"));
+			json.put("fechaVencimiento", xmlCompleto.get("cbc:ExpiryDate"));
+			detalle.setValorUnitario(Double.parseDouble(json.get("montoTotalNeto").toString()));
+            List<ComprobanteDetalle> listaComprobanteDetalle = new ArrayList();
+            listaComprobanteDetalle.add(detalle);
+            
+            json.put("listaComprobanteDetalle", listaComprobanteDetalle);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return json;
 	}
 
 }

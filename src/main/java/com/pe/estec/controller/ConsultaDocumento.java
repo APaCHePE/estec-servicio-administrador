@@ -68,6 +68,11 @@ public class ConsultaDocumento {
 		ServiceResult<Map<String, Object>> response = consultaDocumentoServices.guardarZip(archivoZip, archivoPdf);
 		return new ResponseEntity(response, HttpStatus.valueOf(response.getHttpStatus()));
 	}
+	@PostMapping(value="crear-recibo-honorarios-proveedor", consumes= {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE},produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<Object> cargarFilesHonorarios(MultipartFile  archivoPdf, MultipartFile archivoZip){
+		ServiceResult<Map<String, Object>> response = consultaDocumentoServices.cargarFilesHonorarios(archivoZip, archivoPdf);
+		return new ResponseEntity(response, HttpStatus.valueOf(response.getHttpStatus()));
+	}
 	
 	@GetMapping("/estado-factura")
 	public ResponseEntity<Object> estadoFactura(@RequestParam("usuarioResponsable") String usuarioResponsable,
