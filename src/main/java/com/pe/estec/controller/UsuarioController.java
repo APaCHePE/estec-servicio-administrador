@@ -1,6 +1,7 @@
 package com.pe.estec.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,6 +47,11 @@ public class UsuarioController {
 	@GetMapping("listar-proveedor-erp")
 	public ResponseEntity<Object> listarProveedorErp(String nroDocumento){
 		ServiceResult<Proveedor> response = usuarioService.listarProveedorErp(nroDocumento);
+		return new ResponseEntity(response, HttpStatus.valueOf(response.getHttpStatus()));
+	}
+	@PostMapping("modificar-pass-proveedor")
+	public ResponseEntity<Object> contrasenaProveedor(@RequestBody Map<String, Object> proveedor){
+		ServiceResult<String> response = usuarioService.contrasenaProveedor(Integer.parseInt(proveedor.get("user").toString()), proveedor.get("contrasena").toString());
 		return new ResponseEntity(response, HttpStatus.valueOf(response.getHttpStatus()));
 	}
 }

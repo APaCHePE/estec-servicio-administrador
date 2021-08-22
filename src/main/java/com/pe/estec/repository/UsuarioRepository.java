@@ -53,22 +53,36 @@ public class UsuarioRepository {
 		return existe;
 	}
 
-	public Boolean validarProveedor(String nroDocumento) throws Exception {
+	public Boolean validarNroDocumentoProveedor(String nroDocumento) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		Boolean existe = false;
 		sql.append(" select COUNT(*) ");
 		sql.append(" From pruebas..proveedor prov ");
 		sql.append(" left join pruebas..persona per on per.id_persona = prov.id_persona ");
-		sql.append(" where trim(per.NRO_DOCUMENTO) = ? ");
-		Object[] params = new Object[] { nroDocumento.trim() };
+		sql.append(" where trim(per.NRO_DOCUMENTO) = ? or trim(prov.correo) = ?");
+		Object[] params = new Object[] { nroDocumento };
 		try {
 			Integer cantidad = sqlServer.queryForObject(sql.toString(), Integer.class, params);
-			System.out.println("cantidad:" + cantidad);
+//			System.out.println("cantidad:" + cantidad);
 			if (cantidad > 0)
 				existe = true;
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("No existe ruc");
+		}
+		return existe;
+	}
+	
+	public Boolean validarCorreoProveedor(String usuario) throws Exception {
+		StringBuilder sql = new StringBuilder();
+		Boolean existe = false;
+		sql.append(" select COUNT(*) ");
+		sql.append(" From pruebas..proveedor prov ");
+		sql.append(" where prov.correo = ?");
+		Object[] params = new Object[] { usuario };
+		try {
+			Integer cantidad = sqlServer.queryForObject(sql.toString(), Integer.class, params);
+			if (cantidad > 0)
+				existe = true;
+		} catch (Exception e) {
 		}
 		return existe;
 	}
@@ -149,5 +163,13 @@ public class UsuarioRepository {
 		Object[] params = new Object[] {nroDocumento};
 		List<Proveedor> listaProveedores = sqlServer.query(sql.toString(), new ProveedorErpRowMapper(), params);
 		return listaProveedores;
+	}
+	public void contrasenaProveedor(Integer idProveedor, String pass) throws Exception {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" UPDATE PRUEBAS..PROVEEDOR ");
+		sql.append(" SET  PASS = '"+pass+"', FEC_MODIFI = GETDATE() ");
+		sql.append(" WHERE ID_PROVEEDOR=? ");
+		Object[] params= new Object[] {idProveedor};
+		sqlServer.update(sql.toString(), params);
 	}
 }

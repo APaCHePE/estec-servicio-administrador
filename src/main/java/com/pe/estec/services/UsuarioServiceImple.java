@@ -30,7 +30,7 @@ public class UsuarioServiceImple implements UsuarioService {
 	public ServiceResult<Boolean> validarProveedor(String nroDocumento) {
 		ServiceResult<Boolean> response = new ServiceResult<>();
 		try {
-			response.setResultado(userRepository.validarProveedor(nroDocumento));
+			response.setResultado(userRepository.validarNroDocumentoProveedor(nroDocumento));
 			response.setHttpStatus(HttpStatus.OK.value());
 		} catch (Exception e) {
 			response.setResultado(true);
@@ -44,7 +44,13 @@ public class UsuarioServiceImple implements UsuarioService {
 	public ServiceResult<String> guardarProveedor(Proveedor proveedor) {
 		ServiceResult<String> response = new ServiceResult();
 		try {
-			if (userRepository.validarProveedor(proveedor.getPersona().getNroDocumento())) {
+			if (userRepository.validarNroDocumentoProveedor(proveedor.getPersona().getNroDocumento())) {
+				response.setResultado("El Nro de Documento ya se encuentra registrado");
+				response.setMensajeError("El Nro de Documento ya se encuentra registrado");
+				response.setHttpStatus(HttpStatus.CONFLICT.value());
+				return response;
+			}
+			if (userRepository.validarCorreoProveedor(proveedor.getUsuario())) {
 				response.setResultado("El usuario ya se encuentra registrado");
 				response.setMensajeError("El usuario ya se encuentra registrado");
 				response.setHttpStatus(HttpStatus.CONFLICT.value());
@@ -52,8 +58,9 @@ public class UsuarioServiceImple implements UsuarioService {
 			}
 			if (!userRepository.validarPersona(proveedor.getPersona().getNroDocumento())) {
 				try {
-					proveedor.getPersona().setIdPersona(userRepository.insertarPersona(proveedor.getPersona()).intValue());					
-				}catch(Exception e) {
+					proveedor.getPersona()
+							.setIdPersona(userRepository.insertarPersona(proveedor.getPersona()).intValue());
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			} else {
@@ -97,11 +104,12 @@ public class UsuarioServiceImple implements UsuarioService {
 	}
 
 	@Override
-	public ServiceResult<List<Proveedor>> listarProveedor(Integer estado, Integer tipoCuenta, String usuario, String nroDocumento,
-			Integer tipoDocumento) {
+	public ServiceResult<List<Proveedor>> listarProveedor(Integer estado, Integer tipoCuenta, String usuario,
+			String nroDocumento, Integer tipoDocumento) {
 		ServiceResult<List<Proveedor>> response = new ServiceResult<>();
 		try {
-			response.setResultado(userRepository.listarProveedor(estado, tipoCuenta, usuario, nroDocumento, tipoDocumento));
+			response.setResultado(
+					userRepository.listarProveedor(estado, tipoCuenta, usuario, nroDocumento, tipoDocumento));
 			response.setHttpStatus(HttpStatus.OK.value());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -115,12 +123,13 @@ public class UsuarioServiceImple implements UsuarioService {
 	public ServiceResult<String> activarProveedor(Proveedor proveedor) {
 		ServiceResult<String> response = new ServiceResult();
 		try {
-			userRepository.activarProveedor(proveedor.getIdProveedor(), proveedor.getEstado(), proveedor.getObservacion());
-			if(proveedor.getEstado()==Constantes.ESTADO_ACTIVO)
+			userRepository.activarProveedor(proveedor.getIdProveedor(), proveedor.getEstado(),
+					proveedor.getObservacion());
+			if (proveedor.getEstado() == Constantes.ESTADO_ACTIVO)
 				enviarCorreoActivacion(proveedor);
 			response.setEsCorrecto(true);
 			response.setHttpStatus(HttpStatus.OK.value());
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			response.setEsCorrecto(false);
 			response.setMensajeError("No se pudo modificar al usuario");
@@ -128,28 +137,47 @@ public class UsuarioServiceImple implements UsuarioService {
 		}
 		return response;
 	}
+
 	private void enviarCorreoActivacion(Proveedor proveedor) throws Exception {
-		String htmlTemplate = correoService.correoActivacion(proveedor.getPersona().getNombreCompleto(), proveedor.getContrasenia(),
-				proveedor.getUsuario(), null, "/tmpl-8641");
+		String htmlTemplate = correoService.correoActivacion(proveedor.getPersona().getNombreCompleto(),
+				proveedor.getContrasenia(), proveedor.getUsuario(), null, "/tmpl-8641");
 		correoService.enviaReporteNuevo(htmlTemplate, proveedor.getUsuario(), null,
 				"Activación de solicitud de cuenta como proveedor:  ", null);
 	}
+
 	@Override
 	public ServiceResult<Proveedor> listarProveedorErp(String nroDocumento) {
 		ServiceResult<Proveedor> response = new ServiceResult();
-		try{
+		try {
 			List<Proveedor> lista = userRepository.listarProveedorErp(nroDocumento);
-			if(lista.size()==0) {
+			if (lista.size() == 0) {
 				response.setEsCorrecto(false);
 				response.setMensajeError("No existe este usuario.");
 				response.setHttpStatus(HttpStatus.OK.value());
 				return response;
-			}else {
+			} else {
 				response.setResultado(lista.get(0));
 			}
-			response.setEsCorrecto(true);			
+			response.setEsCorrecto(true);
 			response.setHttpStatus(HttpStatus.OK.value());
-		}catch(Exception e) {
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setMensajeError("Ocurrió un error al buscar proveedor. ");
+			response.setEsCorrecto(false);
+			response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+		}
+		return response;
+	}
+
+	@Override
+	public ServiceResult<String> contrasenaProveedor(Integer idProveedor, String contrasena) {
+		ServiceResult<String> response = new ServiceResult();
+		try {
+			userRepository.contrasenaProveedor(idProveedor, contrasena);
+			response.setEsCorrecto(true);
+			response.setResultado("Modificado correctamente");
+			response.setHttpStatus(HttpStatus.OK.value());
+		} catch (Exception e) {
 			e.printStackTrace();
 			response.setMensajeError("Ocurrió un error al buscar proveedor. ");
 			response.setEsCorrecto(false);
