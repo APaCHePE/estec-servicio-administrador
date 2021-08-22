@@ -96,13 +96,13 @@ public class UsuarioServiceImple implements UsuarioService {
 		return response;
 	}
 
-/*private void enviarCorreoRegistro(Proveedor proveedor) throws Exception {
+	private void enviarCorreoRegistro(Proveedor proveedor) throws Exception {
 		String htmlTemplate = correoService.correoRegistro(proveedor.getPersona().getNombreCompleto(),
 				proveedor.getUsuario(), null, "/tmpl-8642");
 		correoService.enviaReporteNuevo(htmlTemplate, proveedor.getUsuario(), null,
 				"Confirmación de solicitud de cuenta como proveedor:  ", null);
 	}
-*/
+
 	@Override
 	public ServiceResult<List<Proveedor>> listarProveedor(Integer estado, Integer tipoCuenta, String usuario,
 			String nroDocumento, Integer tipoDocumento) {
@@ -123,16 +123,9 @@ public class UsuarioServiceImple implements UsuarioService {
 	public ServiceResult<String> activarProveedor(Proveedor proveedor) {
 		ServiceResult<String> response = new ServiceResult();
 		try {
-<<<<<<< HEAD
-			userRepository.activarProveedor(proveedor.getIdProveedor(), proveedor.getEstado(),
-					proveedor.getObservacion());
-			if (proveedor.getEstado() == Constantes.ESTADO_ACTIVO)
-				enviarCorreoActivacion(proveedor);
-=======
 			userRepository.activarProveedor(proveedor.getIdProveedor(), proveedor.getEstado(), proveedor.getObservacion());
 			if(proveedor.getEstado()==Constantes.ESTADO_ACTIVO)
-				//enviarCorreoActivacion(proveedor);
->>>>>>> 308c92ff2d24a53a59fb63e5e8638756f115a52c
+				enviarCorreoActivacion(proveedor);
 			response.setEsCorrecto(true);
 			response.setHttpStatus(HttpStatus.OK.value());
 		} catch (Exception e) {
@@ -143,7 +136,6 @@ public class UsuarioServiceImple implements UsuarioService {
 		}
 		return response;
 	}
-<<<<<<< HEAD
 
 	private void enviarCorreoActivacion(Proveedor proveedor) throws Exception {
 		String htmlTemplate = correoService.correoActivacion(proveedor.getPersona().getNombreCompleto(),
@@ -152,14 +144,6 @@ public class UsuarioServiceImple implements UsuarioService {
 				"Activación de solicitud de cuenta como proveedor:  ", null);
 	}
 
-=======
-/*	private void enviarCorreoActivacion(Proveedor proveedor) throws Exception {
-		String htmlTemplate = correoService.correoActivacion(proveedor.getPersona().getNombreCompleto(), proveedor.getContrasenia(),
-				proveedor.getUsuario(), null, "/tmpl-8641");
-		correoService.enviaReporteNuevo(htmlTemplate, proveedor.getUsuario(), null,
-				"Activación de solicitud de cuenta como proveedor:  ", null);
-	}*/
->>>>>>> 308c92ff2d24a53a59fb63e5e8638756f115a52c
 	@Override
 	public ServiceResult<Proveedor> listarProveedorErp(String nroDocumento) {
 		ServiceResult<Proveedor> response = new ServiceResult();
