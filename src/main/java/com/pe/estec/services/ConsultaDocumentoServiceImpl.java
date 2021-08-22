@@ -89,38 +89,12 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 	}
 
 	@Override
-	public ServiceResult<Map<String, Object>> guardarZip(MultipartFile archivoZip, MultipartFile archivoPdf) {
-		byte[] buffer = new byte[1024];
+	public ServiceResult<Map<String, Object>> guardarZip(MultipartFile archivoZip, MultipartFile archivoPdf,
+			MultipartFile  archivoInforme, MultipartFile archivoGuia, Integer idDocumento) {
 		ServiceResult<Map<String, Object>> response = new ServiceResult();
 		try {
-			File convFile = new File(System.getProperty("java.io.tmpdir") + "/" + archivoZip.getName());
-			archivoZip.transferTo(convFile);
-			ZipInputStream zis = new ZipInputStream(new FileInputStream(convFile));
-			ZipEntry ze = zis.getNextEntry();
-			while (ze != null) {
-				String nombreArchivo = ze.getName();
-				File archivoNuevo = new File("4L3X/" + File.separator + nombreArchivo);
-				System.out.println("archivo descomprimido : " + archivoNuevo.getAbsoluteFile());
-				new File(archivoNuevo.getParent()).mkdirs();
-				FileOutputStream fos = new FileOutputStream(archivoNuevo);
-				int len;
-				while ((len = zis.read(buffer)) > 0) {
-					fos.write(buffer, 0, len);
-				}
-				if (nombreArchivo != null && nombreArchivo.toUpperCase().contains(".XML")) {
-					try {
-						response.setResultado(FilesUtils.convertirXmlJson(archivoNuevo));
-					}catch (Exception e) {
-						System.out.println("Ocurrió un error al convertir XML en JSON");
-//						logger.error("Ocurrió un error al convertir XML en JSON");
-					}
-				}
-				fos.close();
-				ze = zis.getNextEntry();
-			}
-			zis.closeEntry();
-			zis.close();
-			guardarFile( archivoPdf);
+			response.setResultado(FilesUtils.descromprimirZIP(archivoZip));
+			if(idDocumento!=null)guardarFile( archivoPdf, idDocumento);
 			System.out.println("Listo");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -129,11 +103,11 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 		return response;
 	}
 
-	private void guardarFile(MultipartFile archivoRep) throws IOException {
+	private void guardarFile(MultipartFile archivoRep,Integer idDocumento) throws IOException {
 		Archivo archivo = new Archivo();
 		archivo.setNombreArchivo(archivoRep.getName());
 		archivo.setArchivo(archivoRep.getBytes());
-		archivo.setIdParametro(7);
+		archivo.setIdParametro(Constantes.ARCHIVOS_COMPROBANTE);
 		archivo.setIdDocumento(10);
 		archivo.setIdArchivo(consultaDocRepository.guardarArchivo(archivo));
 		consultaDocRepository.guardarArchivoRepo(archivo);
@@ -214,7 +188,6 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 
 				try {
 					consultaDocRepository.guardarComprobanteDetalle(item, comprobante.getIdComprobante());
-					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -225,8 +198,6 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 			response.setEsCorrecto(true);
 			response.setHttpStatus(HttpStatus.OK.value());
 		} catch (Exception e) {
-			System.out.println("catch");
-			e.printStackTrace();
 			response.setEsCorrecto(false);
 			response.setMensajeError("No se pudo guardar comprobante");
 			response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
@@ -236,11 +207,10 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 
 	@Override
 	public ServiceResult<Map<String, Object>> cargarFilesHonorarios(MultipartFile archivoZip,
-			MultipartFile archivoPdf) {
+			MultipartFile archivoPdf, MultipartFile  archivoInforme, Integer idDocumento) {
 		ServiceResult<Map<String, Object>> response = new ServiceResult();
 		response.setHttpStatus(HttpStatus.OK.value());
 		try {
-
 			System.out.println(archivoZip.getOriginalFilename());
 			if(archivoZip.getOriginalFilename().toUpperCase().contains(".XML")) {
 				File convFile = new File(System.getProperty("java.io.tmpdir")+"/"+archivoZip.getName());

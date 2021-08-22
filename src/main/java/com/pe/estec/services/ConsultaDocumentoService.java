@@ -18,11 +18,13 @@ public interface ConsultaDocumentoService {
 	public List<Contrato> getContrato( Integer nroContrato);
 	public List<Facturas> consultaFacturas( String nroOrden, 
 			String fecInicio, String fecFin, Integer estado, String nroDocumento);
-	public ServiceResult<Map<String, Object>> guardarZip(MultipartFile archivoZip, MultipartFile archivoPdf);
+	public ServiceResult<Map<String, Object>> guardarZip(MultipartFile archivoZip, MultipartFile archivoPdf,
+			MultipartFile  archivoInforme, MultipartFile archivoGuia, Integer idDocumento);
 	public ServiceResult<String> estadoFactura(String usuarioResponsable,Integer estado,Integer idComprobante,Integer id008Trazabilidad ,String observacion, String usuarioModificador); 
 	public ServiceResult<String> guardarComprobante(Comprobante Comprobante);
 	public List<Comprobante> consultarComprobante(String usuariosresponsable, String nroOrden, 
 			String fecInicio, String fecFin, Integer estado, String nroDocumento, Integer idComprobante, Integer tipoComprobante);
-	public ServiceResult<Map<String, Object>> cargarFilesHonorarios(MultipartFile archivoZip, MultipartFile archivoPdf);
+	public ServiceResult<Map<String, Object>> cargarFilesHonorarios(MultipartFile archivoZip, MultipartFile archivoPdf,
+			MultipartFile  archivoInforme, Integer idDocumento);
 	
 }
