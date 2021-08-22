@@ -123,8 +123,8 @@ public class UsuarioServiceImple implements UsuarioService {
 	public ServiceResult<String> activarProveedor(Proveedor proveedor) {
 		ServiceResult<String> response = new ServiceResult();
 		try {
-			userRepository.activarProveedor(proveedor.getIdProveedor(), proveedor.getEstado(), proveedor.getObservacion());
-			if(proveedor.getEstado()==Constantes.ESTADO_ACTIVO)
+			userRepository.estadoProveedor(proveedor.getIdProveedor(), proveedor.getEstado(), proveedor.getObservacion());
+			if(proveedor.getEstado()==Constantes.ESTADO_APROBADO)
 				enviarCorreoActivacion(proveedor);
 			response.setEsCorrecto(true);
 			response.setHttpStatus(HttpStatus.OK.value());
@@ -169,10 +169,12 @@ public class UsuarioServiceImple implements UsuarioService {
 	}
 
 	@Override
-	public ServiceResult<String> contrasenaProveedor(Integer idProveedor, String contrasena) {
+	public ServiceResult<String> contrasenaProveedor(String user, String contrasena, Integer estado) {
 		ServiceResult<String> response = new ServiceResult();
 		try {
+			Integer idProveedor = (user != null && user.length()>32)?Integer.parseInt(user.substring(0, user.length()-32)): Integer.parseInt(user );
 			userRepository.contrasenaProveedor(idProveedor, contrasena);
+			userRepository.estadoProveedor(idProveedor, estado, "");
 			response.setEsCorrecto(true);
 			response.setResultado("Modificado correctamente");
 			response.setHttpStatus(HttpStatus.OK.value());

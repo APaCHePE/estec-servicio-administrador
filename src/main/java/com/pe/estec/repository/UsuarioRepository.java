@@ -142,7 +142,7 @@ public class UsuarioRepository {
 		List<Proveedor> listaProveedores = sqlServer.query(sql.toString(), new ProveedorRowMapper());
 		return listaProveedores;
 	}
-	public void activarProveedor(Integer idProveedor, Integer estado, String observacion) throws Exception {
+	public void estadoProveedor(Integer idProveedor, Integer estado, String observacion) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" update pruebas..proveedor ");
 		sql.append(" set  estado= "+estado+", FEC_MODIFI = GETDATE() ");

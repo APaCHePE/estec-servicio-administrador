@@ -13,5 +13,5 @@ public interface UsuarioService {
 			String usuario, String nroDocumento, Integer tipoDocumento);
 	public ServiceResult<String> activarProveedor(Proveedor proveedor);
 	public ServiceResult<Proveedor> listarProveedorErp(String nroDocumento );
-	public ServiceResult<String> contrasenaProveedor(Integer idProveedor, String contrasena);
+	public ServiceResult<String> contrasenaProveedor(String user, String contrasena, Integer estado);
 }

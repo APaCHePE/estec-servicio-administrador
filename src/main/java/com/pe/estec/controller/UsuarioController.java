@@ -51,7 +51,10 @@ public class UsuarioController {
 	}
 	@PostMapping("modificar-pass-proveedor")
 	public ResponseEntity<Object> contrasenaProveedor(@RequestBody Map<String, Object> proveedor){
-		ServiceResult<String> response = usuarioService.contrasenaProveedor(Integer.parseInt(proveedor.get("user").toString()), proveedor.get("contrasena").toString());
+		ServiceResult<String> response = usuarioService.contrasenaProveedor(
+				proveedor.get("user").toString(), 
+				proveedor.get("contrasena").toString(),
+				Integer.parseInt(proveedor.get("estado").toString()));
 		return new ResponseEntity(response, HttpStatus.valueOf(response.getHttpStatus()));
 	}
 }

@@ -15,10 +15,10 @@ public class Constantes {
 
 	public static Integer ESTADO_ACTIVO = 1;
 	public static Integer ESTADO_DESACTIVADO = 2;
-	public static Integer ESTADO_PENDIENTE= 8;
-	public static Integer ESTADO_DENEGADO = 12;
+	public static Integer ESTADO_PENDIENTE= 9;
+	public static Integer ESTADO_APROBADO = 10;
+	public static Integer ESTADO_DENEGADO = 11;
 
-	public static Integer ESTADO_PENDIENTE_FACTURA= 9;
 	public static String MONEDA_NACIONAL = "MN";
 	public static String MONEDA_DOLAR = "US";
 

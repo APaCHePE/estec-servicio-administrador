@@ -13,27 +13,25 @@ import com.pe.estec.services.CatalogoService;
 
 @RestController
 public class CatalogoController {
-	
+
 	@Autowired
 	CatalogoService catalogoService;
-	
 
-		@GetMapping("/consultar-parametro")
-		public ResponseEntity<Object> consultaParametro(@RequestParam("idParametroTipo") Integer idParametroTipo) {
-			Map<String, Object> respuesta = new HashMap<>();
-			HttpStatus status = HttpStatus.OK;
-			try {
-				respuesta.put("result",
-						catalogoService.consultaParametro(idParametroTipo));
-				respuesta.put("status", Boolean.TRUE);
-				respuesta.put("codigo", status.value());
-			} catch (Exception e) {
-				status = HttpStatus.NOT_FOUND;
-				respuesta.put("status", false);
-				respuesta.put("errorMensaje", e.getMessage());
-				respuesta.put("codigo", status.value());
-			}
-			return new ResponseEntity(respuesta, status);
+	@GetMapping("/consultar-parametro")
+	public ResponseEntity<Object> consultaParametro(@RequestParam("idParametroTipo") Integer idParametroTipo) {
+		Map<String, Object> respuesta = new HashMap<>();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			respuesta.put("result", catalogoService.consultaParametro(idParametroTipo));
+			respuesta.put("status", Boolean.TRUE);
+			respuesta.put("codigo", status.value());
+		} catch (Exception e) {
+			status = HttpStatus.NOT_FOUND;
+			respuesta.put("status", false);
+			respuesta.put("errorMensaje", e.getMessage());
+			respuesta.put("codigo", status.value());
+		}
+		return new ResponseEntity(respuesta, status);
 	}
 
 }
