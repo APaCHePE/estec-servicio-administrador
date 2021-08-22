@@ -265,12 +265,10 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 			json.put("enteNroDocumento" , ((Map<String, Object>) xmlCompleto.get("cac:AccountingCustomerParty")).get("cbc:CustomerAssignedAccountID"));
 			json.put("enteDireccion" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingCustomerParty")).get("cac:Party")).get("cac:PostalAddress")).get("cbc:StreetName"));
 			//EMISOR DATOS
-			json.put("proveedorNombreCompleto" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PartyName")).get("cbc:Name"));
-			json.put("proveedorNombres" , "ALEXANDERS");
-			json.put("proveedorApeParterno" , "PRADO");
-			json.put("proveedorApeMaterno" , "CHOQUEPATA");
-			json.put("proveedorRuc", ((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cbc:CustomerAssignedAccountID"));
-			json.put("proveedorDireccionCompleta", ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PostalAddress")).get("cbc:StreetName"));
+			json.put("proveedorNombre" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PartyName")).get("cbc:Name"));
+			json.put("proveedorNombreComercial" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PartyName")).get("cbc:Name"));
+			json.put("proveedorNumeroDocumento", ((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cbc:CustomerAssignedAccountID"));
+			json.put("proveedorDireccion", ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PostalAddress")).get("cbc:StreetName"));
 			json.put("proveedorDireccionDepartamento" , "LIMA");
 			json.put("proveedorDireccionProvincia" , "LIMA");
 			json.put("proveedorTelefono" ,((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:Contact")).get("cbc:Telephone") );
@@ -286,17 +284,17 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 			json.put("incisoTipo" , "A");
 			json.put("incisoDescripcion" , "DEL ARTÍCULO 33 DE LA LEY DEL IMPUESTO A LA RENTA");
 			json.put("fechaEmisionCompleta" , "10-04-2021");
-			json.put("montoTotal" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:TaxTotal")).get("cac:TaxSubtotal")).get("cbc:TaxableAmount")).get("content"));
-			if(!json.get("montoTotal").toString().contains(".")) {
-				json.put("montoTotal" , json.get("montoTotal")+".00");
+			json.put("importeSubTotal" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:TaxTotal")).get("cac:TaxSubtotal")).get("cbc:TaxableAmount")).get("content"));
+			if(!json.get("importeSubTotal").toString().contains(".")) {
+				json.put("importeSubTotal" , json.get("importeSubTotal")+".00");
 			}
-			json.put("montoRetencion" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:TaxTotal")).get("cac:TaxSubtotal")).get("cbc:TaxAmount")).get("content"));
-			if(!json.get("montoRetencion").toString().contains(".")) {
-				json.put("montoRetencion" , json.get("montoRetencion")+".00");
+			json.put("importeIgv" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:TaxTotal")).get("cac:TaxSubtotal")).get("cbc:TaxAmount")).get("content"));
+			if(!json.get("importeIgv").toString().contains(".")) {
+				json.put("importeIgv" , json.get("importeIgv")+".00");
 			}
-			json.put("montoTotalNeto" ,((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:LegalMonetaryTotal")).get("cbc:PayableAmount")).get("content"));
-			if(!json.get("montoTotalNeto").toString().contains(".")) {
-				json.put("montoTotalNeto" , json.get("montoTotalNeto")+".00");
+			json.put("importeTotal" ,((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:LegalMonetaryTotal")).get("cbc:PayableAmount")).get("content"));
+			if(!json.get("importeTotal").toString().contains(".")) {
+				json.put("importeTotal" , json.get("importeTotal")+".00");
 			}
 			json.put("tipoMonedaDescripcion" , "SOLES");
 			json.put("tipoMonedaISO" ,((Map<String, Object>) ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:TaxTotal")).get("cac:TaxSubtotal")).get("cbc:TaxAmount")).get("currencyID"));
@@ -317,7 +315,7 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 			
 			json.put("fechaEmision", ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:OrderReference")).get("cac:DocumentReference")).get("cbc:IssueDate"));
 			json.put("fechaVencimiento", xmlCompleto.get("cbc:ExpiryDate"));
-			detalle.setValorUnitario(Double.parseDouble(json.get("montoTotalNeto").toString()));
+			detalle.setValorUnitario(Double.parseDouble(json.get("importeTotal").toString()));
             List<ComprobanteDetalle> listaComprobanteDetalle = new ArrayList();
             listaComprobanteDetalle.add(detalle);
             

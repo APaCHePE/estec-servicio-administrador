@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pe.estec.services.CatalogoService;
 
 @RestController
-public class catalogoController {
+public class CatalogoController {
 	
 	@Autowired
 	CatalogoService catalogoService;
