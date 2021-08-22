@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.pe.estec.comunes.model.bean.CuentaMensaje;
+/*import com.pe.estec.comunes.model.bean.CuentaMensaje;
 import com.pe.estec.comunes.model.bean.FileAdjunto;
-import com.pe.estec.comunes.model.bean.Mensaje;
+import com.pe.estec.comunes.model.bean.Mensaje;*/
 import com.pe.estec.config.Constantes;
 import com.pe.estec.util.Util;
 
@@ -58,7 +58,7 @@ public class CorreoServiceImple {
 		return htmlTemplate;
 
 	}
-	public void enviaReporteNuevo(String htmlTemplate, String correoDestino, String correoCopia, String asunto,
+	/*public void enviaReporteNuevo(String htmlTemplate, String correoDestino, String correoCopia, String asunto,
 			List<FileAdjunto> adjunto) throws Exception{
 		Mensaje mensaje = new Mensaje();
 		CuentaMensaje destino = new CuentaMensaje();
@@ -102,7 +102,7 @@ public class CorreoServiceImple {
 		RestTemplate rest = new RestTemplate();
 
 		rest.postForObject(uriMensajeria.toString(), mensaje, HashMap.class);
-	}
+	}*/
 
 //	public String crearQR(String textQR) {
 //		String encodeImage;

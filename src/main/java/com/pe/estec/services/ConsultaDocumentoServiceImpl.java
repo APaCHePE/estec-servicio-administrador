@@ -23,6 +23,7 @@ import com.pe.estec.config.Constantes;
 import com.pe.estec.model.Archivo;
 import com.pe.estec.model.Comprobante;
 import com.pe.estec.model.ComprobanteDetalle;
+import com.pe.estec.model.Contrato;
 import com.pe.estec.model.DocumentoOrigen;
 import com.pe.estec.model.Facturas;
 import com.pe.estec.model.Orden;
@@ -54,6 +55,11 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 		return listaOrdenes;
 	}
 
+	@Override
+	public List<Contrato> getContrato( Integer nroContrato){
+		List<Contrato> listaContrato = consultaDocRepository.getContrato(nroContrato);
+		return listaContrato;
+	}
 	@Override
 	public List<Facturas> consultaFacturas(String nroOrden, String fecInicio, String fecFin, Integer estado,
 			String nroDocumento) {

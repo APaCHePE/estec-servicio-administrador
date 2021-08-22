@@ -75,7 +75,7 @@ public class UsuarioServiceImple implements UsuarioService {
 				return response;
 			}
 			try {
-				enviarCorreoRegistro(proveedor);
+				//enviarCorreoRegistro(proveedor);
 			} catch (Exception e) {
 				e.printStackTrace();
 				logger.error("No se pudo enviar correo de confiración");
@@ -89,13 +89,13 @@ public class UsuarioServiceImple implements UsuarioService {
 		return response;
 	}
 
-	private void enviarCorreoRegistro(Proveedor proveedor) throws Exception {
+/*private void enviarCorreoRegistro(Proveedor proveedor) throws Exception {
 		String htmlTemplate = correoService.correoRegistro(proveedor.getPersona().getNombreCompleto(),
 				proveedor.getUsuario(), null, "/tmpl-8642");
 		correoService.enviaReporteNuevo(htmlTemplate, proveedor.getUsuario(), null,
 				"Confirmación de solicitud de cuenta como proveedor:  ", null);
 	}
-
+*/
 	@Override
 	public ServiceResult<List<Proveedor>> listarProveedor(Integer estado, Integer tipoCuenta, String usuario, String nroDocumento,
 			Integer tipoDocumento) {
@@ -117,7 +117,7 @@ public class UsuarioServiceImple implements UsuarioService {
 		try {
 			userRepository.activarProveedor(proveedor.getIdProveedor(), proveedor.getEstado(), proveedor.getObservacion());
 			if(proveedor.getEstado()==Constantes.ESTADO_ACTIVO)
-				enviarCorreoActivacion(proveedor);
+				//enviarCorreoActivacion(proveedor);
 			response.setEsCorrecto(true);
 			response.setHttpStatus(HttpStatus.OK.value());
 		}catch (Exception e) {
@@ -128,12 +128,12 @@ public class UsuarioServiceImple implements UsuarioService {
 		}
 		return response;
 	}
-	private void enviarCorreoActivacion(Proveedor proveedor) throws Exception {
+/*	private void enviarCorreoActivacion(Proveedor proveedor) throws Exception {
 		String htmlTemplate = correoService.correoActivacion(proveedor.getPersona().getNombreCompleto(), proveedor.getContrasenia(),
 				proveedor.getUsuario(), null, "/tmpl-8641");
 		correoService.enviaReporteNuevo(htmlTemplate, proveedor.getUsuario(), null,
 				"Activación de solicitud de cuenta como proveedor:  ", null);
-	}
+	}*/
 	@Override
 	public ServiceResult<Proveedor> listarProveedorErp(String nroDocumento) {
 		ServiceResult<Proveedor> response = new ServiceResult();
