@@ -45,6 +45,25 @@ public class ConsultaDocumento {
 		}
 		return new ResponseEntity(respuesta, status);
 	}
+	
+	@GetMapping("/getContrato")
+	public ResponseEntity<Object> getContrato( Integer nroContrato) {
+		Map<String, Object> respuesta = new HashMap<>();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			respuesta.put("result",
+					consultaDocumentoServices.getContrato(nroContrato));
+			respuesta.put("status", Boolean.TRUE);
+			respuesta.put("codigo", status.value());
+		} catch (Exception e) {
+			status = HttpStatus.NOT_FOUND;
+			respuesta.put("status", false);
+			respuesta.put("errorMensaje", e.getMessage());
+			respuesta.put("codigo", status.value());
+		}
+		return new ResponseEntity(respuesta, status);
+	}
+
 
 	@GetMapping("/getFacturas")
 	public ResponseEntity<Object> getFacturas(String numeroFac, String fecInicio, String fecFin, Integer estado, String nroDocumento) {

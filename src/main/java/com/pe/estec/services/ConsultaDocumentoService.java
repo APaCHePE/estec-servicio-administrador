@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.pe.estec.model.Comprobante;
+import com.pe.estec.model.Contrato;
 import com.pe.estec.model.Facturas;
 import com.pe.estec.model.Orden;
 import com.pe.estec.model.request.ServiceResult;
@@ -14,6 +15,7 @@ public interface ConsultaDocumentoService {
 
 	public List<Orden> consultaOrdenes(Integer tipoDocumento, String nroOrden, 
 			String fecInicio, String fecFin, Integer estado, String nroDocumento);
+	public List<Contrato> getContrato( Integer nroContrato);
 	public List<Facturas> consultaFacturas( String nroOrden, 
 			String fecInicio, String fecFin, Integer estado, String nroDocumento);
 	public ServiceResult<Map<String, Object>> guardarZip(MultipartFile archivoZip, MultipartFile archivoPdf);

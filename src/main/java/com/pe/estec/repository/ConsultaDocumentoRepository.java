@@ -11,12 +11,14 @@ import com.pe.estec.model.Archivo;
 import com.pe.estec.model.Comprobante;
 import com.pe.estec.model.ComprobanteDetalle;
 import com.pe.estec.model.ComprobanteTrazabilidad;
+import com.pe.estec.model.Contrato;
 import com.pe.estec.model.Facturas;
 import com.pe.estec.model.Orden;
 import com.pe.estec.model.OrdenDetalle;
 import com.pe.estec.rowmapper.ComprobanteDetalleRowMapper;
 import com.pe.estec.rowmapper.ComprobanteRowMapper;
 import com.pe.estec.rowmapper.ComprobanteTrazabilidadRowMapper;
+import com.pe.estec.rowmapper.ContratoRowMapper;
 import com.pe.estec.rowmapper.FacturasRowMapper;
 import com.pe.estec.rowmapper.OrdenDetalleRowMapper;
 import com.pe.estec.rowmapper.OrdenesRowMapper;
@@ -102,17 +104,17 @@ public class ConsultaDocumentoRepository {
 		sql.append(
 				"  left outer join RSFACCAR15..AL0002TABL AS TB_TIP_ORD on TB_TIP_ORD.TG_CCLAVE = MOVC.oc_ctipord AND TB_TIP_ORD.TG_CCOD = '63'  ");
 		sql.append(
-				"  left outer join RSFACCAR15..AL0002TABL AS TB_TIP_DOC on TB_TIP_DOC.TG_CCLAVE = MOVC.OC_CTIPDOC AND TB_TIP_DOC.TG_CCOD = '04'  ");
+				"  left outer join RSFACCAR15..AL0002TABL AS TB_TIP_DOC on TB_TIP_DOC.TG_CCLAVE = MOVC.OC_CTIPDOC   ");
 		sql.append("  WHERE 1=1 ");
 		if (nroDocumento != null)
 			sql.append("  and MOVC.OC_CCODPRO ='" + nroDocumento + "'  ");
 		if (nroOrden != null)
-			sql.append(" And MOVC.OC_CNUMORD='" + nroOrden + "' ");
+			sql.append(" And MOVC.OC_CNUMORD like('%" + nroOrden + "%') ");
 		if (fecFin != null && fecInicio != null)
 			sql.append("");
 //		if(estado!=null)sql.append(" AND MOVD.OC_CESTADO='1' ");
 		if (tipoDocumento == null)
-			sql.append(" and MOVC.OC_CTIPORD != 'I'  ");
+			//sql.append(" and MOVC.OC_CTIPORD != 'I'  ");
 		System.out.println(sql);
 		List<Orden> users = dao.query(sql.toString(), new OrdenesRowMapper());
 		return users;
@@ -140,6 +142,17 @@ public class ConsultaDocumentoRepository {
 			sql.append(" and oc_cnumord = '" + numeroOrden + "' ");
 		List<OrdenDetalle> users = dao.query(sql.toString(), new OrdenDetalleRowMapper());
 		return users;
+	}
+	
+	public List<Contrato> getContrato(Integer nroContrato) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" select id_contrato, descripcion, fecha_contrato  ");
+		sql.append(" from pruebas.dbo.CONTRATO ");
+		sql.append(" where 1=1");
+		if (nroContrato != null && !nroContrato.equals("null"))
+			sql.append(" and id_contrato = " + nroContrato );
+		List<Contrato> listaContrato = dao.query(sql.toString(), new ContratoRowMapper());
+		return listaContrato;
 	}
 
 	public List<Facturas> getFacturasCabecera(String nroFact, String fecInicio, String fecFin, Integer estado,
