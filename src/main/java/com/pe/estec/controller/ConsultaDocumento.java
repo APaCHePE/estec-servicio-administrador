@@ -95,7 +95,7 @@ public class ConsultaDocumento {
 		return new ResponseEntity(response, HttpStatus.valueOf(response.getHttpStatus()));
 	}
 	
-	@GetMapping("/estado-factura")
+	@GetMapping("estado-factura")
 	public ResponseEntity<Object> estadoFactura(@RequestParam("usuarioResponsable") String usuarioResponsable,
 			@RequestParam("idComprobante") Integer idComprobante,@RequestParam("estado") Integer estado,@RequestParam("id008Trazabilidad") Integer id008Trazabilidad,
 			@RequestParam("observacion") String observacion,@RequestParam("usuarioModificador") String usuarioModificador ){
@@ -108,15 +108,12 @@ public class ConsultaDocumento {
 		ServiceResult<String> response = consultaDocumentoServices.guardarComprobante(Comprobante);
 		return new ResponseEntity(response, HttpStatus.valueOf(response.getHttpStatus()));
 	}
-	
+	 
 	@GetMapping("/consultar-comprobante")
 	public ResponseEntity<Object> consultarComprobante(String usuariosresponsable, String numeroFac, String fecInicio, 
 			String fecFin, Integer estado, String nroDocumento, Integer idComprobante, Integer tipoComprobante) {
 		Map<String, Object> respuesta = new HashMap<>();
 		HttpStatus status = HttpStatus.OK;
-		System.out.println(tipoComprobante);
-		System.out.println(fecInicio);
-		System.out.println(fecFin);
 		try {
 			respuesta.put("result",
 					consultaDocumentoServices.consultarComprobante(usuariosresponsable, numeroFac, fecInicio, fecFin, estado, nroDocumento, idComprobante, tipoComprobante));

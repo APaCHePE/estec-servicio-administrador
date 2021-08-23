@@ -12,6 +12,7 @@ import com.pe.estec.config.Constantes;
 import com.pe.estec.model.Proveedor;
 import com.pe.estec.model.request.ServiceResult;
 import com.pe.estec.repository.UsuarioRepository;
+import com.pe.estec.util.UtilString;
 
 @Service
 public class UsuarioServiceImple implements UsuarioService {
@@ -139,7 +140,7 @@ public class UsuarioServiceImple implements UsuarioService {
 
 	private void enviarCorreoActivacion(Proveedor proveedor) throws Exception {
 		String htmlTemplate = correoService.correoActivacion(proveedor.getPersona().getNombreCompleto(),
-				proveedor.getContrasenia(), proveedor.getUsuario(), null, "/tmpl-8641");
+				Constantes.URL_PLANTILLA_PASS+proveedor.getIdProveedor()+UtilString.retornarEncryptMd5(proveedor.getUsuario()), proveedor.getUsuario(), null, "/tmpl-8641");
 		correoService.enviaReporteNuevo(htmlTemplate, proveedor.getUsuario(), null,
 				"Activación de solicitud de cuenta como proveedor:  ", null);
 	}

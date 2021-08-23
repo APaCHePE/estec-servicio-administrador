@@ -93,8 +93,8 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 			MultipartFile  archivoInforme, MultipartFile archivoGuia, Integer idDocumento) {
 		ServiceResult<Map<String, Object>> response = new ServiceResult();
 		try {
-			response.setResultado(FilesUtils.descromprimirZIP(archivoZip));
-			if(idDocumento!=null)guardarFile( archivoPdf, idDocumento);
+			if(idDocumento==null)response.setResultado(FilesUtils.descromprimirZIP(archivoZip));
+			if(idDocumento!=null)guardarAdjuntos( archivoZip,archivoPdf, archivoInforme, archivoGuia, idDocumento);
 			System.out.println("Listo");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -102,15 +102,49 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 		response.setHttpStatus(HttpStatus.OK.value());
 		return response;
 	}
+	
+	private void guardarAdjuntos(MultipartFile archivoZip, MultipartFile archivoPdf,
+			MultipartFile  archivoInforme, MultipartFile archivoGuia, Integer idDocumento) throws Exception{
+		List<Archivo> lista = new ArrayList();
 
-	private void guardarFile(MultipartFile archivoRep,Integer idDocumento) throws IOException {
 		Archivo archivo = new Archivo();
-		archivo.setNombreArchivo(archivoRep.getName());
-		archivo.setArchivo(archivoRep.getBytes());
+		archivo.setNombreArchivo(archivoZip.getOriginalFilename());
+		archivo.setArchivo(archivoZip.getBytes());
 		archivo.setIdParametro(Constantes.ARCHIVOS_COMPROBANTE);
-		archivo.setIdDocumento(10);
-		archivo.setIdArchivo(consultaDocRepository.guardarArchivo(archivo));
-		consultaDocRepository.guardarArchivoRepo(archivo);
+		archivo.setIdDocumento(idDocumento);
+		archivo.setIdDocumentoArchivo(consultaDocRepository.guardarAdjunto(archivo));
+		lista.add(archivo);
+		archivo = new Archivo();
+		archivo.setNombreArchivo(archivoPdf.getOriginalFilename());
+		archivo.setArchivo(archivoPdf.getBytes());
+		archivo.setIdParametro(Constantes.ARCHIVOS_COMPROBANTE);
+		archivo.setIdDocumento(idDocumento);
+		archivo.setIdDocumentoArchivo(consultaDocRepository.guardarAdjunto(archivo));
+		lista.add(archivo);
+		archivo = new Archivo();
+		archivo.setNombreArchivo(archivoInforme.getOriginalFilename());
+		archivo.setArchivo(archivoInforme.getBytes());
+		archivo.setIdParametro(Constantes.ARCHIVOS_COMPROBANTE);
+		archivo.setIdDocumento(idDocumento);
+		archivo.setIdDocumentoArchivo(consultaDocRepository.guardarAdjunto(archivo));
+		lista.add(archivo);
+		archivo = new Archivo();
+		archivo.setNombreArchivo(archivoGuia.getOriginalFilename());
+		archivo.setArchivo(archivoGuia.getBytes());
+		archivo.setIdParametro(Constantes.ARCHIVOS_COMPROBANTE);
+		archivo.setIdDocumento(idDocumento);
+		archivo.setIdDocumentoArchivo(consultaDocRepository.guardarAdjunto(archivo));
+		lista.add(archivo);
+		System.out.println("la lista tiene la siguiente dimension "+lista.size());
+		
+		guardarFile(lista);
+	}
+
+	private void guardarFile(List<Archivo> listaArchivos) throws IOException {
+		listaArchivos.forEach(item ->{
+			item.setIdArchivo(consultaDocRepository.guardarArchivo(item));
+			consultaDocRepository.guardarArchivoRepo(item);
+		});
 	}
 
 	@Override
@@ -183,7 +217,7 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 					: ((listaContratos != null) && (listaContratos.size() > 0)) ? listaContratos.get(0).getUsuarioResponsable() : null);
 			
 			comprobante.setIdComprobante(consultaDocRepository.guardarComprobante(comprobante));
-			
+			response.setResultado(comprobante.getIdComprobante()+"");
 			comprobante.getListaComprobanteDetalle().forEach((item) -> {
 
 				try {

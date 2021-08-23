@@ -12,8 +12,8 @@ public class ArchivoServiceImple implements ArchivoService{
 	@Autowired
 	private FileRepository fileRepo;
 	@Override
-	public Archivo recuperarEntidadArchivo() {
-		Archivo archivo = fileRepo.recuperaEntidadArchivo();
+	public Archivo recuperarEntidadArchivo(int tipoEntidad,int  idEntidad,int entidadArchivo) {
+		Archivo archivo = fileRepo.recuperaEntidadArchivo(tipoEntidad, idEntidad, entidadArchivo);
 		return archivo;
 	}
 

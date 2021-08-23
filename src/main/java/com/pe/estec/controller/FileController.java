@@ -26,7 +26,7 @@ public class FileController {
 
 		byte archivoByteRecuperado[] = null;
 		try {
-			archivoRecuperado = fileService.recuperarEntidadArchivo();
+			archivoRecuperado = fileService.recuperarEntidadArchivo(tipoEntidad, idEntidad, entidadArchivo);
 //tipoEntidad, idEntidad, entidadArchivo
 			archivoByteRecuperado = Base64.getDecoder().decode(archivoRecuperado.getArchivo());
 		} catch (Exception ex) {

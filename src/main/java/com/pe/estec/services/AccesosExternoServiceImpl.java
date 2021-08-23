@@ -34,9 +34,14 @@ public class AccesosExternoServiceImpl implements AccesosExternoService{
 				response.setMensajeError("Su solicitud de acceso está siendo evaluada.");
 				response.setEsCorrecto(false);
 				response.setHttpStatus(HttpStatus.OK.value());
+			}else if(proveedorAuth.get(0).getEstado()==Constantes.ESTADO_APROBADO) {
+				response.setMensajeError("Para completar el registro debe activar su cuenta.");
+				response.setEsCorrecto(false);
+				response.setHttpStatus(HttpStatus.OK.value());
 			}else {
-				Boolean access = accesoRepository.validarPass(proveedorAuth.get(0).getContrasenia(), proveedorAuth.get(0).getUsuario());
-				if(!access) {					
+				Boolean access = accesoRepository.validarPass(proveedorAuth.get(0).getUsuario() ,
+						proveedorAuth.get(0).getContrasenia());
+				if(access) {					
  					response.setHttpStatus(HttpStatus.OK.value());
 					response.setResultado(proveedorAuth.get(0));
 					response.setEsCorrecto(true);

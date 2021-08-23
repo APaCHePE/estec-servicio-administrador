@@ -24,6 +24,7 @@ public class Constantes {
 	
 	public static String MONEDA_NACIONAL = "MN";
 	public static String MONEDA_DOLAR = "US";
+	public static String URL_PLANTILLA_PASS = "http://localhost:8081/estec-proveedores/pass/";
 
 	public static Integer EstadoTrazabilidad = 27;
 	@Value("${config.url.plantilla}")

@@ -28,8 +28,10 @@ import com.pe.estec.util.SqlReturning;
 public class ConsultaDocumentoRepository {
 
 	@Autowired
-	JdbcTemplate dao;
-
+	JdbcTemplate sqlServer;
+	
+	
+	
 	public List<Orden> consultaOrdenes(Integer tipoDocumento, String nroOrden, String fecInicio, String fecFin,
 			Integer estado, String nroDocumento) {
 		StringBuilder sql = new StringBuilder();
@@ -75,7 +77,7 @@ public class ConsultaDocumentoRepository {
 		if (tipoDocumento == null)
 			sql.append(" and MOVC.OC_CTIPORD != 'I'  ");
 		sql.append("  Order by MOVD.OC_CNUMORD  ");
-		List<Orden> users = dao.query(sql.toString(), new OrdenesRowMapper());
+		List<Orden> users = sqlServer.query(sql.toString(), new OrdenesRowMapper());
 		return users;
 	}
 
@@ -116,7 +118,7 @@ public class ConsultaDocumentoRepository {
 		if (tipoDocumento == null)
 			//sql.append(" and MOVC.OC_CTIPORD != 'I'  ");
 		System.out.println(sql);
-		List<Orden> users = dao.query(sql.toString(), new OrdenesRowMapper());
+		List<Orden> users = sqlServer.query(sql.toString(), new OrdenesRowMapper());
 		return users;
 	}
 
@@ -140,7 +142,7 @@ public class ConsultaDocumentoRepository {
 		sql.append(" where 1=1");
 		if (numeroOrden != null && !numeroOrden.equals("null"))
 			sql.append(" and oc_cnumord = '" + numeroOrden + "' ");
-		List<OrdenDetalle> users = dao.query(sql.toString(), new OrdenDetalleRowMapper());
+		List<OrdenDetalle> users = sqlServer.query(sql.toString(), new OrdenDetalleRowMapper());
 		return users;
 	}
 	
@@ -151,7 +153,7 @@ public class ConsultaDocumentoRepository {
 		sql.append(" where 1=1");
 		if (nroContrato != null && !nroContrato.equals("null"))
 			sql.append(" and id_contrato = " + nroContrato );
-		List<Contrato> listaContrato = dao.query(sql.toString(), new ContratoRowMapper());
+		List<Contrato> listaContrato = sqlServer.query(sql.toString(), new ContratoRowMapper());
 		return listaContrato;
 	}
 
@@ -207,7 +209,7 @@ public class ConsultaDocumentoRepository {
 			sql.append(" and prov.CP_CCODIGO = '" + nroDocumento + "' ");
 		sql.append(" order by CP_CFECDOC desc ");
 		System.out.println(sql);
-		List<Facturas> users = dao.query(sql.toString(), new FacturasRowMapper());
+		List<Facturas> users = sqlServer.query(sql.toString(), new FacturasRowMapper());
 		return users;
 	}
 
@@ -226,7 +228,7 @@ public class ConsultaDocumentoRepository {
 	 * sql.append(" where id_comprobante=" + idComprobante + " ");
 	 * 
 	 * System.out.println(sql.toString()); // Object[] params= new Object[] {estado,
-	 * idComprobante}; dao.update(sql.toString()); }
+	 * idComprobante}; sqlServer.update(sql.toString()); }
 	 */
 
 	public void estadoFactura(String usuarioResponsable, Integer estado, Integer idComprobante) throws Exception {
@@ -236,7 +238,7 @@ public class ConsultaDocumentoRepository {
 		if (usuarioResponsable != null)
 			sql.append(" ,usuario_responsable = '" + usuarioResponsable + "'");
 		sql.append(" where id_comprobante=" + idComprobante + " ");
-		dao.update(sql.toString());
+		sqlServer.update(sql.toString());
 	}
 
 	public void estadoFacturaTrazabilidad(Integer idComprobante, Integer id008Trazabilidad, String observacionTra,
@@ -247,7 +249,7 @@ public class ConsultaDocumentoRepository {
 		sql.append(" values(" + idComprobante + "," + id008Trazabilidad + ",GETDATE(),'" + observacionTra + "','"
 				+ usuarioModificador + "') ");
 
-		dao.update(sql.toString());
+		sqlServer.update(sql.toString());
 	}
 
 	public Integer guardarComprobante(Comprobante comprobante) throws Exception {
@@ -289,7 +291,7 @@ public class ConsultaDocumentoRepository {
 		sql.append(", 9 ,  '" + comprobante.getUsuarioResponsable() + "' ");
 		sql.append(", '" + comprobante.getProveedorDireccion() + "', '" + comprobante.getProveedorZona() + "', GETDATE()  ) ");
 		System.out.println(sql.toString());
-		SqlReturning db = new SqlReturning(dao);
+		SqlReturning db = new SqlReturning(sqlServer);
 
 		Long idGenerado = db.insertaDataParams(sql.toString());
 		return idGenerado.intValue();
@@ -305,7 +307,7 @@ public class ConsultaDocumentoRepository {
 		Object[] params = new Object[] { idComprobante, comprobanteDetalle.getCantidad(),
 				comprobanteDetalle.getUnidadMedida(), comprobanteDetalle.getDescripcion(),
 				comprobanteDetalle.getValorUnitario(), comprobanteDetalle.getIcbper() };
-		dao.update(sql.toString(), params);
+		sqlServer.update(sql.toString(), params);
 	}
 
 	public List<Comprobante> consultarComprobante(String usuariosresponsable, String nroFact, String fecInicio,
@@ -342,7 +344,7 @@ public class ConsultaDocumentoRepository {
 		if (fecInicio != null && fecFin != null)
 			sql.append(" and fecha_emision BETWEEN '"+fecInicio+"' AND '"+fecFin+"'");
 		sql.append(" order by fecha_emision desc ");
-		List<Comprobante> users = dao.query(sql.toString(), new ComprobanteRowMapper());
+		List<Comprobante> users = sqlServer.query(sql.toString(), new ComprobanteRowMapper());
 		return users;
 	}
 
@@ -355,7 +357,7 @@ public class ConsultaDocumentoRepository {
 		sql.append(" where 1=1");
 		if (idComprobante != null)
 			sql.append(" and id_comprobante = '" + idComprobante + "' ");
-		List<ComprobanteDetalle> users = dao.query(sql.toString(), new ComprobanteDetalleRowMapper());
+		List<ComprobanteDetalle> users = sqlServer.query(sql.toString(), new ComprobanteDetalleRowMapper());
 		return users;
 	}
 
@@ -369,18 +371,28 @@ public class ConsultaDocumentoRepository {
 		sql.append(" where 1=1");
 		if (idComprobante != null)
 			sql.append(" and id_comprobante = '" + idComprobante + "' ");
-		List<ComprobanteTrazabilidad> users = dao.query(sql.toString(), new ComprobanteTrazabilidadRowMapper());
+		List<ComprobanteTrazabilidad> users = sqlServer.query(sql.toString(), new ComprobanteTrazabilidadRowMapper());
 		return users;
 	}
+	
+	public Integer guardarAdjunto(Archivo archivo) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" INSERT INTO PRUEBAS..ADJUNTOS ");
+		sql.append(" ( ID_DOCUMENTO, NOMBRE_ADJUNTO, FEC_CREACION ) ");
+		sql.append(" VALUES( "+archivo.getIdDocumento()+", '"+archivo.getNombreArchivo()+"', GETDATE()) ");
+//		Object[] params = new Object[] { archivo.getIdArchivo(), archivo.getArchivo() };
+		SqlReturning db = new SqlReturning(sqlServer);
 
+		Long idGenerado = db.insertaDataParams(sql.toString());
+		return idGenerado.intValue();
+	}
 	public Integer guardarArchivo(Archivo archivo) {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" INSERT INTO PRUEBAS..ARCHIVO  ");
-		sql.append(" (ID_PARAMETRO,ID_ENTIDAD, VERSION, FECHA_CREACION, ESTADO) ");
-		sql.append(" VALUES( "+archivo.getIdParametro()+", "+archivo.getIdDocumento()+", 1, GETDATE(), 1) ");
+		sql.append(" (ID_PARAMETRO,ID_DOCUMENTO, ID_DOCUMENTO_AUXILIAR, VERSION, FECHA_CREACION, ESTADO) ");
+		sql.append(" VALUES( "+archivo.getIdParametro()+", "+archivo.getIdDocumento()+", "+archivo.getIdDocumentoArchivo()+", 1, GETDATE(), 1) ");
 //		Object[] params = new Object[] { archivo.getIdArchivo(), archivo.getArchivo() };
-		SqlReturning db = new SqlReturning(dao);
-
+		SqlReturning db = new SqlReturning(sqlServer);
 		Long idGenerado = db.insertaDataParams(sql.toString());
 		return idGenerado.intValue();
 	}
@@ -390,7 +402,7 @@ public class ConsultaDocumentoRepository {
 		sql.append(" (ID_ARCHIVO,ARCHIVO) ");
 		sql.append(" VALUES(?,?) ");
 		Object[] params = new Object[] { archivo.getIdArchivo(), archivo.getArchivo() };
-		dao.update(sql.toString(), params);
+		sqlServer.update(sql.toString(), params);
 	}
 
 }
