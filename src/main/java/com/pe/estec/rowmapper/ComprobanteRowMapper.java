@@ -37,7 +37,7 @@ public class ComprobanteRowMapper implements RowMapper<Comprobante>{
 		comprobante.setImporteMontoRedondeo(rs.getDouble("importe_monto_redondeo"));
 		comprobante.setImporteTotal(rs.getDouble("importe_total"));
 		comprobante.setOrdenNumero(rs.getString("orden_numero"));
-		comprobante.setOrdenContrato(rs.getInt("orden_contrato"));
+		comprobante.setOrdenContrato(rs.getString("orden_contrato"));
 		comprobante.setId004Estado(rs.getInt("id_004_estado"));
 		comprobante.setNombreMoneda(rs.getString("nombre_moneda")); 
 		comprobante.setNombreEstado(rs.getString("nombre_estado")); 

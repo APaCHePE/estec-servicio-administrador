@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class Orden {
 
-	private Integer idOrden;
+	private String idOrden;
 	private String importe;
 	private String fecha;
 	private String nroOrden;

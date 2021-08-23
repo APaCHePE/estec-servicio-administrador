@@ -40,13 +40,14 @@ public class AccesosExternoServiceImpl implements AccesosExternoService{
 				response.setHttpStatus(HttpStatus.OK.value());
 			}else {
 				Boolean access = accesoRepository.validarPass(proveedorAuth.get(0).getUsuario() ,
-						proveedorAuth.get(0).getContrasenia());
+						pass);
+				System.out.println("acceso "+access);
 				if(access) {					
  					response.setHttpStatus(HttpStatus.OK.value());
 					response.setResultado(proveedorAuth.get(0));
 					response.setEsCorrecto(true);
 				}else {
-					response.setMensajeError("La contraseña ingresada es incorrecta.");
+					response.setMensajeError("EL usuario o contraseña ingresada es incorrecta.");
 					response.setEsCorrecto(false);
 					response.setHttpStatus(HttpStatus.OK.value());
 				}

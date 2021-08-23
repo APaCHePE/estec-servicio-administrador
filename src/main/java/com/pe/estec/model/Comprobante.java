@@ -33,7 +33,7 @@ public class Comprobante {
 	private Double importeMontoRedondeo;
 	private Double importeTotal;
 	private String ordenNumero;
-	private Integer ordenContrato;
+	private String ordenContrato;
 	private Integer id004Estado;
 	private String nombreMoneda;
 	private String nombreEstado;

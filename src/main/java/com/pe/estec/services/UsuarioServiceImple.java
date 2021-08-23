@@ -83,10 +83,10 @@ public class UsuarioServiceImple implements UsuarioService {
 				return response;
 			}
 			try {
-				//enviarCorreoRegistro(proveedor);
+				enviarCorreoRegistro(proveedor);
 			} catch (Exception e) {
 				e.printStackTrace();
-				logger.error("No se pudo enviar correo de confiración");
+				logger.error("No se pudo enviar correo de confirmación");
 			}
 			response.setResultado("Se ha registrado correctamente.");
 			response.setHttpStatus(HttpStatus.OK.value());
@@ -142,7 +142,7 @@ public class UsuarioServiceImple implements UsuarioService {
 		String htmlTemplate = correoService.correoActivacion(proveedor.getPersona().getNombreCompleto(),
 				Constantes.URL_PLANTILLA_PASS+proveedor.getIdProveedor()+UtilString.retornarEncryptMd5(proveedor.getUsuario()), proveedor.getUsuario(), null, "/tmpl-8641");
 		correoService.enviaReporteNuevo(htmlTemplate, proveedor.getUsuario(), null,
-				"Activación de solicitud de cuenta como proveedor:  ", null);
+				"Activación de cuenta de proveedor:  ", null);
 	}
 
 	@Override

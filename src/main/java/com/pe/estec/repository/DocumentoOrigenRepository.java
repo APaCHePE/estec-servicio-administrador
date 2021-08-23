@@ -15,11 +15,11 @@ public class DocumentoOrigenRepository {
 	@Autowired
 	private JdbcTemplate sqlServer;
 	
-	public List<DocumentoOrigen> consultaDocumento(Integer idContrato){
+	public List<DocumentoOrigen> consultaDocumento(String idContrato){
 		StringBuilder sql = new StringBuilder();
 		sql.append("  Select * ");
 		sql.append(" From pruebas..contrato ");
-		sql.append(" where id_contrato = ?  ");
+		sql.append(" where id_contrato = "+idContrato+"  ");
 		sql.append(" Order by id_contrato ");
 		Object[] params = new Object[] {idContrato };
 		List<DocumentoOrigen> listaDocumentos= 

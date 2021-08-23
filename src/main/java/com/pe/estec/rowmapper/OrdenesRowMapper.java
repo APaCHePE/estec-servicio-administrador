@@ -11,7 +11,7 @@ public class OrdenesRowMapper implements RowMapper<Orden> {
 	@Override
 	public Orden mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Orden ordenes = new Orden();
-		ordenes.setIdOrden(rs.getInt("NUMERO_ORDEN"));
+		ordenes.setIdOrden(rs.getString("NUMERO_ORDEN"));
 		ordenes.setNroOrden(rs.getString("NUMERO_ORDEN"));
 		ordenes.setDocumentoProveedor(rs.getString("RUC_PROVEEDOR"));
 		ordenes.setTipoDocumentoAbrev(rs.getString("TIPO_DOCUMENTO"));

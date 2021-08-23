@@ -53,7 +53,7 @@ public class CorreoServiceImple {
 		htmlTemplate = Util.obtenerPlantillaCorreoMiraflores(constantes.getUrlPlantillabase(),
 				constantes.getCarpetaMail(),plantilla);
 
-		htmlTemplate = Util.reemplazaSeccionPlantilla(htmlTemplate, "{ruc}", nombreUsuario.toUpperCase());
+		htmlTemplate = Util.reemplazaSeccionPlantilla(htmlTemplate, "{usuario}", nombreUsuario.toUpperCase());
 		htmlTemplate = Util.reemplazaSeccionPlantilla(htmlTemplate, "{pass}", contrasenia);
 		return htmlTemplate;
 

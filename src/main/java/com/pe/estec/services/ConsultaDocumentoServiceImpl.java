@@ -232,6 +232,7 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 			response.setEsCorrecto(true);
 			response.setHttpStatus(HttpStatus.OK.value());
 		} catch (Exception e) {
+			e.printStackTrace();
 			response.setEsCorrecto(false);
 			response.setMensajeError("No se pudo guardar comprobante");
 			response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
@@ -261,78 +262,74 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 		}
 		return response;
 	}
-	private Map<String, Object> filtrarJsonRecibosHonorarios(Map<String, Object> xmlCompleto){
+	private Map<String, Object> filtrarJsonRecibosHonorarios(Map<String, Object> xmlCompleto)throws Exception{
 		Map<String, Object> json = new HashMap();
-		try {
-			//RECEPTOR DATOS
-			
-			ComprobanteDetalle detalle = new ComprobanteDetalle();
-            detalle.setDescripcion(((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:InvoiceLine")).get("cac:Item")).get("cbc:Description").toString() );
-			detalle.setCantidad(1.0);
-            
-			json.put("enteContratante" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingCustomerParty")).get("cac:Party")).get("cac:PartyName")).get("cbc:Name"));
-			json.put("enteTipoDocumento" , "RUC");
-			json.put("enteNroDocumento" , ((Map<String, Object>) xmlCompleto.get("cac:AccountingCustomerParty")).get("cbc:CustomerAssignedAccountID"));
-			json.put("enteDireccion" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingCustomerParty")).get("cac:Party")).get("cac:PostalAddress")).get("cbc:StreetName"));
-			//EMISOR DATOS
-			json.put("proveedorNombre" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PartyName")).get("cbc:Name"));
-			json.put("proveedorNombreComercial" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PartyName")).get("cbc:Name"));
-			json.put("proveedorNumeroDocumento", ((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cbc:CustomerAssignedAccountID"));
-			json.put("proveedorDireccion", ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PostalAddress")).get("cbc:StreetName"));
-			json.put("proveedorDireccionDepartamento" , "LIMA");
-			json.put("proveedorDireccionProvincia" , "LIMA");
-			json.put("proveedorTelefono" ,((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:Contact")).get("cbc:Telephone") );
-			json.put("proveedorDireccionDistrito" , "VILLA MARIA DEL TRIUNFO");
-			json.put("proveedorDireccionZona" , ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PostalAddress"));
-			
-			json.put("idRecibo", xmlCompleto.get("cbc:ID"));
-			//MONTOS TOTALES
-			json.put("concepto" , ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:InvoiceLine")).get("cac:Item")).get("cbc:Description") );
-			json.put("observacion" , "-");
-			
-			json.put("retencionTipo" , ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:InvoiceLine")).get("cac:TaxTotal")).get("cac:TaxSubtotal") );
-			json.put("incisoTipo" , "A");
-			json.put("incisoDescripcion" , "DEL ARTÍCULO 33 DE LA LEY DEL IMPUESTO A LA RENTA");
-			json.put("fechaEmisionCompleta" , "10-04-2021");
-			json.put("importeSubTotal" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:TaxTotal")).get("cac:TaxSubtotal")).get("cbc:TaxableAmount")).get("content"));
-			if(!json.get("importeSubTotal").toString().contains(".")) {
-				json.put("importeSubTotal" , json.get("importeSubTotal")+".00");
-			}
-			json.put("importeIgv" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:TaxTotal")).get("cac:TaxSubtotal")).get("cbc:TaxAmount")).get("content"));
-			if(!json.get("importeIgv").toString().contains(".")) {
-				json.put("importeIgv" , json.get("importeIgv")+".00");
-			}
-			json.put("importeTotal" ,((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:LegalMonetaryTotal")).get("cbc:PayableAmount")).get("content"));
-			if(!json.get("importeTotal").toString().contains(".")) {
-				json.put("importeTotal" , json.get("importeTotal")+".00");
-			}
-			json.put("tipoMonedaDescripcion" , "SOLES");
-			json.put("tipoMonedaISO" ,((Map<String, Object>) ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:TaxTotal")).get("cac:TaxSubtotal")).get("cbc:TaxAmount")).get("currencyID"));
-			json.put("tipoMonedaSimbolo" , "S/");
-			String[] idRecibo = xmlCompleto.get("cbc:ID").toString().split("-");
-			json.put("serie" , idRecibo[0]);
-			json.put("numero" , idRecibo[1]);
-			json.put("montoRecibidoTexto", xmlCompleto.get("cbc:Note"));
-
-			json.put("fechaEmisionCompleto" , xmlCompleto.get("cbc:IssueDate"));
-			Locale spain=new Locale("es", "ES");
-			DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd", spain); 
-			LocalDate fecha = LocalDate.parse(json.get("fechaEmisionCompleto").toString(), formato); 
-			json.put("fechaEmisionDia" , fecha.getDayOfMonth());
-			json.put("fechaEmisionMes" , fecha.getMonth());
-			json.put("fechaEmisionAnio" , fecha.getYear());
-			json.put("id007TipoComprobante" , 26);
-			
-			json.put("fechaEmision", ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:OrderReference")).get("cac:DocumentReference")).get("cbc:IssueDate"));
-			json.put("fechaVencimiento", xmlCompleto.get("cbc:ExpiryDate"));
-			detalle.setValorUnitario(Double.parseDouble(json.get("importeTotal").toString()));
-            List<ComprobanteDetalle> listaComprobanteDetalle = new ArrayList();
-            listaComprobanteDetalle.add(detalle);
-            
-            json.put("listaComprobanteDetalle", listaComprobanteDetalle);
-		}catch (Exception e) {
-			e.printStackTrace();
+		//RECEPTOR DATOS
+		
+		ComprobanteDetalle detalle = new ComprobanteDetalle();
+        detalle.setDescripcion(((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:InvoiceLine")).get("cac:Item")).get("cbc:Description").toString() );
+		detalle.setCantidad(1.0);
+        
+		json.put("enteContratante" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingCustomerParty")).get("cac:Party")).get("cac:PartyName")).get("cbc:Name"));
+		json.put("enteTipoDocumento" , "RUC");
+		json.put("enteNroDocumento" , ((Map<String, Object>) xmlCompleto.get("cac:AccountingCustomerParty")).get("cbc:CustomerAssignedAccountID"));
+		json.put("enteDireccion" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingCustomerParty")).get("cac:Party")).get("cac:PostalAddress")).get("cbc:StreetName"));
+		//EMISOR DATOS
+		json.put("proveedorNombre" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PartyName")).get("cbc:Name"));
+		json.put("proveedorNombreComercial" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PartyName")).get("cbc:Name"));
+		json.put("proveedorNumeroDocumento", ((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cbc:CustomerAssignedAccountID"));
+		json.put("proveedorDireccion", ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PostalAddress")).get("cbc:StreetName"));
+		json.put("proveedorDireccionDepartamento" , "LIMA");
+		json.put("proveedorDireccionProvincia" , "LIMA");
+		json.put("proveedorTelefono" ,((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:Contact")).get("cbc:Telephone") );
+		json.put("proveedorDireccionDistrito" , "VILLA MARIA DEL TRIUNFO");
+		json.put("proveedorDireccionZona" , ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PostalAddress"));
+		
+		json.put("idRecibo", xmlCompleto.get("cbc:ID"));
+		//MONTOS TOTALES
+		json.put("concepto" , ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:InvoiceLine")).get("cac:Item")).get("cbc:Description") );
+		json.put("observacion" , "-");
+		
+		json.put("retencionTipo" , ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:InvoiceLine")).get("cac:TaxTotal")).get("cac:TaxSubtotal") );
+		json.put("incisoTipo" , "A");
+		json.put("incisoDescripcion" , "DEL ARTÍCULO 33 DE LA LEY DEL IMPUESTO A LA RENTA");
+		json.put("fechaEmisionCompleta" , "10-04-2021");
+		json.put("importeSubTotal" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:TaxTotal")).get("cac:TaxSubtotal")).get("cbc:TaxableAmount")).get("content"));
+		if(!json.get("importeSubTotal").toString().contains(".")) {
+			json.put("importeSubTotal" , json.get("importeSubTotal")+".00");
 		}
+		json.put("importeIgv" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:TaxTotal")).get("cac:TaxSubtotal")).get("cbc:TaxAmount")).get("content"));
+		if(!json.get("importeIgv").toString().contains(".")) {
+			json.put("importeIgv" , json.get("importeIgv")+".00");
+		}
+		json.put("importeTotal" ,((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:LegalMonetaryTotal")).get("cbc:PayableAmount")).get("content"));
+		if(!json.get("importeTotal").toString().contains(".")) {
+			json.put("importeTotal" , json.get("importeTotal")+".00");
+		}
+		json.put("tipoMonedaDescripcion" , "SOLES");
+		json.put("tipoMonedaISO" ,((Map<String, Object>) ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:TaxTotal")).get("cac:TaxSubtotal")).get("cbc:TaxAmount")).get("currencyID"));
+		json.put("tipoMonedaSimbolo" , "S/");
+		String[] idRecibo = xmlCompleto.get("cbc:ID").toString().split("-");
+		json.put("serie" , idRecibo[0]);
+		json.put("numero" , idRecibo[1]);
+		json.put("montoRecibidoTexto", xmlCompleto.get("cbc:Note"));
+
+		json.put("fechaEmisionCompleto" , xmlCompleto.get("cbc:IssueDate"));
+		Locale spain=new Locale("es", "ES");
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd", spain); 
+		LocalDate fecha = LocalDate.parse(json.get("fechaEmisionCompleto").toString(), formato); 
+		json.put("fechaEmisionDia" , fecha.getDayOfMonth());
+		json.put("fechaEmisionMes" , fecha.getMonth());
+		json.put("fechaEmisionAnio" , fecha.getYear());
+		json.put("id007TipoComprobante" , 26);
+		
+		json.put("fechaEmision", ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:OrderReference")).get("cac:DocumentReference")).get("cbc:IssueDate"));
+		json.put("fechaVencimiento", xmlCompleto.get("cbc:ExpiryDate"));
+		detalle.setValorUnitario(Double.parseDouble(json.get("importeTotal").toString()));
+        List<ComprobanteDetalle> listaComprobanteDetalle = new ArrayList();
+        listaComprobanteDetalle.add(detalle);
+        
+        json.put("listaComprobanteDetalle", listaComprobanteDetalle);
 		return json;
 	}
 
