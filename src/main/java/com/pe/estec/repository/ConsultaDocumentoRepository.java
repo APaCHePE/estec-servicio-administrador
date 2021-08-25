@@ -208,7 +208,7 @@ public class ConsultaDocumentoRepository {
 		if (nroDocumento != null)
 			sql.append(" and prov.CP_CCODIGO = '" + nroDocumento + "' ");
 		sql.append(" order by CP_CFECDOC desc ");
-		System.out.println(sql);
+		System.out.println("sql "+sql);
 		List<Facturas> users = sqlServer.query(sql.toString(), new FacturasRowMapper());
 		return users;
 	}
@@ -344,6 +344,7 @@ public class ConsultaDocumentoRepository {
 		if (fecInicio != null && fecFin != null)
 			sql.append(" and fecha_emision BETWEEN '"+fecInicio+"' AND '"+fecFin+"'");
 		sql.append(" order by fecha_emision desc ");
+//		System.out.println("sql "+sql);
 		List<Comprobante> users = sqlServer.query(sql.toString(), new ComprobanteRowMapper());
 		return users;
 	}

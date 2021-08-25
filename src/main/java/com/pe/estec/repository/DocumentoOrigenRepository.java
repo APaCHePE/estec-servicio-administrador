@@ -19,11 +19,11 @@ public class DocumentoOrigenRepository {
 		StringBuilder sql = new StringBuilder();
 		sql.append("  Select * ");
 		sql.append(" From pruebas..contrato ");
-		sql.append(" where id_contrato = "+idContrato+"  ");
+		sql.append(" where id_contrato = ?  ");
 		sql.append(" Order by id_contrato ");
 		Object[] params = new Object[] {idContrato };
 		List<DocumentoOrigen> listaDocumentos= 
-				sqlServer.query(sql.toString(),new DocumentoOrigneContratoRowMapper(), params );
+			sqlServer.query(sql.toString(),new DocumentoOrigneContratoRowMapper(), params );
 		return listaDocumentos;
 	}
 }

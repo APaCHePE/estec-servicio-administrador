@@ -16,6 +16,7 @@ public class DocumentoOrigneContratoRowMapper implements RowMapper<DocumentoOrig
 		contrato.setDescripcion(rs.getString("descripcion"));
 		contrato.setFechaInicio(rs.getString("fecha_contrato"));
 		contrato.setUsuarioResponsable(rs.getString("usuario_responsable"));
+		contrato.setNumeroDocumento(rs.getString("documento_proveedor"));
 		return contrato;
 	}
 

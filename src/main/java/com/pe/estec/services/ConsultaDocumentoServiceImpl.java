@@ -93,9 +93,17 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 			MultipartFile  archivoInforme, MultipartFile archivoGuia, Integer idDocumento) {
 		ServiceResult<Map<String, Object>> response = new ServiceResult();
 		try {
-			if(idDocumento==null)response.setResultado(FilesUtils.descromprimirZIP(archivoZip));
+			if(idDocumento==null){
+				if(archivoZip.getOriginalFilename().contains(".zip")) {
+					response.setResultado(FilesUtils.descromprimirZIP(archivoZip));
+				}else if(archivoZip.getOriginalFilename().contains(".xml")) {
+					File convFile = new File(System.getProperty("java.io.tmpdir")+"/"+archivoZip.getName());
+					archivoZip.transferTo(convFile);
+					response.setResultado(FilesUtils.convertirXmlJson(convFile));
+					convFile.delete();
+				}
+			}
 			if(idDocumento!=null)guardarAdjuntos( archivoZip,archivoPdf, archivoInforme, archivoGuia, idDocumento);
-			System.out.println("Listo");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -121,20 +129,24 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 		archivo.setIdDocumento(idDocumento);
 		archivo.setIdDocumentoArchivo(consultaDocRepository.guardarAdjunto(archivo));
 		lista.add(archivo);
-		archivo = new Archivo();
-		archivo.setNombreArchivo(archivoInforme.getOriginalFilename());
-		archivo.setArchivo(archivoInforme.getBytes());
-		archivo.setIdParametro(Constantes.ARCHIVOS_COMPROBANTE);
-		archivo.setIdDocumento(idDocumento);
-		archivo.setIdDocumentoArchivo(consultaDocRepository.guardarAdjunto(archivo));
-		lista.add(archivo);
-		archivo = new Archivo();
-		archivo.setNombreArchivo(archivoGuia.getOriginalFilename());
-		archivo.setArchivo(archivoGuia.getBytes());
-		archivo.setIdParametro(Constantes.ARCHIVOS_COMPROBANTE);
-		archivo.setIdDocumento(idDocumento);
-		archivo.setIdDocumentoArchivo(consultaDocRepository.guardarAdjunto(archivo));
-		lista.add(archivo);
+		if(archivoInforme != null) {
+			archivo = new Archivo();
+			archivo.setNombreArchivo(archivoInforme.getOriginalFilename());
+			archivo.setArchivo(archivoInforme.getBytes());
+			archivo.setIdParametro(Constantes.ARCHIVOS_COMPROBANTE);
+			archivo.setIdDocumento(idDocumento);
+			archivo.setIdDocumentoArchivo(consultaDocRepository.guardarAdjunto(archivo));
+			lista.add(archivo);
+		}
+		if(archivoGuia != null) {
+			archivo = new Archivo();
+			archivo.setNombreArchivo(archivoGuia.getOriginalFilename());
+			archivo.setArchivo(archivoGuia.getBytes());
+			archivo.setIdParametro(Constantes.ARCHIVOS_COMPROBANTE);
+			archivo.setIdDocumento(idDocumento);
+			archivo.setIdDocumentoArchivo(consultaDocRepository.guardarAdjunto(archivo));
+			lista.add(archivo);
+		}
 		System.out.println("la lista tiene la siguiente dimension "+lista.size());
 		
 		guardarFile(lista);
@@ -150,7 +162,6 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 	@Override
 	public List<Comprobante> consultarComprobante( String usuariosresponsable, String nroOrden, String fecInicio, String fecFin, Integer estado,
 			String nroDocumento, Integer idComprobante, Integer tipoComprobante) {
-		System.out.println(tipoComprobante);
 		List<Comprobante> listaFacturas = consultaDocRepository.consultarComprobante(usuariosresponsable, nroOrden, fecInicio, fecFin,
 				estado, nroDocumento, idComprobante, tipoComprobante);
 		for (Comprobante comprobante : listaFacturas) {
@@ -212,6 +223,16 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 				response.setMensajeError("No exite el número de orden ingresado");
 				response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
 				return response;
+//			}else if(!comprobante.getProveedorNumeroDocumento().trim().equals(listaContratos.get(listaContratos.size()-1).getNumeroDocumento())) {
+//				response.setEsCorrecto(false);
+//				response.setMensajeError("El número de contrato ingresado no te corresponde");
+//				response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+//				return response;
+//			}else if(!comprobante.getProveedorNumeroDocumento().trim().equals(listaOrdenes.get(listaOrdenes.size()-1).getDocumentoProveedor())) {
+//				response.setEsCorrecto(false);
+//				response.setMensajeError("El número de orden ingresado no te corresponde");
+//				response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+//				return response;
 			}
 			comprobante.setUsuarioResponsable(((listaOrdenes != null) && (listaOrdenes.size() > 0)) ? listaOrdenes.get(0).getSolicitante()
 					: ((listaContratos != null) && (listaContratos.size() > 0)) ? listaContratos.get(0).getUsuarioResponsable() : null);
@@ -219,7 +240,6 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 			comprobante.setIdComprobante(consultaDocRepository.guardarComprobante(comprobante));
 			response.setResultado(comprobante.getIdComprobante()+"");
 			comprobante.getListaComprobanteDetalle().forEach((item) -> {
-
 				try {
 					consultaDocRepository.guardarComprobanteDetalle(item, comprobante.getIdComprobante());
 				} catch (Exception e) {
@@ -253,6 +273,7 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 //				response.setResultado(FilesUtils.convertirXmlJson(convFile));
 				response.setResultado(filtrarJsonRecibosHonorarios(
 						(Map<String, Object>)FilesUtils.convertirXmlJson(convFile).get("Invoice")));
+				convFile.delete();
 			}else if(archivoZip.getName().contains(".zip")) {
 				response.setResultado(filtrarJsonRecibosHonorarios(
 						(Map<String, Object>)FilesUtils.descromprimirZIP(archivoZip).get("Invoice")));

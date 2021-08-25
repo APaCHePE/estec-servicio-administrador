@@ -9,4 +9,5 @@ public class DocumentoOrigen {
 	private String descripcion;
 	private String fechaInicio;
 	private String usuarioResponsable;
+	private String numeroDocumento;
 }
