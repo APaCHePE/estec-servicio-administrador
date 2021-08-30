@@ -387,23 +387,4 @@ public class ConsultaDocumentoRepository {
 		Long idGenerado = db.insertaDataParams(sql.toString());
 		return idGenerado.intValue();
 	}
-	public Integer guardarArchivo(Archivo archivo) {
-		StringBuilder sql = new StringBuilder();
-		sql.append(" INSERT INTO PRUEBAS..ARCHIVO  ");
-		sql.append(" (ID_PARAMETRO,ID_DOCUMENTO, ID_DOCUMENTO_AUXILIAR, VERSION, FECHA_CREACION, ESTADO) ");
-		sql.append(" VALUES( "+archivo.getIdParametro()+", "+archivo.getIdDocumento()+", "+archivo.getIdDocumentoArchivo()+", 1, GETDATE(), 1) ");
-//		Object[] params = new Object[] { archivo.getIdArchivo(), archivo.getArchivo() };
-		SqlReturning db = new SqlReturning(sqlServer);
-		Long idGenerado = db.insertaDataParams(sql.toString());
-		return idGenerado.intValue();
-	}
-	public void guardarArchivoRepo(Archivo archivo) {
-		StringBuilder sql = new StringBuilder();
-		sql.append(" INSERT INTO PRUEBAS..ARCHIVO_REPOSITORIO  ");
-		sql.append(" (ID_ARCHIVO,ARCHIVO) ");
-		sql.append(" VALUES(?,?) ");
-		Object[] params = new Object[] { archivo.getIdArchivo(), archivo.getArchivo() };
-		sqlServer.update(sql.toString(), params);
-	}
-
 }

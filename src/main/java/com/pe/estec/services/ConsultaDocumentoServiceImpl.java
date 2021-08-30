@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -44,6 +45,9 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 	@Autowired
 	private DocumentoOrigenRepository docOriginRep;
 
+	@Autowired
+	private ArchivoService archivoRep;
+
 	@Override
 	public List<Orden> consultaOrdenes(Integer tipoDocumento, String nroOrden, String fecInicio, String fecFin,
 			Integer estado, String nroDocumento) {
@@ -56,10 +60,11 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 	}
 
 	@Override
-	public List<Contrato> getContrato( Integer nroContrato){
+	public List<Contrato> getContrato(Integer nroContrato) {
 		List<Contrato> listaContrato = consultaDocRepository.getContrato(nroContrato);
 		return listaContrato;
 	}
+
 	@Override
 	public List<Facturas> consultaFacturas(String nroOrden, String fecInicio, String fecFin, Integer estado,
 			String nroDocumento) {
@@ -90,80 +95,85 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 
 	@Override
 	public ServiceResult<Map<String, Object>> guardarZip(MultipartFile archivoZip, MultipartFile archivoPdf,
-			MultipartFile  archivoInforme, MultipartFile archivoGuia, Integer idDocumento) {
+			MultipartFile archivoInforme, MultipartFile archivoGuia) {
 		ServiceResult<Map<String, Object>> response = new ServiceResult();
 		try {
-			if(idDocumento==null){
-				if(archivoZip.getOriginalFilename().contains(".zip")) {
-					response.setResultado(FilesUtils.descromprimirZIP(archivoZip));
-				}else if(archivoZip.getOriginalFilename().contains(".xml")) {
-					File convFile = new File(System.getProperty("java.io.tmpdir")+"/"+archivoZip.getName());
-					archivoZip.transferTo(convFile);
-					response.setResultado(FilesUtils.convertirXmlJson(convFile));
-					convFile.delete();
-				}
+			Map<String, Object> resultado = new HashMap<>();
+			String tmp = UUID.randomUUID().toString().replace("-", "");
+			resultado.put("token", tmp);
+			guardarAdjuntos(archivoZip, archivoPdf, archivoInforme, archivoGuia, tmp);
+			if (archivoZip.getOriginalFilename().contains(".zip")) {
+				resultado.put("factura", FilesUtils.descromprimirZIP(archivoZip));
+			} else if (archivoZip.getOriginalFilename().contains(".xml")) {
+				File convFile = new File(System.getProperty("java.io.tmpdir") + "/" + archivoZip.getName());
+				archivoZip.transferTo(convFile);
+				resultado.put("factura", FilesUtils.convertirXmlJson(convFile));
+				convFile.delete();
 			}
-			if(idDocumento!=null)guardarAdjuntos( archivoZip,archivoPdf, archivoInforme, archivoGuia, idDocumento);
+			response.setHttpStatus(HttpStatus.OK.value());
+			response.setResultado(resultado);
 		} catch (Exception e) {
+			response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
 			e.printStackTrace();
 		}
-		response.setHttpStatus(HttpStatus.OK.value());
 		return response;
 	}
-	
-	private void guardarAdjuntos(MultipartFile archivoZip, MultipartFile archivoPdf,
-			MultipartFile  archivoInforme, MultipartFile archivoGuia, Integer idDocumento) throws Exception{
+
+	private void guardarAdjuntos(MultipartFile archivoZip, MultipartFile archivoPdf, MultipartFile archivoInforme,
+			MultipartFile archivoGuia, String tmp) throws Exception {
 		List<Archivo> lista = new ArrayList();
 
 		Archivo archivo = new Archivo();
-		archivo.setNombreArchivo(archivoZip.getOriginalFilename());
-		archivo.setArchivo(archivoZip.getBytes());
-		archivo.setIdParametro(Constantes.ARCHIVOS_COMPROBANTE);
-		archivo.setIdDocumento(idDocumento);
-		archivo.setIdDocumentoArchivo(consultaDocRepository.guardarAdjunto(archivo));
-		lista.add(archivo);
-		archivo = new Archivo();
-		archivo.setNombreArchivo(archivoPdf.getOriginalFilename());
-		archivo.setArchivo(archivoPdf.getBytes());
-		archivo.setIdParametro(Constantes.ARCHIVOS_COMPROBANTE);
-		archivo.setIdDocumento(idDocumento);
-		archivo.setIdDocumentoArchivo(consultaDocRepository.guardarAdjunto(archivo));
-		lista.add(archivo);
-		if(archivoInforme != null) {
+		if (archivoPdf != null) {
 			archivo = new Archivo();
-			archivo.setNombreArchivo(archivoInforme.getOriginalFilename());
-			archivo.setArchivo(archivoInforme.getBytes());
+			archivo.setNombreArchivo(archivoPdf.getOriginalFilename());
+			archivo.setArchivo(archivoPdf.getBytes());
 			archivo.setIdParametro(Constantes.ARCHIVOS_COMPROBANTE);
-			archivo.setIdDocumento(idDocumento);
-			archivo.setIdDocumentoArchivo(consultaDocRepository.guardarAdjunto(archivo));
+			archivo.setIdDocumento(0);
+			archivo.setIdDocumentoArchivo(1);
+			archivo.setToken(tmp);
 			lista.add(archivo);
 		}
-		if(archivoGuia != null) {
+		if (archivoZip != null) {
+			archivo = new Archivo();
+			archivo.setNombreArchivo(archivoZip.getOriginalFilename());
+			archivo.setArchivo(archivoZip.getBytes());
+			archivo.setIdParametro(Constantes.ARCHIVOS_COMPROBANTE);
+			archivo.setIdDocumento(0);
+			archivo.setIdDocumentoArchivo(2);
+			archivo.setToken(tmp);
+			lista.add(archivo);
+		}
+		if (archivoGuia != null) {
 			archivo = new Archivo();
 			archivo.setNombreArchivo(archivoGuia.getOriginalFilename());
 			archivo.setArchivo(archivoGuia.getBytes());
 			archivo.setIdParametro(Constantes.ARCHIVOS_COMPROBANTE);
-			archivo.setIdDocumento(idDocumento);
-			archivo.setIdDocumentoArchivo(consultaDocRepository.guardarAdjunto(archivo));
+			archivo.setIdDocumento(0);
+			archivo.setIdDocumentoArchivo(3);
+			archivo.setToken(tmp);
 			lista.add(archivo);
 		}
-		System.out.println("la lista tiene la siguiente dimension "+lista.size());
-		
-		guardarFile(lista);
-	}
+		if (archivoInforme != null) {
+			archivo = new Archivo();
+			archivo.setNombreArchivo(archivoInforme.getOriginalFilename());
+			archivo.setArchivo(archivoInforme.getBytes());
+			archivo.setIdParametro(Constantes.ARCHIVOS_COMPROBANTE);
+			archivo.setIdDocumento(0);
+			archivo.setIdDocumentoArchivo(4);
+			archivo.setToken(tmp);
+			lista.add(archivo);
+		}
+		System.out.println("la lista tiene la siguiente dimension " + lista.size());
 
-	private void guardarFile(List<Archivo> listaArchivos) throws IOException {
-		listaArchivos.forEach(item ->{
-			item.setIdArchivo(consultaDocRepository.guardarArchivo(item));
-			consultaDocRepository.guardarArchivoRepo(item);
-		});
+		archivoRep.guardarFile(lista);
 	}
 
 	@Override
-	public List<Comprobante> consultarComprobante( String usuariosresponsable, String nroOrden, String fecInicio, String fecFin, Integer estado,
-			String nroDocumento, Integer idComprobante, Integer tipoComprobante) {
-		List<Comprobante> listaFacturas = consultaDocRepository.consultarComprobante(usuariosresponsable, nroOrden, fecInicio, fecFin,
-				estado, nroDocumento, idComprobante, tipoComprobante);
+	public List<Comprobante> consultarComprobante(String usuariosresponsable, String nroOrden, String fecInicio,
+			String fecFin, Integer estado, String nroDocumento, Integer idComprobante, Integer tipoComprobante) {
+		List<Comprobante> listaFacturas = consultaDocRepository.consultarComprobante(usuariosresponsable, nroOrden,
+				fecInicio, fecFin, estado, nroDocumento, idComprobante, tipoComprobante);
 		for (Comprobante comprobante : listaFacturas) {
 			comprobante.setListaComprobanteDetalle(
 					consultaDocRepository.consultarComprobanteDetalle(comprobante.getIdComprobante()));
@@ -176,11 +186,11 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 	}
 
 	@Override
-	public ServiceResult<String> estadoFactura(String usuarioResponsable, Integer estado, Integer idComprobante, Integer id008Trazabilidad,
-			String observacion, String usuarioModificador) {
+	public ServiceResult<String> estadoFactura(String usuarioResponsable, Integer estado, Integer idComprobante,
+			Integer id008Trazabilidad, String observacion, String usuarioModificador) {
 		ServiceResult<String> response = new ServiceResult();
 		try {
-			consultaDocRepository.estadoFactura(usuarioResponsable,estado, idComprobante);
+			consultaDocRepository.estadoFactura(usuarioResponsable, estado, idComprobante);
 			consultaDocRepository.estadoFacturaTrazabilidad(idComprobante, id008Trazabilidad, observacion,
 					usuarioModificador);
 			response.setEsCorrecto(true);
@@ -198,31 +208,34 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 	public ServiceResult<String> guardarComprobante(Comprobante comprobante) {
 		ServiceResult<String> response = new ServiceResult();
 		try {
-			if (comprobante.getOrdenContrato() == null && comprobante.getOrdenNumero() == null) {
-				response.setEsCorrecto(false);
-				response.setMensajeError("Ingresee número de orden y/o contrato por favor");
-				response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
-				return response;
-			}
-			final List<Orden> listaOrdenes = (comprobante.getOrdenNumero()!=null)? consultaDocRepository.getOrdenesCabecera(null, comprobante.getOrdenNumero(),
-					null, null, null): null;
-			final List<DocumentoOrigen> listaContratos = (comprobante.getOrdenContrato()!=null)? 
-					docOriginRep.consultaDocumento(comprobante.getOrdenContrato()): null;
-			if(listaOrdenes == null && listaContratos == null) {
-				response.setEsCorrecto(false);
-				response.setMensajeError("Número de orden y/o contrato ingresado es incorrecto");
-				response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
-				return response;
-			} else if (comprobante.getOrdenContrato() != null && listaContratos.size() == 0) {
-				response.setEsCorrecto(false);
-				response.setMensajeError("No exite el número de contrato ingresado");
-				response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
-				return response;
-			} else if (comprobante.getOrdenNumero() != null && listaOrdenes.size() == 0) {
-				response.setEsCorrecto(false);
-				response.setMensajeError("No exite el número de orden ingresado");
-				response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
-				return response;
+			if(comprobante.getRequiereValidación()== null || comprobante.getRequiereValidación()== true) {
+				if (comprobante.getOrdenContrato() == null && comprobante.getOrdenNumero() == null) {
+					response.setEsCorrecto(false);
+					response.setMensajeError("Ingresee número de orden y/o contrato por favor");
+					response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+					return response;
+				}
+				final List<Orden> listaOrdenes = (comprobante.getOrdenNumero() != null)
+						? consultaDocRepository.getOrdenesCabecera(null, comprobante.getOrdenNumero(), null, null, null)
+								: null;
+				final List<DocumentoOrigen> listaContratos = (comprobante.getOrdenContrato() != null)
+						? docOriginRep.consultaDocumento(comprobante.getOrdenContrato())
+								: null;
+				if (listaOrdenes == null && listaContratos == null) {
+					response.setEsCorrecto(false);
+					response.setMensajeError("Número de orden y/o contrato ingresado es incorrecto");
+					response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+					return response;
+				} else if (comprobante.getOrdenContrato() != null && listaContratos.size() == 0) {
+					response.setEsCorrecto(false);
+					response.setMensajeError("No exite el número de contrato ingresado");
+					response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+					return response;
+				} else if (comprobante.getOrdenNumero() != null && listaOrdenes.size() == 0) {
+					response.setEsCorrecto(false);
+					response.setMensajeError("No exite el número de orden ingresado");
+					response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+					return response;
 //			}else if(!comprobante.getProveedorNumeroDocumento().trim().equals(listaContratos.get(listaContratos.size()-1).getNumeroDocumento())) {
 //				response.setEsCorrecto(false);
 //				response.setMensajeError("El número de contrato ingresado no te corresponde");
@@ -233,22 +246,25 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 //				response.setMensajeError("El número de orden ingresado no te corresponde");
 //				response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
 //				return response;
+				}
+				comprobante.setUsuarioResponsable(
+						((listaOrdenes != null) && (listaOrdenes.size() > 0)) ? listaOrdenes.get(0).getSolicitante()
+								: ((listaContratos != null) && (listaContratos.size() > 0))
+								? listaContratos.get(0).getUsuarioResponsable()
+										: null);
 			}
-			comprobante.setUsuarioResponsable(((listaOrdenes != null) && (listaOrdenes.size() > 0)) ? listaOrdenes.get(0).getSolicitante()
-					: ((listaContratos != null) && (listaContratos.size() > 0)) ? listaContratos.get(0).getUsuarioResponsable() : null);
-			
+
 			comprobante.setIdComprobante(consultaDocRepository.guardarComprobante(comprobante));
-			response.setResultado(comprobante.getIdComprobante()+"");
+			response.setResultado(comprobante.getIdComprobante() + "");
 			comprobante.getListaComprobanteDetalle().forEach((item) -> {
 				try {
 					consultaDocRepository.guardarComprobanteDetalle(item, comprobante.getIdComprobante());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-
 			});
-			consultaDocRepository.estadoFacturaTrazabilidad(comprobante.getIdComprobante(), Constantes.EstadoTrazabilidad
-							,"","" );
+			consultaDocRepository.estadoFacturaTrazabilidad(comprobante.getIdComprobante(),
+					Constantes.EstadoTrazabilidad, "", "");
 			response.setEsCorrecto(true);
 			response.setHttpStatus(HttpStatus.OK.value());
 		} catch (Exception e) {
@@ -261,96 +277,129 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 	}
 
 	@Override
-	public ServiceResult<Map<String, Object>> cargarFilesHonorarios(MultipartFile archivoZip,
-			MultipartFile archivoPdf, MultipartFile  archivoInforme, Integer idDocumento) {
+	public ServiceResult<Map<String, Object>> cargarFilesHonorarios(MultipartFile archivoZip, MultipartFile archivoPdf,
+			MultipartFile archivoInforme, Integer idDocumento) {
 		ServiceResult<Map<String, Object>> response = new ServiceResult();
 		response.setHttpStatus(HttpStatus.OK.value());
 		try {
 			System.out.println(archivoZip.getOriginalFilename());
-			if(archivoZip.getOriginalFilename().toUpperCase().contains(".XML")) {
-				File convFile = new File(System.getProperty("java.io.tmpdir")+"/"+archivoZip.getName());
+			if (archivoZip.getOriginalFilename().toUpperCase().contains(".XML")) {
+				File convFile = new File(System.getProperty("java.io.tmpdir") + "/" + archivoZip.getName());
 				archivoZip.transferTo(convFile);
 //				response.setResultado(FilesUtils.convertirXmlJson(convFile));
 				response.setResultado(filtrarJsonRecibosHonorarios(
-						(Map<String, Object>)FilesUtils.convertirXmlJson(convFile).get("Invoice")));
+						(Map<String, Object>) FilesUtils.convertirXmlJson(convFile).get("Invoice")));
 				convFile.delete();
-			}else if(archivoZip.getName().contains(".zip")) {
+			} else if (archivoZip.getName().contains(".zip")) {
 				response.setResultado(filtrarJsonRecibosHonorarios(
-						(Map<String, Object>)FilesUtils.descromprimirZIP(archivoZip).get("Invoice")));
+						(Map<String, Object>) FilesUtils.descromprimirZIP(archivoZip).get("Invoice")));
 			}
-		}catch (Exception e) {
-			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return response;
 	}
-	private Map<String, Object> filtrarJsonRecibosHonorarios(Map<String, Object> xmlCompleto)throws Exception{
+
+	private Map<String, Object> filtrarJsonRecibosHonorarios(Map<String, Object> xmlCompleto) throws Exception {
 		Map<String, Object> json = new HashMap();
-		//RECEPTOR DATOS
-		
+		// RECEPTOR DATOS
+
 		ComprobanteDetalle detalle = new ComprobanteDetalle();
-        detalle.setDescripcion(((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:InvoiceLine")).get("cac:Item")).get("cbc:Description").toString() );
+		detalle.setDescripcion(
+				((Map<String, Object>) ((Map<String, Object>) xmlCompleto.get("cac:InvoiceLine")).get("cac:Item"))
+						.get("cbc:Description").toString());
 		detalle.setCantidad(1.0);
-        
-		json.put("enteContratante" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingCustomerParty")).get("cac:Party")).get("cac:PartyName")).get("cbc:Name"));
-		json.put("enteTipoDocumento" , "RUC");
-		json.put("enteNroDocumento" , ((Map<String, Object>) xmlCompleto.get("cac:AccountingCustomerParty")).get("cbc:CustomerAssignedAccountID"));
-		json.put("enteDireccion" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingCustomerParty")).get("cac:Party")).get("cac:PostalAddress")).get("cbc:StreetName"));
-		//EMISOR DATOS
-		json.put("proveedorNombre" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PartyName")).get("cbc:Name"));
-		json.put("proveedorNombreComercial" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PartyName")).get("cbc:Name"));
-		json.put("proveedorNumeroDocumento", ((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cbc:CustomerAssignedAccountID"));
-		json.put("proveedorDireccion", ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PostalAddress")).get("cbc:StreetName"));
-		json.put("proveedorDireccionDepartamento" , "LIMA");
-		json.put("proveedorDireccionProvincia" , "LIMA");
-		json.put("proveedorTelefono" ,((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:Contact")).get("cbc:Telephone") );
-		json.put("proveedorDireccionDistrito" , "VILLA MARIA DEL TRIUNFO");
-		json.put("proveedorDireccionZona" , ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PostalAddress"));
-		
+
+		json.put("enteContratante", ((Map<String, Object>) ((Map<String, Object>) ((Map<String, Object>) xmlCompleto
+				.get("cac:AccountingCustomerParty")).get("cac:Party")).get("cac:PartyName")).get("cbc:Name"));
+		json.put("enteTipoDocumento", "RUC");
+		json.put("enteNroDocumento", ((Map<String, Object>) xmlCompleto.get("cac:AccountingCustomerParty"))
+				.get("cbc:CustomerAssignedAccountID"));
+		json.put("enteDireccion",
+				((Map<String, Object>) ((Map<String, Object>) ((Map<String, Object>) xmlCompleto
+						.get("cac:AccountingCustomerParty")).get("cac:Party")).get("cac:PostalAddress"))
+								.get("cbc:StreetName"));
+		// EMISOR DATOS
+		json.put("proveedorNombre", ((Map<String, Object>) ((Map<String, Object>) ((Map<String, Object>) xmlCompleto
+				.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PartyName")).get("cbc:Name"));
+		json.put("proveedorNombreComercial",
+				((Map<String, Object>) ((Map<String, Object>) ((Map<String, Object>) xmlCompleto
+						.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PartyName")).get("cbc:Name"));
+		json.put("proveedorNumeroDocumento", ((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty"))
+				.get("cbc:CustomerAssignedAccountID"));
+		json.put("proveedorDireccion",
+				((Map<String, Object>) ((Map<String, Object>) ((Map<String, Object>) xmlCompleto
+						.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:PostalAddress"))
+								.get("cbc:StreetName"));
+		json.put("proveedorDireccionDepartamento", "LIMA");
+		json.put("proveedorDireccionProvincia", "LIMA");
+		json.put("proveedorTelefono",
+				((Map<String, Object>) ((Map<String, Object>) ((Map<String, Object>) xmlCompleto
+						.get("cac:AccountingSupplierParty")).get("cac:Party")).get("cac:Contact"))
+								.get("cbc:Telephone"));
+		json.put("proveedorDireccionDistrito", "VILLA MARIA DEL TRIUNFO");
+		json.put("proveedorDireccionZona",
+				((Map<String, Object>) ((Map<String, Object>) xmlCompleto.get("cac:AccountingSupplierParty"))
+						.get("cac:Party")).get("cac:PostalAddress"));
+
 		json.put("idRecibo", xmlCompleto.get("cbc:ID"));
-		//MONTOS TOTALES
-		json.put("concepto" , ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:InvoiceLine")).get("cac:Item")).get("cbc:Description") );
-		json.put("observacion" , "-");
-		
-		json.put("retencionTipo" , ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:InvoiceLine")).get("cac:TaxTotal")).get("cac:TaxSubtotal") );
-		json.put("incisoTipo" , "A");
-		json.put("incisoDescripcion" , "DEL ARTÍCULO 33 DE LA LEY DEL IMPUESTO A LA RENTA");
-		json.put("fechaEmisionCompleta" , "10-04-2021");
-		json.put("importeSubTotal" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:TaxTotal")).get("cac:TaxSubtotal")).get("cbc:TaxableAmount")).get("content"));
-		if(!json.get("importeSubTotal").toString().contains(".")) {
-			json.put("importeSubTotal" , json.get("importeSubTotal")+".00");
+		// MONTOS TOTALES
+		json.put("concepto",
+				((Map<String, Object>) ((Map<String, Object>) xmlCompleto.get("cac:InvoiceLine")).get("cac:Item"))
+						.get("cbc:Description"));
+		json.put("observacion", "-");
+
+		json.put("retencionTipo",
+				((Map<String, Object>) ((Map<String, Object>) xmlCompleto.get("cac:InvoiceLine")).get("cac:TaxTotal"))
+						.get("cac:TaxSubtotal"));
+		json.put("incisoTipo", "A");
+		json.put("incisoDescripcion", "DEL ARTÍCULO 33 DE LA LEY DEL IMPUESTO A LA RENTA");
+		json.put("fechaEmisionCompleta", "10-04-2021");
+		json.put("importeSubTotal",
+				((Map<String, Object>) ((Map<String, Object>) ((Map<String, Object>) xmlCompleto.get("cac:TaxTotal"))
+						.get("cac:TaxSubtotal")).get("cbc:TaxableAmount")).get("content"));
+		if (!json.get("importeSubTotal").toString().contains(".")) {
+			json.put("importeSubTotal", json.get("importeSubTotal") + ".00");
 		}
-		json.put("importeIgv" , ((Map<String, Object>)((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:TaxTotal")).get("cac:TaxSubtotal")).get("cbc:TaxAmount")).get("content"));
-		if(!json.get("importeIgv").toString().contains(".")) {
-			json.put("importeIgv" , json.get("importeIgv")+".00");
+		json.put("importeIgv",
+				((Map<String, Object>) ((Map<String, Object>) ((Map<String, Object>) xmlCompleto.get("cac:TaxTotal"))
+						.get("cac:TaxSubtotal")).get("cbc:TaxAmount")).get("content"));
+		if (!json.get("importeIgv").toString().contains(".")) {
+			json.put("importeIgv", json.get("importeIgv") + ".00");
 		}
-		json.put("importeTotal" ,((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:LegalMonetaryTotal")).get("cbc:PayableAmount")).get("content"));
-		if(!json.get("importeTotal").toString().contains(".")) {
-			json.put("importeTotal" , json.get("importeTotal")+".00");
+		json.put("importeTotal",
+				((Map<String, Object>) ((Map<String, Object>) xmlCompleto.get("cac:LegalMonetaryTotal"))
+						.get("cbc:PayableAmount")).get("content"));
+		if (!json.get("importeTotal").toString().contains(".")) {
+			json.put("importeTotal", json.get("importeTotal") + ".00");
 		}
-		json.put("tipoMonedaDescripcion" , "SOLES");
-		json.put("tipoMonedaISO" ,((Map<String, Object>) ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:TaxTotal")).get("cac:TaxSubtotal")).get("cbc:TaxAmount")).get("currencyID"));
-		json.put("tipoMonedaSimbolo" , "S/");
+		json.put("tipoMonedaDescripcion", "SOLES");
+		json.put("tipoMonedaISO",
+				((Map<String, Object>) ((Map<String, Object>) ((Map<String, Object>) xmlCompleto.get("cac:TaxTotal"))
+						.get("cac:TaxSubtotal")).get("cbc:TaxAmount")).get("currencyID"));
+		json.put("tipoMonedaSimbolo", "S/");
 		String[] idRecibo = xmlCompleto.get("cbc:ID").toString().split("-");
-		json.put("serie" , idRecibo[0]);
-		json.put("numero" , idRecibo[1]);
+		json.put("serie", idRecibo[0]);
+		json.put("numero", idRecibo[1]);
 		json.put("montoRecibidoTexto", xmlCompleto.get("cbc:Note"));
 
-		json.put("fechaEmisionCompleto" , xmlCompleto.get("cbc:IssueDate"));
-		Locale spain=new Locale("es", "ES");
-		DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd", spain); 
-		LocalDate fecha = LocalDate.parse(json.get("fechaEmisionCompleto").toString(), formato); 
-		json.put("fechaEmisionDia" , fecha.getDayOfMonth());
-		json.put("fechaEmisionMes" , fecha.getMonth());
-		json.put("fechaEmisionAnio" , fecha.getYear());
-		json.put("id007TipoComprobante" , 26);
-		
-		json.put("fechaEmision", ((Map<String, Object>)((Map<String, Object>) xmlCompleto.get("cac:OrderReference")).get("cac:DocumentReference")).get("cbc:IssueDate"));
+		json.put("fechaEmisionCompleto", xmlCompleto.get("cbc:IssueDate"));
+		Locale spain = new Locale("es", "ES");
+		DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd", spain);
+		LocalDate fecha = LocalDate.parse(json.get("fechaEmisionCompleto").toString(), formato);
+		json.put("fechaEmisionDia", fecha.getDayOfMonth());
+		json.put("fechaEmisionMes", fecha.getMonth());
+		json.put("fechaEmisionAnio", fecha.getYear());
+		json.put("id007TipoComprobante", 26);
+
+		json.put("fechaEmision", ((Map<String, Object>) ((Map<String, Object>) xmlCompleto.get("cac:OrderReference"))
+				.get("cac:DocumentReference")).get("cbc:IssueDate"));
 		json.put("fechaVencimiento", xmlCompleto.get("cbc:ExpiryDate"));
 		detalle.setValorUnitario(Double.parseDouble(json.get("importeTotal").toString()));
-        List<ComprobanteDetalle> listaComprobanteDetalle = new ArrayList();
-        listaComprobanteDetalle.add(detalle);
-        
-        json.put("listaComprobanteDetalle", listaComprobanteDetalle);
+		List<ComprobanteDetalle> listaComprobanteDetalle = new ArrayList();
+		listaComprobanteDetalle.add(detalle);
+
+		json.put("listaComprobanteDetalle", listaComprobanteDetalle);
 		return json;
 	}
 

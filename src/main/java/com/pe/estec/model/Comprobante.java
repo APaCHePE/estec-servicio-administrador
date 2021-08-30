@@ -39,6 +39,7 @@ public class Comprobante {
 	private String nombreEstado;
 	private String nombreTipoComprobante;
 	private String usuarioResponsable;
+	private Boolean requiereValidación;
 	private List<ComprobanteDetalle> listaComprobanteDetalle;
 	private List<ComprobanteTrazabilidad> listaComprobanteTrazabilidad;
 

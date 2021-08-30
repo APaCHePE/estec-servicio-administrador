@@ -17,8 +17,7 @@ public class FileRowMapper implements RowMapper<Archivo>{
 		Archivo archivo = new Archivo();
 		archivo.setArchivo(rs.getBytes("archivo"));
 		archivo.setIdArchivo(rs.getInt("idArchivo"));
-		archivo.setNombreArchivo("Factura");
-//		archivo.setNombreArchivo(l);
+		archivo.setNombreArchivo(rs.getString("nombre_archivo"));
 		return archivo;
 	}
 

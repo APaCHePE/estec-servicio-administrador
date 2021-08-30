@@ -11,5 +11,7 @@ public class Archivo {
 	private Integer idParametro;
 	private Integer idDocumento;
 	private Integer idDocumentoArchivo;
+	private String token;
+	private String archivoBase64;
 	
 }

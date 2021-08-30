@@ -84,8 +84,8 @@ public class ConsultaDocumento {
 	}
 	@PostMapping(value="crear-documento-comprobante-proveedor", consumes= {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE},produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<Object> cargarZip(MultipartFile  archivoPdf, MultipartFile archivoZip,
-			MultipartFile  archivoInforme, MultipartFile archivoGuia, Integer idDocumento){
-		ServiceResult<Map<String, Object>> response = consultaDocumentoServices.guardarZip(archivoZip, archivoPdf, archivoInforme, archivoGuia, idDocumento);
+			MultipartFile  archivoInforme, MultipartFile archivoGuia){
+		ServiceResult<Map<String, Object>> response = consultaDocumentoServices.guardarZip(archivoZip, archivoPdf, archivoInforme, archivoGuia);
 		return new ResponseEntity(response, HttpStatus.valueOf(response.getHttpStatus()));
 	}
 	@PostMapping(value="crear-recibo-honorarios-proveedor", consumes= {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE},produces = { MediaType.APPLICATION_JSON_VALUE })

@@ -19,7 +19,7 @@ public interface ConsultaDocumentoService {
 	public List<Facturas> consultaFacturas( String nroOrden, 
 			String fecInicio, String fecFin, Integer estado, String nroDocumento);
 	public ServiceResult<Map<String, Object>> guardarZip(MultipartFile archivoZip, MultipartFile archivoPdf,
-			MultipartFile  archivoInforme, MultipartFile archivoGuia, Integer idDocumento);
+			MultipartFile  archivoInforme, MultipartFile archivoGuia);
 	public ServiceResult<String> estadoFactura(String usuarioResponsable,Integer estado,Integer idComprobante,Integer id008Trazabilidad ,String observacion, String usuarioModificador); 
 	public ServiceResult<String> guardarComprobante(Comprobante Comprobante);
 	public List<Comprobante> consultarComprobante(String usuariosresponsable, String nroOrden, 
