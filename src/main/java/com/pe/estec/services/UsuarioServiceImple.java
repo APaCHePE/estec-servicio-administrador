@@ -126,7 +126,7 @@ public class UsuarioServiceImple implements UsuarioService {
 		try {
 			userRepository.estadoProveedor(proveedor.getIdProveedor(), proveedor.getEstado(), proveedor.getObservacion());
 			if(proveedor.getEstado()==Constantes.ESTADO_APROBADO)
-				enviarCorreoActivacion(proveedor);
+				//enviarCorreoActivacion(proveedor);
 			response.setEsCorrecto(true);
 			response.setHttpStatus(HttpStatus.OK.value());
 		} catch (Exception e) {
@@ -138,12 +138,12 @@ public class UsuarioServiceImple implements UsuarioService {
 		return response;
 	}
 
-	private void enviarCorreoActivacion(Proveedor proveedor) throws Exception {
+	/*private void enviarCorreoActivacion(Proveedor proveedor) throws Exception {
 		String htmlTemplate = correoService.correoActivacion(proveedor.getPersona().getNombreCompleto(),
 				Constantes.URL_PLANTILLA_PASS+proveedor.getIdProveedor()+UtilString.retornarEncryptMd5(proveedor.getUsuario()), proveedor.getUsuario(), null, "/tmpl-8641");
 		correoService.enviaReporteNuevo(htmlTemplate, proveedor.getUsuario(), null,
 				"Activación de cuenta de proveedor:  ", null);
-	}
+	}*/
 
 	@Override
 	public ServiceResult<Proveedor> listarProveedorErp(String nroDocumento) {

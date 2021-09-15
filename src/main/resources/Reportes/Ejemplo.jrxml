@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_EECC" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="ae9c1ba5-24fe-4b09-8bef-575d75cbee15">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="fec" class="java.lang.String"/>
+	<parameter name="numrec" class="java.lang.String"/>
+	<parameter name="contribuyente" class="java.lang.String"/>
+	<parameter name="TCdes" class="java.lang.String"/>
+	<parameter name="dni" class="java.lang.String"/>
+	<parameter name="domicilio" class="java.lang.String"/>
+	<parameter name="periodo" class="java.lang.String"/>
+	<parameter name="estados" class="java.lang.String"/>
+	<parameter name="tituloGrupo" class="java.lang.String"/>
+	<parameter name="cantRec" class="java.lang.Integer"/>
+	<parameter name="deudaV" class="java.lang.String"/>
+	<parameter name="totGen" class="java.lang.String"/>
+	<parameter name="totSB" class="java.lang.String"/>
+	<parameter name="deudaIC" class="java.lang.Double"/>
+	<parameter name="detCab1" class="java.lang.String"/>
+	<parameter name="detCab2" class="java.lang.String"/>
+	<parameter name="detCab3" class="java.lang.String"/>
+	<parameter name="detCab4" class="java.lang.String"/>
+	<parameter name="detCab5" class="java.lang.String"/>
+	<parameter name="detCab6" class="java.lang.String"/>
+	<parameter name="sdeTotalx" class="java.lang.Double"/>
+	<parameter name="gfaFacc" class="java.lang.Double"/>
+	<parameter name="sdeVal06x" class="java.lang.Double"/>
+	<parameter name="sdeVal05x" class="java.lang.Double"/>
+	<parameter name="sdeVal04x" class="java.lang.Double"/>
+	<parameter name="sdeVal03x" class="java.lang.Double"/>
+	<parameter name="sdeVal02x" class="java.lang.Double"/>
+	<parameter name="sdeVal01x" class="java.lang.Double"/>
+	<parameter name="escudo-muni" class="java.lang.String"/>
+	<parameter name="numeroEmi" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="sdePerio" class="java.lang.String"/>
+	<field name="sdeReci" class="java.lang.String"/>
+	<field name="sdeEsta" class="java.lang.String"/>
+	<field name="sdeEstax" class="java.lang.String"/>
+	<field name="sdeVal01" class="java.lang.Double"/>
+	<field name="sdeVal02" class="java.lang.Double"/>
+	<field name="sdeVal03" class="java.lang.Double"/>
+	<field name="sdeVal04" class="java.lang.Double"/>
+	<field name="sdeVal05" class="java.lang.Double"/>
+	<field name="sdeVal06" class="java.lang.Double"/>
+	<field name="sdeTotal" class="java.lang.Double"/>
+	<field name="sdeFref" class="java.lang.String"/>
+	<field name="sdeExpe" class="java.lang.String"/>
+	<field name="detGrup" class="java.lang.Integer"/>
+	<field name="detGrupx" class="java.lang.String"/>
+	<field name="detEnc01" class="java.lang.String"/>
+	<field name="detEnc02" class="java.lang.String"/>
+	<field name="detEnc03" class="java.lang.String"/>
+	<field name="detEnc04" class="java.lang.String"/>
+	<field name="detEnc05" class="java.lang.String"/>
+	<field name="detEnc06" class="java.lang.String"/>
+	<field name="sdeExtra" class="java.lang.String"/>
+	<field name="gfaFacc" class="java.lang.String"/>
+	<field name="detEnc07" class="java.lang.String"/>
+	<field name="sdeTotalx" class="java.lang.Double"/>
+	<field name="sdeVal06x" class="java.lang.Double"/>
+	<field name="sdeVal05x" class="java.lang.Double"/>
+	<field name="sdeVal04x" class="java.lang.Double"/>
+	<field name="sdeVal03x" class="java.lang.Double"/>
+	<field name="sdeVal02x" class="java.lang.Double"/>
+	<field name="sdeVal01x" class="java.lang.Double"/>
+	<variable name="Sum1" class="java.lang.Double" resetType="Group" resetGroup="GroupX" calculation="Sum">
+		<variableExpression><![CDATA[$F{sdeVal01x}]]></variableExpression>
+	</variable>
+	<variable name="Sum2" class="java.lang.Double" resetType="Group" resetGroup="GroupX" calculation="Sum">
+		<variableExpression><![CDATA[$F{sdeVal02x}]]></variableExpression>
+	</variable>
+	<variable name="Sum3" class="java.lang.Double" resetType="Group" resetGroup="GroupX" calculation="Sum">
+		<variableExpression><![CDATA[$F{sdeVal03x}]]></variableExpression>
+	</variable>
+	<variable name="Sum4" class="java.lang.Double" resetType="Group" resetGroup="GroupX" calculation="Sum">
+		<variableExpression><![CDATA[$F{sdeVal04x}]]></variableExpression>
+	</variable>
+	<variable name="Sum5" class="java.lang.Double" resetType="Group" resetGroup="GroupX" calculation="Sum">
+		<variableExpression><![CDATA[$F{sdeVal05x}]]></variableExpression>
+	</variable>
+	<variable name="Sum6" class="java.lang.Double" resetType="Group" resetGroup="GroupX" calculation="Sum">
+		<variableExpression><![CDATA[$F{sdeVal06x}]]></variableExpression>
+	</variable>
+	<variable name="SumT" class="java.lang.Double" resetType="Group" resetGroup="GroupX" calculation="Sum">
+		<variableExpression><![CDATA[$F{sdeTotalx}]]></variableExpression>
+	</variable>
+	<variable name="REPORT_PAGE" class="java.lang.Integer" resetType="None" incrementType="Page">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
+	<group name="GroupX">
+		<groupExpression><![CDATA[$F{detGrupx}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<staticText>
+					<reportElement x="-1" y="15" width="71" height="11" uuid="1a098f24-335e-4983-96f8-80e1f2e08748"/>
+					<textElement markup="styled">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[<style isBold="true">PERIODO</style>]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="39" y="15" width="91" height="11" uuid="fbbb975a-3bb1-4046-843a-d5f7dfb12c1e"/>
+					<textElement markup="styled">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[<style isBold="true">RECIBO</style>]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="101" y="15" width="29" height="11" uuid="b9036603-03c1-4b9c-bb13-4d91ddf2ab17"/>
+					<textElement markup="styled">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[<style isBold="true">E</style>]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="117" y="15" width="40" height="11" uuid="8622c6f7-e618-4e11-b41a-4da6067a7f8e"/>
+					<textElement markup="styled">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[<style isBold="true">Form</style>]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="143" y="15" width="71" height="11" uuid="d8c119ca-4764-4310-b77b-f57ada534b5a"/>
+					<textElement markup="styled">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{detEnc01}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="191" y="15" width="71" height="11" uuid="5b72b24b-47e1-45b0-b5f6-fdd4fb1885f3"/>
+					<textElement markup="styled">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{detEnc02}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="240" y="15" width="71" height="11" uuid="07c3c990-cdd4-40ac-95ea-6885f819940b"/>
+					<textElement markup="styled">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{detEnc03}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="288" y="15" width="71" height="11" uuid="ae8b4eeb-ab6e-4a31-9a19-8a3a1ab98fbc"/>
+					<textElement markup="styled">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{detEnc04}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="338" y="15" width="71" height="11" uuid="1237fdc5-90f3-4590-ac35-a6b3b2a56a95"/>
+					<textElement markup="styled">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{detEnc05}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="381" y="15" width="69" height="11" uuid="0c5f35ec-faa9-401f-bd05-5f973b8cf9be"/>
+					<textElement markup="styled">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{detEnc06}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="430" y="15" width="65" height="11" uuid="a1e25f85-12be-4b0e-9941-a74b97a101f3"/>
+					<textElement markup="styled">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[<style isBold="true">TOTAL:</style>]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="471" y="15" width="65" height="11" uuid="6aae2d8a-a047-441b-a6b6-e6873e5b210d"/>
+					<textElement markup="styled">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[<style isBold="true">VEN/PAG</style>]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="517" y="15" width="27" height="11" uuid="024863a7-83a5-4667-8dba-f4d346ae4cab"/>
+					<textElement markup="styled">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<text><![CDATA[<style isBold="true">COAC</style>]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="-1" y="0" width="556" height="21" uuid="c9e767b8-829c-470a-bb64-4fcf63bd55f6"/>
+					<textElement markup="styled">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{detGrupx}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement positionType="Float" x="-1" y="14" width="555" height="1" uuid="21a2c1f9-203e-4556-9ed8-b45a27ad83ec"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement positionType="Float" x="-1" y="28" width="555" height="1" uuid="20b3ed79-1b1f-4bca-9165-8f35e3e223e5"/>
+					<graphicElement>
+						<pen lineWidth="1.0"/>
+					</graphicElement>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="16">
+				<textField>
+					<reportElement x="143" y="0" width="42" height="11" uuid="5d947d75-926a-4027-ac31-83741c672cd8"/>
+					<textElement markup="styled">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum1}).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum1}))?(NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum1})+".00"):(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($V{Sum1}*100.0)/100.0*10).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($V{Sum1}*100.0)/100.0*10))?(NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum1})+"0"):NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum1}))]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="192" y="0" width="39" height="11" uuid="7d583cac-6445-4bde-9dfb-512ab6e6b368"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum2}).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum2}))?(NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum2})+".00"):(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($V{Sum2}*100.0)/100.0*10).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($V{Sum2}*100.0)/100.0*10))?(NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum2})+"0"):NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum2}))]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="240" y="0" width="43" height="11" uuid="5a9229c1-8035-4a43-934b-1c13b10ec24d"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum3}).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum3}))?(NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum3})+".00"):(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($V{Sum3}*100.0)/100.0*10).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($V{Sum3}*100.0)/100.0*10))?(NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum3})+"0"):NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum3}))]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="288" y="0" width="48" height="11" uuid="83c69c3a-ceb9-4454-94c4-5642c771f105"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum4}).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum4}))?(NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum4})+".00"):(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($V{Sum4}*100.0)/100.0*10).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($V{Sum4}*100.0)/100.0*10))?(NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum4})+"0"):NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum4}))]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="338" y="0" width="48" height="10" uuid="2dd1ca4d-c8d0-4824-bdb5-b8dc00ab48c8"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum5}).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum5}))?(NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum5})+".00"):(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($V{Sum5}*100.0)/100.0*10).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($V{Sum5}*100.0)/100.0*10))?(NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum5})+"0"):NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum5}))]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="380" y="0" width="40" height="14" uuid="9aa61274-dee9-4363-b2c5-3dc94ec9410c"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum6}).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum6}))?(NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum6})+".00"):(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($V{Sum6}*100.0)/100.0*10).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($V{Sum6}*100.0)/100.0*10))?(NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum6})+"0"):NumberFormat.getInstance(Locale.ENGLISH).format($V{Sum6}))]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="430" y="0" width="51" height="11" uuid="3cc7220a-a4eb-4036-aa44-a42d1a4c5f86"/>
+					<textElement>
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[NumberFormat.getInstance(Locale.ENGLISH).format($V{SumT}).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format($V{SumT}))?(NumberFormat.getInstance(Locale.ENGLISH).format($V{SumT})+".00"):(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($V{SumT}*100.0)/100.0*10).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($V{SumT}*100.0)/100.0*10))?(NumberFormat.getInstance(Locale.ENGLISH).format($V{SumT})+"0"):NumberFormat.getInstance(Locale.ENGLISH).format($V{SumT}))]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="480" y="0" width="75" height="14" uuid="acbaabc8-1821-471a-b9ca-62ec88627aea"/>
+					<textElement markup="styled">
+						<font size="7" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{gfaFacc}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="100" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="41" width="99" height="11" uuid="d9360878-e879-4593-a371-336dad215bae"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[MUNICIPALIDAD DE MIRAFLORES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="52" width="100" height="11" uuid="11ebc278-9130-4f5f-a1fb-cc599c53268d"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[CONTRIBUYENTE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="64" width="100" height="11" uuid="99042d52-1980-4772-9737-67911aa6db69"/>
+				<textElement>
+					<font size="8"/>
+					<paragraph tabStopWidth="40"/>
+				</textElement>
+				<text><![CDATA[DOMICILIO FISCAL:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="79" y="52" width="310" height="11" uuid="1f17f4b1-dfb7-4ab3-b1cb-fc01059d96b4"/>
+				<textElement markup="styled">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{contribuyente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="79" y="64" width="310" height="11" uuid="5eba6bff-fba7-400e-a5e5-826e6decaf19"/>
+				<textElement markup="styled">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{domicilio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="431" y="52" width="120" height="11" uuid="40262e1a-066c-4c6e-888b-f42242784958"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dni}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="80" width="80" height="11" uuid="842eb52d-5ec2-41ea-80b5-c98b3797b821"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[PERIODO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="211" y="80" width="70" height="11" uuid="e4061d93-7923-44a3-9074-911f307d892c"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[ESTADOS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="222" y="31" width="114" height="14" uuid="11d09512-90c6-47de-ae5e-34899f4d7106"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[ESTADO DE CUENTA AL]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="330" y="31" width="60" height="14" uuid="3de41d6f-7811-46c5-b250-5955ee82ca7f"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fec}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="458" y="35" width="78" height="11" uuid="b462ab00-091e-4806-a988-d21334074d2d"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numrec}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="513" y="10" width="50" height="21" uuid="9685b6d7-e1ab-4b4a-917d-545b555224e7"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fec}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="46" y="80" width="101" height="11" uuid="d5c2b9a8-a3bd-4938-92ea-afbaf4d781c5"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{periodo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="256" y="80" width="247" height="11" uuid="2d9800ab-a248-4e78-a755-8b3828538214"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{estados}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="511" y="70" width="44" height="10" uuid="75477aa7-4452-4372-bfd4-412431089185"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numeroEmi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="87" width="556" height="11" uuid="2e2d0919-f29b-48c8-ba62-492c7f5d3477"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+			</staticText>
+			<textField evaluationTime="Auto">
+				<reportElement x="430" y="10" width="72" height="20" uuid="531b887c-d594-4beb-a5ed-04258e8ff4ec"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página "+$V{REPORT_PAGE} +" de " +$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="37" y="0" width="44" height="45" uuid="37d2245f-7d32-4fad-81bb-2bfe56e865db"/>
+				<imageExpression><![CDATA[$P{escudo-muni}]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField>
+				<reportElement x="3" y="0" width="71" height="11" uuid="082c4aa7-3878-4e1d-9b8c-b26e21d34088"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sdePerio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="39" y="0" width="89" height="11" uuid="04ceb80b-fde2-4b78-8db9-865207bec96e"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sdeReci}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="101" y="0" width="30" height="11" uuid="f3d2cd18-779a-4c36-b1be-ef1b63f8b83e"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sdeEsta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="117" y="0" width="39" height="11" uuid="d10115fc-efc9-4779-a8ec-90f569497798"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sdeEstax}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="" x="143" y="0" width="68" height="11" uuid="a291da37-f728-44bf-98e8-2ede10296d04"/>
+				<textElement markup="styled">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal01}).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal01}))?(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal01})+".00"):(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($F{sdeVal01}*100.0)/100.0*10).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($F{sdeVal01}*100.0)/100.0*10))?(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal01})+"0"):NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal01}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="191" y="0" width="76" height="11" uuid="b6103b6d-3759-4398-ae1e-34a6e08ea537"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal02}).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal02}))?(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal02})+".00"):(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($F{sdeVal02}*100.0)/100.0*10).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($F{sdeVal02}*100.0)/100.0*10))?(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal02})+"0"):NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal02}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="240" y="0" width="69" height="11" uuid="91e84004-739b-46f6-8e34-8e54d3fe773e"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal03}).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal03}))?(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal03})+".00"):(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($F{sdeVal03}*100.0)/100.0*10).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($F{sdeVal03}*100.0)/100.0*10))?(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal03})+"0"):NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal03}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="288" y="0" width="78" height="11" uuid="05bef48e-7701-4487-8698-f37eb394ddc5"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal04}).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal04}))?(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal04})+".00"):(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($F{sdeVal04}*100.0)/100.0*10).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($F{sdeVal04}*100.0)/100.0*10))?(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal04})+"0"):NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal04}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="338" y="0" width="78" height="11" uuid="291d6570-7ffe-4bd0-a109-36fc9bbf7a12"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal05}).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal05}))?(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal05})+".00"):(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($F{sdeVal05}*100.0)/100.0*10).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($F{sdeVal05}*100.0)/100.0*10))?(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal05})+"0"):NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal05}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="381" y="0" width="74" height="11" uuid="2f16f30f-3288-4166-82e3-16f9862e3f73"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal06}).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal06}))?(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal06})+".00"):(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($F{sdeVal06}*100.0)/100.0*10).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($F{sdeVal06}*100.0)/100.0*10))?(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal06})+"0"):NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeVal06}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="431" y="0" width="70" height="11" uuid="fbb328a0-3cc0-4930-a036-713fc6f28d3a"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeTotal}).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeTotal}))?(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeTotal})+".00"):(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($F{sdeTotal}*100.0)/100.0*10).replace(".", "").equals(NumberFormat.getInstance(Locale.ENGLISH).format(Math.round($F{sdeTotal}*100.0)/100.0*10))?(NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeTotal})+"0"):NumberFormat.getInstance(Locale.ENGLISH).format($F{sdeTotal}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="0" width="78" height="11" uuid="f498ba4e-89a1-4921-9ae4-788379751115"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sdeFref}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="509" y="0" width="39" height="11" uuid="2da941b2-6654-4f46-8cf5-9e18045443c0"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sdeExpe}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="12" width="555" height="1" uuid="944c65cf-9f77-4529-905e-46d28257b432"/>
+			</line>
+			<textField>
+				<reportElement x="530" y="0" width="30" height="11" uuid="14cde1fe-39a5-4e8d-9c73-2988c308e0a2"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sdeExtra}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="552" y="0" width="22" height="11" uuid="217d2604-4481-48f5-8e1e-6502804ac138"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{detEnc07}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="160" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="3" width="81" height="18" uuid="ef28e609-4778-485a-9a2a-13174bb9b947"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Nº_Recibos: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="3" width="81" height="18" uuid="e24f5da3-7985-420e-a1a2-2648a7c0f257"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Deuda vencida: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="2" width="81" height="18" uuid="4bd3b8ef-da90-49e5-8845-523227191f28"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Total general:  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="22" width="230" height="21" uuid="fe674cb7-5fb9-4f72-9402-bf6107af5198"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Saldo relacionado a licencia de funcionamiento:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="41" y="3" width="60" height="23" uuid="7579fca3-5f93-42a6-aecd-88448a3315e7"/>
+				<textElement markup="styled">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cantRec}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="44" width="550" height="55" uuid="57288cba-b911-44f2-93dc-8336768ff9df"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Los pagos con tarjeta Visa y MasterCard podrá realizarlos en el portal Web www.miraflores.gob.pe o en nuestra Agencias: Oficina principal Av. Larco N° 400 Miraflores, Malecón Cisneros Cdra. 8 Miraflores (Centro Promotor Tenis); Av. Mariscal Ramón Castilla Nº 640 Miraflores ( Cada del Adulto Mayor > La Aurora), Calle Manuel Tovar Nº 256 Miraflores (casa de la Juventud Prolongada > Santa Cruz), Cruce de la Av. 15 de Enero con Calle Ramón Ribeyro, Miraflores (Museo del Parque Reducto N° 2), Calle General Borgoño Cdra. 8 Miraflores (Huaca Pucllana), Calle Mariano Melgar N° 247 ( Centro Comunal Santa Cruz),Calle General Mendiburu N°1145 Miraflores (Modulo de Seguridad Ciudadana), Av. Del Ejercito Cdra.13, Miraflores (Estadio Manuel Bonilla), Av. Del Ejercito Cdra.13, Miraflores (Estadio Manuel Bonilla  Veterinaria Municipal).]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="35" width="550" height="21" uuid="275c1ba2-fd32-4d6e-b2ce-2053e10d5c1a"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[LUGARES DE PAGO: Banco de Crédito, Scotiabank, Interbank, BanBif, BBVA. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="89" width="550" height="21" uuid="229f1e5c-7deb-4886-83b4-8b7c475b9fca"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[CONSULTAS: En la página Web www.miraflores.gob.pe, asimismo a nuestra central Telefónica TRIBUTOS MIRAFLORES al 617-7555 o WHATSAPP TRIBUTARIO 942113733 y también a nuestro correo electrónico servicios_rentas@miraflores.gob.pe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="108" width="550" height="12" uuid="d9b2ac47-65c9-4ba2-bf48-ebd76c385aad"/>
+				<textElement markup="styled">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[<style isBold="true">* TODO PAGO DEBERA EFECTUARSE EN LAS OFICINAS DE LA MUNICIPALIDAD Y/O BANCOS AUTORIZADOS, NO AL NOTIFICADOR *</style>]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="458" y="22" width="64" height="18" uuid="7f122bed-f33a-44f8-94e1-3758e4e281fb"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{deudaIC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="344" y="2" width="45" height="15" uuid="cf17768f-7e70-449e-9407-11e7439ab019">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totGen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="202" y="3" width="48" height="16" uuid="d3d9dab0-4fbd-437a-a5fa-d2f7eaeb79d5"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{deudaV}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="432" y="3" width="81" height="18" uuid="f366b07d-54ae-4e23-b60d-4e4922264874"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Total con descuento:  ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="500" y="3" width="44" height="13" uuid="b90eff98-e09c-4b1a-96f1-5f560f5be5ec">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement markup="styled">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{TCdes}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-1" y="120" width="554" height="20" uuid="80af91db-2564-4d9e-b036-022c365e09d8"/>
+				<textElement markup="styled">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[<style isBold="true">"La deuda consignada en el presente estado de cuenta se encuentra bajo los alcances de la Ord. 571-MM (Beneficio Tributario) prorrogado por el D.A. N° 009-2021 hasta el 31.10.2021."</style>]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="140" width="554" height="20" uuid="8545e9ab-090f-4dc8-be01-53de364bfd46">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement markup="styled">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA["Las condiciones de fraccionamientos estarán sujetas al decreto de alcaldía 001-2017 Reglamento de Fraccionamiento Tributario y No Tributario"]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>
