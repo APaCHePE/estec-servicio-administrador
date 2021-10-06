@@ -1,15 +1,20 @@
 package com.pe.estec.repository;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import com.pe.estec.model.Proveedor;
+import com.pe.estec.rowmapper.ProveedorRowMapper;
 
 @Repository
 public class AccesosRepository {
 
 	@Autowired
 	private JdbcTemplate sqlServer;
-	
+
 	public Boolean validarPass(String usuario, String clave)throws Exception {
 		StringBuilder sql = new StringBuilder();
 		sql.append("Select count(*) from pruebas..proveedor ");

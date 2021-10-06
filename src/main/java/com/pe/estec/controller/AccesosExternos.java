@@ -13,6 +13,9 @@ import com.pe.estec.model.request.ServiceResult;
 import com.pe.estec.services.AccesosExternoService;
 
 @RestController
+@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET
+		, RequestMethod.DELETE})
+@RequestMapping("api/admin")
 public class AccesosExternos {
 
 	@Autowired

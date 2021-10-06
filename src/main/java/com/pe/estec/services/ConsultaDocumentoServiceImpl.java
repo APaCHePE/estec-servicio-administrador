@@ -164,8 +164,6 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 			archivo.setToken(tmp);
 			lista.add(archivo);
 		}
-		System.out.println("la lista tiene la siguiente dimension " + lista.size());
-
 		archivoRep.guardarFile(lista);
 	}
 
@@ -177,8 +175,6 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 		for (Comprobante comprobante : listaFacturas) {
 			comprobante.setListaComprobanteDetalle(
 					consultaDocRepository.consultarComprobanteDetalle(comprobante.getIdComprobante()));
-		}
-		for (Comprobante comprobante : listaFacturas) {
 			comprobante.setListaComprobanteTrazabilidad(
 					consultaDocRepository.consultarComprobanteTrazabilidad(comprobante.getIdComprobante()));
 		}
@@ -208,7 +204,7 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 	public ServiceResult<String> guardarComprobante(Comprobante comprobante) {
 		ServiceResult<String> response = new ServiceResult();
 		try {
-			if(comprobante.getRequiereValidación()== null || comprobante.getRequiereValidación()== true) {
+			if (comprobante.getRequiereValidación() == null || comprobante.getRequiereValidación() == true) {
 				if (comprobante.getOrdenContrato() == null && comprobante.getOrdenNumero() == null) {
 					response.setEsCorrecto(false);
 					response.setMensajeError("Ingresee número de orden y/o contrato por favor");
@@ -217,10 +213,10 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 				}
 				final List<Orden> listaOrdenes = (comprobante.getOrdenNumero() != null)
 						? consultaDocRepository.getOrdenesCabecera(null, comprobante.getOrdenNumero(), null, null, null)
-								: null;
+						: null;
 				final List<DocumentoOrigen> listaContratos = (comprobante.getOrdenContrato() != null)
 						? docOriginRep.consultaDocumento(comprobante.getOrdenContrato())
-								: null;
+						: null;
 				if (listaOrdenes == null && listaContratos == null) {
 					response.setEsCorrecto(false);
 					response.setMensajeError("Número de orden y/o contrato ingresado es incorrecto");
@@ -250,7 +246,7 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 				comprobante.setUsuarioResponsable(
 						((listaOrdenes != null) && (listaOrdenes.size() > 0)) ? listaOrdenes.get(0).getSolicitante()
 								: ((listaContratos != null) && (listaContratos.size() > 0))
-								? listaContratos.get(0).getUsuarioResponsable()
+										? listaContratos.get(0).getUsuarioResponsable()
 										: null);
 			}
 

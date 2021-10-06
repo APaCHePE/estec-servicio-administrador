@@ -19,7 +19,6 @@
 		<spring-cloud.version>2020.0.3</spring-cloud.version>
 	</properties>
 	<dependencies>
-
 		<dependency>
 			<groupId>com.pe.estec</groupId>
 			<artifactId>estec-pe-librerias</artifactId>

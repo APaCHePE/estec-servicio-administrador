@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +23,9 @@ import com.pe.estec.services.ArchivoService;
 import com.pe.estec.services.ConsultaDocumentoService;
 
 @RestController
+@CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET
+		, RequestMethod.DELETE})
+@RequestMapping("api/admin")
 public class ConsultaDocumento {
 
 	@Autowired
@@ -82,12 +88,14 @@ public class ConsultaDocumento {
 		}
 		return new ResponseEntity(respuesta, status);
 	}
+	
 	@PostMapping(value="crear-documento-comprobante-proveedor", consumes= {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE},produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<Object> cargarZip(MultipartFile  archivoPdf, MultipartFile archivoZip,
 			MultipartFile  archivoInforme, MultipartFile archivoGuia){
 		ServiceResult<Map<String, Object>> response = consultaDocumentoServices.guardarZip(archivoZip, archivoPdf, archivoInforme, archivoGuia);
 		return new ResponseEntity(response, HttpStatus.valueOf(response.getHttpStatus()));
 	}
+	
 	@PostMapping(value="crear-recibo-honorarios-proveedor", consumes= {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE},produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<Object> cargarFilesHonorarios(MultipartFile  archivoPdf, MultipartFile archivoZip,
 			MultipartFile  archivoInforme, Integer idDocumento){
