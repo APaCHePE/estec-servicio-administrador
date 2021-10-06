@@ -17,15 +17,15 @@ import com.pe.estec.repository.ArchivoRepository;
 import com.pe.estec.repository.FileRepository;
 //**********************************++
 
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
+//import net.sf.jasperreports.engine.JRException;
+//import net.sf.jasperreports.engine.JasperCompileManager;
+//import net.sf.jasperreports.engine.JasperExportManager;
+//import net.sf.jasperreports.engine.JasperFillManager;
+//import net.sf.jasperreports.engine.JasperPrint;
+//import net.sf.jasperreports.engine.JasperReport;
+//import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+//import net.sf.jasperreports.engine.design.JasperDesign;
+//import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
 
 @Service
@@ -55,25 +55,27 @@ public class ArchivoServiceImple implements ArchivoService{
 	
 	
 	@Override
-	public InputStreamResource obtenerEstadoCuentaRep(Integer secuencia) throws JRException {
+	public InputStreamResource obtenerEstadoCuentaRep(Integer secuencia) {
+//		public InputStreamResource obtenerEstadoCuentaRep(Integer secuencia) throws JRException {
 		String periodo = "";
 		String estados = "";
 
 		InputStream is = this.getClass().getResourceAsStream("/Reportes/Asiento.jrxml");
 
-		JasperDesign jasperDesign = JRXmlLoader.load(is);
-		JasperReport reporteJasper = JasperCompileManager.compileReport(jasperDesign);
+//		JasperDesign jasperDesign = JRXmlLoader.load(is);
+//		JasperReport reporteJasper = JasperCompileManager.compileReport(jasperDesign);
+//
+//		JRBeanCollectionDataSource datosReporteJasper = new JRBeanCollectionDataSource(null);
+//
+//		Map<String, Object> params = new HashMap<>();
+//
+//		JasperPrint jasperPrint = JasperFillManager.fillReport(reporteJasper, params, datosReporteJasper);
+//		byte[] eecc = JasperExportManager.exportReportToPdf(jasperPrint);
+//
+//		InputStreamResource fileInputStream = new InputStreamResource(new ByteArrayInputStream(eecc));
 
-		JRBeanCollectionDataSource datosReporteJasper = new JRBeanCollectionDataSource(null);
-
-		Map<String, Object> params = new HashMap<>();
-
-		JasperPrint jasperPrint = JasperFillManager.fillReport(reporteJasper, params, datosReporteJasper);
-		byte[] eecc = JasperExportManager.exportReportToPdf(jasperPrint);
-
-		InputStreamResource fileInputStream = new InputStreamResource(new ByteArrayInputStream(eecc));
-
-		return fileInputStream;
+//		return fileInputStream;
+		return null;
 	}
 
 

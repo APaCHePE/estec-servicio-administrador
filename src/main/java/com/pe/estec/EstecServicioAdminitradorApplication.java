@@ -9,12 +9,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 import com.pe.estec.model.Catalogo;
 
 @SpringBootApplication
-@EnableEurekaClient
+//@EnableEurekaClient
 public class EstecServicioAdminitradorApplication implements CommandLineRunner{
 
 	@Autowired

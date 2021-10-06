@@ -9,9 +9,9 @@ import org.springframework.web.client.RestTemplate;
 import com.pe.estec.config.Constantes;
 import com.pe.estec.util.Util;
 
-import gob.pe.miraflores.comunes.model.bean.CuentaMensaje;
-import gob.pe.miraflores.comunes.model.bean.FileAdjunto;
-import gob.pe.miraflores.comunes.model.bean.Mensaje;
+import com.pe.estec.comunes.model.bean.CuentaMensaje;
+import com.pe.estec.comunes.model.bean.FileAdjunto;
+import com.pe.estec.comunes.model.bean.Mensaje;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
