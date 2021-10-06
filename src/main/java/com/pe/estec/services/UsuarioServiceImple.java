@@ -12,7 +12,6 @@ import com.pe.estec.config.Constantes;
 import com.pe.estec.model.Proveedor;
 import com.pe.estec.request.ServiceResult;
 import com.pe.estec.repository.UsuarioRepository;
-import com.pe.estec.util.UtilString;
 
 @Service
 public class UsuarioServiceImple implements UsuarioService {
@@ -100,8 +99,8 @@ public class UsuarioServiceImple implements UsuarioService {
 	private void enviarCorreoRegistro(Proveedor proveedor) throws Exception {
 		String htmlTemplate = correoService.correoRegistro(proveedor.getPersona().getNombreCompleto(),
 				proveedor.getUsuario(), null, "/tmpl-8642");
-		correoService.enviaReporteNuevo(htmlTemplate, proveedor.getUsuario(), null,
-				"Confirmación de solicitud de cuenta como proveedor:  ", null);
+//		correoService.enviaReporteNuevo(htmlTemplate, proveedor.getUsuario(), null,
+//				"Confirmación de solicitud de cuenta como proveedor:  ", null);
 	}
 
 	@Override

@@ -9,10 +9,6 @@ import org.springframework.web.client.RestTemplate;
 import com.pe.estec.config.Constantes;
 import com.pe.estec.util.Util;
 
-import com.pe.estec.comunes.model.bean.CuentaMensaje;
-import com.pe.estec.comunes.model.bean.FileAdjunto;
-import com.pe.estec.comunes.model.bean.Mensaje;
-
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -61,49 +57,49 @@ public class CorreoServiceImple {
 
 	}
 	public void enviaReporteNuevo(String htmlTemplate, String correoDestino, String correoCopia, String asunto,
-			List<FileAdjunto> adjunto) throws Exception{
-		Mensaje mensaje = new Mensaje();
-		CuentaMensaje destino = new CuentaMensaje();
-		destino.setEmail(correoDestino.toUpperCase());
-
-		mensaje.setCuentaDestino(destino);
-
-		if (correoCopia!= null && !correoCopia.equals("0")) {
-			List<CuentaMensaje> listaCuentaCopia = new ArrayList();
-			if (correoCopia.contains(",")) {
-				String[] copiasCorreo = correoCopia.split(",");
-
-				for (String destinoCopia : copiasCorreo) {
-					CuentaMensaje cuentaCopia = new CuentaMensaje();
-					cuentaCopia.setEmail(destinoCopia);
-
-					listaCuentaCopia.add(cuentaCopia);
-				}
-			} else {
-				CuentaMensaje cuentaCopia = new CuentaMensaje();
-				cuentaCopia.setEmail(correoCopia);
-
-				listaCuentaCopia.add(cuentaCopia);
-			}
-			mensaje.setCuentaCopia(listaCuentaCopia);
-		}
-
-		mensaje.setMensajeAsunto(asunto);
-		mensaje.setMensajeContenido(htmlTemplate);
-		mensaje.setConfigSiHtml(true);
-		mensaje.setAplicacionEnvio("Desarrollo");
-		if (adjunto != null) {
-			mensaje.setMensajeFileAdjunto(adjunto);
-		}
-
-		StringBuilder uriMensajeria = new StringBuilder();
-
-		uriMensajeria.append(constantes.getUrlServicioMensajeria());
-		uriMensajeria.append("envia-email");
-
-		RestTemplate rest = new RestTemplate();
-
-		rest.postForObject(uriMensajeria.toString(), mensaje, HashMap.class);
+			List<Object> adjunto) throws Exception{
+//		Mensaje mensaje = new Mensaje();
+//		CuentaMensaje destino = new CuentaMensaje();
+//		destino.setEmail(correoDestino.toUpperCase());
+//
+//		mensaje.setCuentaDestino(destino);
+//
+//		if (correoCopia!= null && !correoCopia.equals("0")) {
+//			List<CuentaMensaje> listaCuentaCopia = new ArrayList();
+//			if (correoCopia.contains(",")) {
+//				String[] copiasCorreo = correoCopia.split(",");
+//
+//				for (String destinoCopia : copiasCorreo) {
+//					CuentaMensaje cuentaCopia = new CuentaMensaje();
+//					cuentaCopia.setEmail(destinoCopia);
+//
+//					listaCuentaCopia.add(cuentaCopia);
+//				}
+//			} else {
+//				CuentaMensaje cuentaCopia = new CuentaMensaje();
+//				cuentaCopia.setEmail(correoCopia);
+//
+//				listaCuentaCopia.add(cuentaCopia);
+//			}
+//			mensaje.setCuentaCopia(listaCuentaCopia);
+//		}
+//
+//		mensaje.setMensajeAsunto(asunto);
+//		mensaje.setMensajeContenido(htmlTemplate);
+//		mensaje.setConfigSiHtml(true);
+//		mensaje.setAplicacionEnvio("Desarrollo");
+//		if (adjunto != null) {
+//			mensaje.setMensajeFileAdjunto(adjunto);
+//		}
+//
+//		StringBuilder uriMensajeria = new StringBuilder();
+//
+//		uriMensajeria.append(constantes.getUrlServicioMensajeria());
+//		uriMensajeria.append("envia-email");
+//
+//		RestTemplate rest = new RestTemplate();
+//
+//		rest.postForObject(uriMensajeria.toString(), mensaje, HashMap.class);
 	}
 
 //	public String crearQR(String textQR) {
