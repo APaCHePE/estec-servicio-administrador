@@ -3,7 +3,11 @@ package com.pe.estec.controller;
 import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -80,4 +84,28 @@ public class ArchivoController {
 //		}
 		return contenType;
 	}
+	
+	@GetMapping("/estado-cuenta/imprimir-eecc/{secuencia}")
+	public ResponseEntity<InputStreamResource> obtenerEECC(@PathVariable("secuencia") int secuencia) {
+		try {
+			InputStreamResource filePdf = fileService.obtenerEstadoCuentaRep(secuencia);
+			HttpHeaders respHeaders = new HttpHeaders();
+			MediaType mediaType = MediaType.parseMediaType("application/pdf");
+			respHeaders.setContentType(mediaType);
+
+			ContentDisposition contentDisposition = ContentDisposition.builder("inline").filename("Asiento.pdf")
+					.build();
+
+			respHeaders.setContentDisposition(contentDisposition);
+
+			return new ResponseEntity<InputStreamResource>(filePdf, respHeaders, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+			return new ResponseEntity<InputStreamResource>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	
+	
 }
