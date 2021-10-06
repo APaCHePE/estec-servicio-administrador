@@ -24,7 +24,7 @@ public class CatalogoController {
 	CatalogoService catalogoService;
 
 	@GetMapping("/consultar-parametro")
-	public ResponseEntity<Object> consultaParametro(@RequestParam("idParametroTipo") Integer idParametroTipo) {
+	public ResponseEntity<Object> consultaParametro(Integer idParametroTipo) {
 		Map<String, Object> respuesta = new HashMap<>();
 		HttpStatus status = HttpStatus.OK;
 		try {
