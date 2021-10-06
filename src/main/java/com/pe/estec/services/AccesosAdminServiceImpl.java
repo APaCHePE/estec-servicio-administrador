@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.pe.estec.config.Constantes;
 import com.pe.estec.model.Proveedor;
-import com.pe.estec.model.request.ServiceResult;
+import com.pe.estec.request.ServiceResult;
 import com.pe.estec.repository.AccesoAdminRepository;
 import com.pe.estec.repository.AccesosRepository;
 

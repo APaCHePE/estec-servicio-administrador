@@ -1,7 +1,7 @@
 package com.pe.estec.services;
 
 import com.pe.estec.model.Proveedor;
-import com.pe.estec.model.request.ServiceResult;
+import com.pe.estec.request.ServiceResult;
 
 public interface AccesosAdminService {
 

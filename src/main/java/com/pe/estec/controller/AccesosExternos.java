@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.pe.estec.model.Proveedor;
-import com.pe.estec.model.request.ServiceResult;
+import com.pe.estec.request.ServiceResult;
 import com.pe.estec.services.AccesosExternoService;
 
 @RestController

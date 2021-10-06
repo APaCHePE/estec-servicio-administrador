@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.pe.estec.model.Comprobante;
-import com.pe.estec.model.request.ServiceResult;
+import com.pe.estec.request.ServiceResult;
 import com.pe.estec.services.ArchivoService;
 import com.pe.estec.services.ConsultaDocumentoService;
 

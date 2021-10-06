@@ -9,7 +9,7 @@ import com.pe.estec.model.Comprobante;
 import com.pe.estec.model.Contrato;
 import com.pe.estec.model.Facturas;
 import com.pe.estec.model.Orden;
-import com.pe.estec.model.request.ServiceResult;
+import com.pe.estec.request.ServiceResult;
 
 public interface ConsultaDocumentoService {
 

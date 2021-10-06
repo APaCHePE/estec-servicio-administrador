@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pe.estec.model.Proveedor;
-import com.pe.estec.model.request.ServiceResult;
+import com.pe.estec.request.ServiceResult;
 import com.pe.estec.services.AccesosAdminService;
 
 @RestController

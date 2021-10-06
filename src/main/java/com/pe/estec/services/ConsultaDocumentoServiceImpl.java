@@ -28,7 +28,7 @@ import com.pe.estec.model.Contrato;
 import com.pe.estec.model.DocumentoOrigen;
 import com.pe.estec.model.Facturas;
 import com.pe.estec.model.Orden;
-import com.pe.estec.model.request.ServiceResult;
+import com.pe.estec.request.ServiceResult;
 import com.pe.estec.repository.ConsultaDocumentoRepository;
 import com.pe.estec.repository.DocumentoOrigenRepository;
 import com.pe.estec.util.FilesUtils;
