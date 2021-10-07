@@ -25,10 +25,14 @@ public class EstecServicioAdminitradorApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		String sql = "  select id_parametro as idParametro, id_parametro_tipo as idParametroTipo, nombre FROM dbo.parametro ";
-		List<Catalogo> catalogo = 
-				dao.query(sql, BeanPropertyRowMapper.newInstance(Catalogo.class));
-		catalogo.forEach(System.out :: println);
+		String sql = " select tcod as idCatalogo, tclave as idGrupo,TDESCRI as nombre from  dbo.CT0002TAGP where TCLAVE='06' "; 
+		try {
+			List<Catalogo> catalogo = 
+					dao.query(sql, BeanPropertyRowMapper.newInstance(Catalogo.class));			
+			catalogo.forEach(System.out :: println);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

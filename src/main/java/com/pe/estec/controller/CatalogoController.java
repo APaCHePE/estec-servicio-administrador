@@ -32,6 +32,7 @@ public class CatalogoController {
 			respuesta.put("status", Boolean.TRUE);
 			respuesta.put("codigo", status.value());
 		} catch (Exception e) {
+			e.printStackTrace();
 			status = HttpStatus.NOT_FOUND;
 			respuesta.put("status", false);
 			respuesta.put("errorMensaje", e.getMessage());
