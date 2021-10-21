@@ -44,7 +44,7 @@ public class FilesUtils {
 		transformer.transform(domSource, result);
 		JSONObject xmlJSONObj = XML.toJSONObject(writer.toString());
 		String jsonPrettyPrintString = xmlJSONObj.toString(PRETTY_PRINT_INDENT_FACTOR);
-		TypeReference<HashMap<String, Object>> typeRef = new TypeReference() {};
+		TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {};
 		Map<String, Object> mapping = new ObjectMapper().readValue(jsonPrettyPrintString, typeRef);
 		return mapping;
 	}

@@ -99,12 +99,13 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 		ServiceResult<Map<String, Object>> response = new ServiceResult();
 		try {
 			Map<String, Object> resultado = new HashMap<>();
+			System.out.println(archivoZip.getOriginalFilename().toUpperCase() );
 			String tmp = UUID.randomUUID().toString().replace("-", "");
 			resultado.put("token", tmp);
 			guardarAdjuntos(archivoZip, archivoPdf, archivoInforme, archivoGuia, tmp);
-			if (archivoZip.getOriginalFilename().contains(".zip")) {
+			if (archivoZip.getOriginalFilename().toUpperCase().contains(".ZIP")) {
 				resultado.put("factura", FilesUtils.descromprimirZIP(archivoZip));
-			} else if (archivoZip.getOriginalFilename().contains(".xml")) {
+			} else if (archivoZip.getOriginalFilename().toUpperCase().contains(".XML")) {
 				File convFile = new File(System.getProperty("java.io.tmpdir") + "/" + archivoZip.getName());
 				archivoZip.transferTo(convFile);
 				resultado.put("factura", FilesUtils.convertirXmlJson(convFile));
