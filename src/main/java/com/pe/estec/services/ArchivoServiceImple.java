@@ -59,7 +59,7 @@ public class ArchivoServiceImple implements ArchivoService{
 	
 	
 	@Override
-	public InputStreamResource obtenerEstadoCuentaRep(Integer secuencia, List<Comprobante> listComprobante) {
+	public InputStreamResource obtenerEstadoCuentaRep(Integer secuencia, List<Comprobante> listComprobante, Integer igv) {
 		try {
 		InputStream is = this.getClass().getResourceAsStream("/Reportes/Asiento_contabilidad.jrxml");
 		JasperDesign jasperDesign = JRXmlLoader.load(is);
@@ -81,8 +81,34 @@ public class ArchivoServiceImple implements ArchivoService{
 		params.put("comprobante", listComprobante.get(0).getNumero());
 		params.put("concepto", listComprobante.get(0).getListaComprobanteDetalle().get(0).getDescripcion());
 		params.put("nroSubDiario", "11");
+		params.put("ruc", listComprobante.get(0).getProveedorNumeroDocumento());
 		params.put("concepSubDiario", "REGISTRO COMPRAS LOCAL" );
 		//parametros de la tabla 
+		if(igv == 1) {
+		params.put("cuenta", "401111");
+		params.put("anexo", " ");
+		params.put("descripcion", " ");
+		params.put("cc", " ");
+		params.put("tp", " ");
+		params.put("debe", listComprobante.get(0).getImporteIgv().toString());
+		params.put("haber", " ");
+		params.put("documento", "OT 01-3030");
+		params.put("fechavenci", fechaActual);
+		params.put("totaldebe", listComprobante.get(0).getImporteTotal().toString());
+		params.put("totalhaber", listComprobante.get(0).getImporteTotal().toString());
+		}
+		else {
+		params.put("cuenta", " ");
+		params.put("anexo", " ");
+		params.put("descripcion", " ");
+		params.put("cc", " ");
+		params.put("tp", " ");
+		params.put("debe"," ");
+		params.put("haber", " ");
+		params.put("documento", " ");
+		params.put("fechavenci", " ");
+		params.put("totaldebe", " ");
+		params.put("totalhaber", " ");}
 		JasperPrint jasperPrint = JasperFillManager.fillReport(reporteJasper, params, datosReporteJasper);
 		byte[] eecc = JasperExportManager.exportReportToPdf(jasperPrint);
 		InputStreamResource fileInputStream = new InputStreamResource(new ByteArrayInputStream(eecc));

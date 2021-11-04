@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.pe.estec.config.Constantes;
 import com.pe.estec.model.Archivo;
+import com.pe.estec.model.Asiento;
 import com.pe.estec.model.Comprobante;
 import com.pe.estec.model.ComprobanteDetalle;
 import com.pe.estec.model.Contrato;
@@ -63,6 +64,11 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 	public List<Contrato> getContrato(Integer nroContrato) {
 		List<Contrato> listaContrato = consultaDocRepository.getContrato(nroContrato);
 		return listaContrato;
+	}
+	
+	@Override
+	public void grabarAsiento(Asiento asiento) throws Exception{
+		consultaDocRepository.grabarAsiento(asiento);
 	}
 
 	@Override

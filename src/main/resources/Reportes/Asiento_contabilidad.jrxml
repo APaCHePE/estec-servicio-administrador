@@ -8,12 +8,24 @@
 	<parameter name="concepto" class="java.lang.String"/>
 	<parameter name="nroSubDiario" class="java.lang.String"/>
 	<parameter name="concepSubDiario" class="java.lang.String"/>
+	<parameter name="cuenta" class="java.lang.String"/>
+	<parameter name="anexo" class="java.lang.String"/>
+	<parameter name="descripcion" class="java.lang.String"/>
+	<parameter name="cc" class="java.lang.String"/>
+	<parameter name="tp" class="java.lang.String"/>
+	<parameter name="debe" class="java.lang.String"/>
+	<parameter name="haber" class="java.lang.String"/>
+	<parameter name="documento" class="java.lang.String"/>
+	<parameter name="fechavenci" class="java.lang.String"/>
+	<parameter name="totaldebe" class="java.lang.String"/>
+	<parameter name="totalhaber" class="java.lang.String"/>
+	<parameter name="ruc" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
 	<group name="DATOS_PAGO" keepTogether="true">
 		<groupHeader>
-			<band height="31">
+			<band height="50">
 				<line>
 					<reportElement x="1" y="26" width="553" height="1" forecolor="#7D7A7A" uuid="5befe245-17ad-441d-b1d2-616e86df3255"/>
 					<graphicElement>
@@ -83,19 +95,47 @@
 					<text><![CDATA[<style isBold="true">TP.</style>]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="286" y="15" width="81" height="11" uuid="335edd78-d4e9-474e-a68e-3263ce7eb1b4"/>
+					<reportElement x="278" y="15" width="81" height="11" uuid="335edd78-d4e9-474e-a68e-3263ce7eb1b4"/>
 					<textElement markup="styled">
 						<font size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[<style isBold="true">D E B E</style>]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="341" y="15" width="101" height="11" uuid="b2c9cdec-1634-4a0f-84dd-ee73852296d5"/>
+					<reportElement x="330" y="15" width="112" height="11" uuid="b2c9cdec-1634-4a0f-84dd-ee73852296d5"/>
 					<textElement markup="styled">
 						<font size="7" isBold="true"/>
 					</textElement>
-					<text><![CDATA[<style isBold="true">H A B E R  DOCUMENTO</style>]]></text>
+					<text><![CDATA[<style isBold="true">H A B E R        DOCUMENTO</style>]]></text>
 				</staticText>
+				<staticText>
+					<reportElement x="0" y="30" width="50" height="20" uuid="792bcc75-8f49-4af6-a600-a3597e1c1ed8"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[421201]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="60" y="30" width="50" height="20" uuid="31f143c4-7f7f-49d5-937b-ea755d532cef"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{ruc}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="381" y="27" width="70" height="20" uuid="b41374af-1732-4204-84d9-db00ce8e5f25"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{documento}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="451" y="27" width="80" height="20" uuid="b338d8aa-7de0-4cac-b0d0-c67ecec6cddc"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{fechavenci}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
@@ -242,13 +282,76 @@
 		<band/>
 	</columnHeader>
 	<detail>
-		<band height="14" splitType="Stretch">
+		<band height="18" splitType="Stretch">
 			<line>
 				<reportElement x="-1" y="13" width="555" height="1" forecolor="#7D7A7A" uuid="be6a65eb-a03a-4c7a-994b-3bb4f0809c48"/>
 				<graphicElement>
 					<pen lineWidth="0.6"/>
 				</graphicElement>
 			</line>
+			<textField>
+				<reportElement x="1" y="-7" width="70" height="20" uuid="602fc5d0-0b5c-4d5b-868f-a8bc2719c73d"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cuenta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="61" y="-7" width="80" height="20" uuid="4ac6e615-ad0a-4ecd-a241-8ab3e241c7d8"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{anexo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="119" y="-7" width="80" height="20" uuid="c0dcd985-95a9-4233-8d05-64a6cfcc27a7"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="191" y="-7" width="40" height="20" uuid="8a34350a-8abe-4c20-b416-22b7dff39fe3"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="221" y="-7" width="50" height="20" uuid="1074d3ea-2759-4041-873b-bae3b2cf668a"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="-7" width="64" height="20" uuid="985fa11e-0a8d-48ff-9125-a3e51037dd1d"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{debe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="331" y="-7" width="60" height="20" uuid="17cc9ae2-b243-4dbc-9726-76e9a6f4affa"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{haber}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="381" y="-7" width="70" height="20" uuid="0edf9ae2-da98-484c-8474-e581728e3c18"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{documento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="451" y="-7" width="80" height="20" uuid="62d068e0-73a2-4d31-aa88-f8de9d37f044"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechavenci}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
@@ -287,6 +390,20 @@
 				</textElement>
 				<text><![CDATA[Vo Bo]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="278" y="-3" width="70" height="20" uuid="77c423a5-94bd-4c80-8a9a-9db1d280070a"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totaldebe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="340" y="-3" width="70" height="20" uuid="131f1bdf-19ce-46b1-a0e6-2d58b9f71ff1"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalhaber}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>
