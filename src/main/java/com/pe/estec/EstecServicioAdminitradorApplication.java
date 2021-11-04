@@ -25,7 +25,7 @@ public class EstecServicioAdminitradorApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		String sql = " select tcod as idCatalogo, tclave as idGrupo,TDESCRI as nombre from  dbo.CT0002TAGP where TCLAVE='06' "; 
+		String sql = " select tcod as idCatalogo, tclave as idGrupo,TDESCRI as nombre from  RSCONCAR.dbo.CT0002TAGP where TCLAVE='06' "; 
 		try {
 			List<Catalogo> catalogo = 
 					dao.query(sql, BeanPropertyRowMapper.newInstance(Catalogo.class));			

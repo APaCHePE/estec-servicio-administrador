@@ -3,7 +3,10 @@ package com.pe.estec.services;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,19 +16,20 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 
 import com.pe.estec.model.Archivo;
+import com.pe.estec.model.Comprobante;
+import com.pe.estec.model.ComprobanteDetalle;
 import com.pe.estec.repository.ArchivoRepository;
 import com.pe.estec.repository.FileRepository;
-//**********************************++
 
-//import net.sf.jasperreports.engine.JRException;
-//import net.sf.jasperreports.engine.JasperCompileManager;
-//import net.sf.jasperreports.engine.JasperExportManager;
-//import net.sf.jasperreports.engine.JasperFillManager;
-//import net.sf.jasperreports.engine.JasperPrint;
-//import net.sf.jasperreports.engine.JasperReport;
-//import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-//import net.sf.jasperreports.engine.design.JasperDesign;
-//import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
 
 @Service
@@ -55,27 +59,41 @@ public class ArchivoServiceImple implements ArchivoService{
 	
 	
 	@Override
-	public InputStreamResource obtenerEstadoCuentaRep(Integer secuencia) {
-//		public InputStreamResource obtenerEstadoCuentaRep(Integer secuencia) throws JRException {
-		String periodo = "";
-		String estados = "";
+	public InputStreamResource obtenerEstadoCuentaRep(Integer secuencia, List<Comprobante> listComprobante) {
+		try {
+		InputStream is = this.getClass().getResourceAsStream("/Reportes/Asiento_contabilidad.jrxml");
+		JasperDesign jasperDesign = JRXmlLoader.load(is);
+		JasperReport reporteJasper = JasperCompileManager.compileReport(jasperDesign);
+		List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+		Map<String, Object> data1 = new HashMap<>();
+		data1.put("factId", "");
+		data.add(data1);
+		JRBeanCollectionDataSource datosReporteJasper = new JRBeanCollectionDataSource(data);
+		Calendar fecha = new GregorianCalendar();                                                     
+        int año = fecha.get(Calendar.YEAR);
+        int mes = fecha.get(Calendar.MONTH);
+        int dia = fecha.get(Calendar.DAY_OF_MONTH);
+        String fechaActual = dia + "/" + (mes+1) + "/" + año;
+        String moneda = "MN";
+		Map<String, Object> params = new HashMap<>();
+		params.put("fecHora", fechaActual);
+		params.put("moneda", moneda);
+		params.put("comprobante", listComprobante.get(0).getNumero());
+		params.put("concepto", listComprobante.get(0).getListaComprobanteDetalle().get(0).getDescripcion());
+		params.put("nroSubDiario", "11");
+		params.put("concepSubDiario", "REGISTRO COMPRAS LOCAL" );
+		//parametros de la tabla 
+		JasperPrint jasperPrint = JasperFillManager.fillReport(reporteJasper, params, datosReporteJasper);
+		byte[] eecc = JasperExportManager.exportReportToPdf(jasperPrint);
+		InputStreamResource fileInputStream = new InputStreamResource(new ByteArrayInputStream(eecc));
+		return fileInputStream;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
 
-		InputStream is = this.getClass().getResourceAsStream("/Reportes/Asiento.jrxml");
-
-//		JasperDesign jasperDesign = JRXmlLoader.load(is);
-//		JasperReport reporteJasper = JasperCompileManager.compileReport(jasperDesign);
-//
-//		JRBeanCollectionDataSource datosReporteJasper = new JRBeanCollectionDataSource(null);
-//
-//		Map<String, Object> params = new HashMap<>();
-//
-//		JasperPrint jasperPrint = JasperFillManager.fillReport(reporteJasper, params, datosReporteJasper);
-//		byte[] eecc = JasperExportManager.exportReportToPdf(jasperPrint);
-//
-//		InputStreamResource fileInputStream = new InputStreamResource(new ByteArrayInputStream(eecc));
-
-//		return fileInputStream;
-		return null;
+		
 	}
 
 

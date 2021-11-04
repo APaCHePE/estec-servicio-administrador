@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="notificacionPago" pageWidth="320" pageHeight="450" columnWidth="280" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="de7ea109-a300-4ee9-ac80-43a2c8f6d5af">
+	<property name="net.sf.jasperreports.print.create.bookmarks" value="false"/>
+	<parameter name="nroRecibo" class="java.lang.String"/>
+	<parameter name="datoContrib" class="java.lang.String"/>
+	<parameter name="tipOpe" class="java.lang.String"/>
+	<parameter name="tramite" class="java.lang.String"/>
+	<parameter name="fecHora" class="java.lang.String"/>
+	<parameter name="importe" class="java.lang.String"/>
+	<parameter name="cabecera-mail" class="java.lang.String"/>
+	<parameter name="numeroReciboCaja" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="83" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="0" width="280" height="81" uuid="2009966c-7e66-46f0-a30c-59d61c96fb67"/>
+				<imageExpression><![CDATA[$P{cabecera-mail}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="43" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="7" width="151" height="11" uuid="f598642b-609d-4818-85ad-69cb264bff5b"/>
+				<textElement markup="styled">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MUNICIPALIDAD DE MIRAFLORES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="18" width="110" height="11" uuid="4241dcf3-5422-41d9-8b03-adeb85b0714b"/>
+				<textElement markup="styled">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RUC 20131377224]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="29" width="79" height="11" uuid="17bf33b5-2ecd-4c74-9fcc-68c86712e4d0"/>
+				<textElement markup="styled">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RECIBO DE PAGO ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="72" y="29" width="84" height="11" uuid="49dcb8ef-b397-4dbb-93d9-90682d18b08d"/>
+				<textElement markup="none">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nroRecibo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="175" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="7" width="91" height="14" uuid="c71d1b41-f5b0-49a6-8037-67bce8007f88"/>
+				<textElement markup="styled">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Administrado:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="21" width="91" height="14" uuid="ecec3d6c-e659-41ac-a64a-a7476b354e30"/>
+				<textElement markup="styled">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de operación:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="35" width="91" height="14" uuid="2c842eda-bb85-40b4-9be5-5322f5d72d24"/>
+				<textElement markup="styled">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Trámite:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="76" width="91" height="14" uuid="7b90295b-dd4b-44d6-973a-0b3903fa463f"/>
+				<textElement markup="styled">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="90" width="91" height="14" uuid="a605689e-9ff6-4c1c-9655-c7671c99518b"/>
+				<textElement markup="styled">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Importe pagado (S/.):]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="91" y="7" width="189" height="16" uuid="18e95f0f-5c9a-4547-891d-2d5d5fba0175"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{datoContrib}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="91" y="21" width="189" height="18" uuid="8e27ec99-96b8-41a8-aa40-be7f104467ae"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tipOpe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="91" y="35" width="189" height="41" uuid="2e1f68b5-1112-4a8e-a8e7-252abffdbe85"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tramite}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="91" y="76" width="100" height="20" uuid="7efc304b-b77e-4eac-a224-149039ea8bc2"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fecHora}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="91" y="90" width="100" height="15" uuid="618fa60c-50da-47f9-ba18-14c2d2689da3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{importe}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="106" width="91" height="14" uuid="8dcb293c-8551-4583-adaf-9d1092e0dc96"/>
+				<textElement markup="styled">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código Recibo:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="91" y="105" width="100" height="15" uuid="e49988f1-bd7e-4c1c-a67c-23fb5aae59c3"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{numeroReciboCaja}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

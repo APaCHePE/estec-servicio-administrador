@@ -1,6 +1,7 @@
 package com.pe.estec.controller;
 
 import java.util.Base64;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pe.estec.model.Archivo;
+import com.pe.estec.model.Comprobante;
 import com.pe.estec.services.ArchivoService;
+import com.pe.estec.services.ConsultaDocumentoService;
 
 @RestController
 @CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET
@@ -28,6 +31,9 @@ public class ArchivoController {
 
 	@Autowired
 	ArchivoService fileService;
+	
+	@Autowired
+	ConsultaDocumentoService consultaDocumentoServices;
 
 	@PostMapping("guardar-file")
 	public ResponseEntity<Object> guardarFile() {
@@ -85,15 +91,18 @@ public class ArchivoController {
 		return contenType;
 	}
 	
-	@GetMapping("/estado-cuenta/imprimir-eecc/{secuencia}")
-	public ResponseEntity<InputStreamResource> obtenerEECC(@PathVariable("secuencia") int secuencia) {
+	@GetMapping("/imprimir-eecc/{idComprobante}")
+	public ResponseEntity<InputStreamResource> obtenerEECC(@PathVariable("idComprobante") int idComprobante) {
 		try {
-			InputStreamResource filePdf = fileService.obtenerEstadoCuentaRep(secuencia);
+			System.out.println(idComprobante);
+			List<Comprobante> listComprobante = consultaDocumentoServices.consultarComprobante(null, null, null, null, null, null, idComprobante, null);
+			System.out.println(listComprobante.get(0));
+			InputStreamResource filePdf = fileService.obtenerEstadoCuentaRep(idComprobante, listComprobante);
 			HttpHeaders respHeaders = new HttpHeaders();
 			MediaType mediaType = MediaType.parseMediaType("application/pdf");
 			respHeaders.setContentType(mediaType);
 
-			ContentDisposition contentDisposition = ContentDisposition.builder("inline").filename("Asiento.pdf")
+			ContentDisposition contentDisposition = ContentDisposition.builder("inline").filename("Asiento-documento.pdf")
 					.build();
 
 			respHeaders.setContentDisposition(contentDisposition);
