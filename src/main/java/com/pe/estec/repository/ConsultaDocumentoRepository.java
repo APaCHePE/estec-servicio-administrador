@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.pe.estec.config.Constantes;
 import com.pe.estec.model.Archivo;
+import com.pe.estec.model.Asiento;
 import com.pe.estec.model.Comprobante;
 import com.pe.estec.model.ComprobanteDetalle;
 import com.pe.estec.model.ComprobanteTrazabilidad;
@@ -251,6 +252,14 @@ public class ConsultaDocumentoRepository {
 
 		sqlServer.update(sql.toString());
 	}
+	
+	public void grabarAsiento(Asiento asiento) throws Exception {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" ");
+		sql.append(" ");
+		sqlServer.update(sql.toString());
+	}
+	
 
 	public Integer guardarComprobante(Comprobante comprobante) throws Exception {
 		StringBuilder sql = new StringBuilder();

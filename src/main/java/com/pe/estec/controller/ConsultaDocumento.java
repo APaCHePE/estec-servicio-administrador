@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.pe.estec.model.Asiento;
 import com.pe.estec.model.Comprobante;
+import com.pe.estec.model.Proveedor;
 import com.pe.estec.request.ServiceResult;
 import com.pe.estec.services.ArchivoService;
 import com.pe.estec.services.ConsultaDocumentoService;
@@ -134,6 +136,14 @@ public class ConsultaDocumento {
 			respuesta.put("codigo", status.value());
 		}
 		return new ResponseEntity(respuesta, status);
+	}
+	
+	
+	@PostMapping("provisionar-asiento")
+	public ResponseEntity<Object> guardarProveedor(@RequestBody Asiento asiento) throws Exception{
+		ServiceResult<String> response = null;
+		consultaDocumentoServices.grabarAsiento(asiento);
+		return new ResponseEntity(response, HttpStatus.valueOf(response.getHttpStatus()));
 	}
 
 }
