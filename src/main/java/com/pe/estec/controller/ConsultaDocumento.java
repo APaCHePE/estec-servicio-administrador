@@ -140,10 +140,20 @@ public class ConsultaDocumento {
 	
 	
 	@PostMapping("provisionar-asiento")
-	public ResponseEntity<Object> guardarProveedor(@RequestBody Asiento asiento) throws Exception{
-		ServiceResult<String> response = null;
-		consultaDocumentoServices.grabarAsiento(asiento);
-		return new ResponseEntity(response, HttpStatus.valueOf(response.getHttpStatus()));
+	public ResponseEntity<Object> guardarAsientoProvision(@RequestBody Asiento asiento) {
+		Map<String, Object> respuesta = new HashMap<>();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			respuesta.put("result",consultaDocumentoServices.grabarAsiento(asiento));
+			respuesta.put("status", Boolean.TRUE);
+			respuesta.put("codigo", status.value());
+		} catch (Exception e) {
+			status = HttpStatus.NOT_FOUND;
+			respuesta.put("status", false);
+			respuesta.put("errorMensaje", e.getMessage());
+			respuesta.put("codigo", status.value());
+		}
+		return new ResponseEntity(respuesta, status);		
 	}
 
 }

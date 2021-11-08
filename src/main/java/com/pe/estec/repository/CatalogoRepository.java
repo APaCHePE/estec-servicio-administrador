@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.pe.estec.model.Catalogo;
+import com.pe.estec.model.CatalogoContabilidad;
+import com.pe.estec.rowmapper.CatalogoContabilidadRowMappper;
 import com.pe.estec.rowmapper.CatalogoRowMapper;
 
 @Repository
@@ -22,6 +24,13 @@ public class CatalogoRepository {
 		if(idParametroTipo != null)sql.append(" where id_parametro_tipo ="+idParametroTipo);
 		List<Catalogo> listaCatalogo= 
 				sqlServer.query(sql.toString(),new CatalogoRowMapper() );
+		return listaCatalogo;
+	}
+	public List<CatalogoContabilidad> catalogoContabilidad(String idParametro){
+		StringBuilder sql = new StringBuilder();
+		sql.append("  Select * ,TCOD+TCLAVE AS CadeBus From RSCONCAR.dbo.CT0002TAGP ");
+		sql.append(" Where TCOD='"+idParametro+"' Order by TCOD+TCLAVE; ");
+		List<CatalogoContabilidad> listaCatalogo=sqlServer.query(sql.toString(),new CatalogoContabilidadRowMappper());
 		return listaCatalogo;
 	}
 }

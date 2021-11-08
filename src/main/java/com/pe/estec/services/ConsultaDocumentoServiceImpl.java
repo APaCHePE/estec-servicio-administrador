@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.pe.estec.config.Constantes;
 import com.pe.estec.model.Archivo;
 import com.pe.estec.model.Asiento;
+import com.pe.estec.model.AsientoDetalle;
 import com.pe.estec.model.Comprobante;
 import com.pe.estec.model.ComprobanteDetalle;
 import com.pe.estec.model.Contrato;
@@ -31,6 +32,7 @@ import com.pe.estec.model.Facturas;
 import com.pe.estec.model.Orden;
 import com.pe.estec.request.ServiceResult;
 import com.pe.estec.util.FilesUtils;
+import com.pe.estec.util.*;
 import com.pe.estec.repository.ConsultaDocumentoRepository;
 import com.pe.estec.repository.DocumentoOrigenRepository;
 
@@ -67,8 +69,100 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 	}
 	
 	@Override
-	public void grabarAsiento(Asiento asiento) throws Exception{
-		consultaDocRepository.grabarAsiento(asiento);
+	public Integer grabarAsiento(Asiento asiento) throws Exception{
+		Integer idAsiento = null;
+		if(asiento.getAfectoTipoComprobante()==26){
+			asiento.setSub_diario(15);
+			asiento.setSub_diario_detalle("REGISTRO HONORARIOS");
+			idAsiento= consultaDocRepository.grabarAsiento(asiento);
+		}else {
+		if(asiento.getAfectoDetraccion()) {
+			asiento.setSub_diario(10);
+			asiento.setSub_diario_detalle("REGISTRO COMPRAS DETRA");
+			idAsiento= consultaDocRepository.grabarAsiento(asiento);
+		}else {
+			asiento.setSub_diario(11);
+			asiento.setSub_diario_detalle("REGISTRO COMPRAS LOCAL");
+			idAsiento= consultaDocRepository.grabarAsiento(asiento);
+		}}
+		
+		if(asiento.getAfectoTipoComprobante()==26){
+			AsientoDetalle asientodetalle = new AsientoDetalle();
+			asientodetalle.setId_asiento_provision(idAsiento);
+			asientodetalle.setId_asiento_regla(null);
+			asientodetalle.setAnexo(null);
+			asientodetalle.setArea(null);
+			asientodetalle.setCc(null);
+			asientodetalle.setCuenta(null);
+			asientodetalle.setDebe(null);
+			asientodetalle.setDescripcion(null);
+			asientodetalle.setTp(null);
+			asientodetalle.setHaber(null);
+			asientodetalle.setDocumento(null);
+			asientodetalle.setFecha_asiento_detalle(null);
+			asientodetalle.setVencimiento_asiento_detalle(null);
+			asientodetalle.setEstado(null);
+			//15	registro honorarios
+			consultaDocRepository.grabarAsientoDetalle( asientodetalle,idAsiento);
+		}
+		if(asiento.getAfectoDetraccion()) {
+			AsientoDetalle asientodetalle = new AsientoDetalle();
+			asientodetalle.setId_asiento_provision(idAsiento);
+			asientodetalle.setId_asiento_regla(null);
+			asientodetalle.setAnexo(null);
+			asientodetalle.setArea(null);
+			asientodetalle.setCc(null);
+			asientodetalle.setCuenta(null);
+			asientodetalle.setDebe(null);
+			asientodetalle.setDescripcion(null);
+			asientodetalle.setTp(null);
+			asientodetalle.setHaber(null);
+			asientodetalle.setDocumento(null);
+			asientodetalle.setFecha_asiento_detalle(null);
+			asientodetalle.setVencimiento_asiento_detalle(null);
+			asientodetalle.setEstado(null);
+			//10	con detraccion
+			consultaDocRepository.grabarAsientoDetalle( asientodetalle,idAsiento);
+		}else {
+			AsientoDetalle asientodetalle = new AsientoDetalle();
+			asientodetalle.setId_asiento_provision(idAsiento);
+			asientodetalle.setId_asiento_regla(null);
+			asientodetalle.setAnexo(null);
+			asientodetalle.setArea(null);
+			asientodetalle.setCc(null);
+			asientodetalle.setCuenta(null);
+			asientodetalle.setDebe(null);
+			asientodetalle.setDescripcion(null);
+			asientodetalle.setTp(null);
+			asientodetalle.setHaber(null);
+			asientodetalle.setDocumento(null);
+			asientodetalle.setFecha_asiento_detalle(null);
+			asientodetalle.setVencimiento_asiento_detalle(null);
+			asientodetalle.setEstado(null);
+			//11	sin detraccion 
+			consultaDocRepository.grabarAsientoDetalle(asientodetalle, idAsiento);
+		}
+		
+		if(asiento.getAfectoIgv()) {
+			AsientoDetalle asientodetalle = new AsientoDetalle();
+			asientodetalle.setId_asiento_provision(idAsiento);
+			asientodetalle.setId_asiento_regla(null);
+			asientodetalle.setAnexo(null);
+			asientodetalle.setArea(null);
+			asientodetalle.setCc(null);
+			asientodetalle.setCuenta(null);
+			asientodetalle.setDebe(null);
+			asientodetalle.setDescripcion(null);
+			asientodetalle.setTp(null);
+			asientodetalle.setHaber(null);
+			asientodetalle.setDocumento(null);
+			asientodetalle.setFecha_asiento_detalle(null);
+			asientodetalle.setVencimiento_asiento_detalle(null);
+			asientodetalle.setEstado(null);
+			consultaDocRepository.grabarAsientoDetalle(asientodetalle, idAsiento);
+		}
+		
+		return idAsiento;
 	}
 
 	@Override
