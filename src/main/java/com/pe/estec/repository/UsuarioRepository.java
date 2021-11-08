@@ -109,7 +109,7 @@ public class UsuarioRepository {
 		sql.append(" values(?,?,?,?,?,GETDATE ()) ");
 		Object[] params = new Object[] { proveedor.getPersona().getIdPersona(), proveedor.getUsuario().toUpperCase(),
 				(proveedor.getContrasenia()!= null)?proveedor.getContrasenia().toUpperCase():"123456"
-				, proveedor.getTipoCuenta(), Constantes.ESTADO_DESACTIVADO };
+				, proveedor.getTipoCuenta(), Constantes.ESTADO_PENDIENTE };
 		SqlReturning db = new SqlReturning(sqlServer);
 		Long idGenerado = db.insertaData(sql.toString(), params);
 		return idGenerado;
