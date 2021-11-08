@@ -270,7 +270,7 @@
 				<textFieldExpression><![CDATA[$P{nroSubDiario}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="130" y="47" width="110" height="17" uuid="780ab900-2f16-4615-999b-f0487109e630"/>
+				<reportElement x="130" y="47" width="251" height="17" uuid="780ab900-2f16-4615-999b-f0487109e630"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
