@@ -27,6 +27,43 @@ public class UsuarioServiceImple implements UsuarioService {
 	Logger logger = LoggerFactory.getLogger(UsuarioServiceImple.class);
 
 	@Override
+	public ServiceResult<Proveedor> authentication(String usuario, String pass) {
+		ServiceResult<Proveedor> response = new ServiceResult();
+		try {
+			List<Proveedor> proveedorAuth = userRepository.listarProveedor(null, null, usuario, null, null);
+			if (proveedorAuth.size() == 0) {
+				response.setMensajeError("Usuario o contraseña incorrectos.");
+				response.setEsCorrecto(false);
+				response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+			} else if (proveedorAuth.get(0).getEstado() == Constantes.ESTADO_PENDIENTE) {
+				response.setMensajeError("Su solicitud de acceso está siendo evaluada.");
+				response.setEsCorrecto(false);
+				response.setHttpStatus(HttpStatus.OK.value());
+			} else if (proveedorAuth.get(0).getEstado() == Constantes.ESTADO_APROBADO) {
+				response.setMensajeError("Para completar el registro debe activar su cuenta.");
+				response.setEsCorrecto(false);
+				response.setHttpStatus(HttpStatus.OK.value());
+			} else {
+				Boolean access = userRepository.validarPass(proveedorAuth.get(0).getUsuario(), pass);
+				System.out.println("acceso " + access);
+				if (access) {
+					response.setHttpStatus(HttpStatus.OK.value());
+					response.setResultado(proveedorAuth.get(0));
+					response.setEsCorrecto(true);
+				} else {
+					response.setMensajeError("EL usuario o contraseña ingresada es incorrecta.");
+					response.setEsCorrecto(false);
+					response.setHttpStatus(HttpStatus.OK.value());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+		}
+		return response;
+	}
+	
+	@Override
 	public ServiceResult<Boolean> validarProveedor(String nroDocumento) {
 		ServiceResult<Boolean> response = new ServiceResult<>();
 		try {
@@ -44,6 +81,12 @@ public class UsuarioServiceImple implements UsuarioService {
 	public ServiceResult<String> guardarProveedor(Proveedor proveedor) {
 		ServiceResult<String> response = new ServiceResult();
 		try {
+			if(proveedor.getUsuario() == null || proveedor.getPersona() == null || proveedor.getPersona().getNroDocumento() == null) {
+				response.setResultado("Ingrese sus datos correctamente");
+				response.setMensajeError("Ingrese sus datos correctamente");
+				response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+				return response;
+			}
 			if (userRepository.validarNroDocumentoProveedor(proveedor.getPersona().getNroDocumento())) {
 				response.setResultado("El Nro de Documento ya se encuentra registrado");
 				response.setMensajeError("El Nro de Documento ya se encuentra registrado");
@@ -99,8 +142,8 @@ public class UsuarioServiceImple implements UsuarioService {
 	private void enviarCorreoRegistro(Proveedor proveedor) throws Exception {
 		String htmlTemplate = correoService.correoRegistro(proveedor.getPersona().getNombreCompleto(),
 				proveedor.getUsuario(), null, "/tmpl-8642");
-//		correoService.enviaReporteNuevo(htmlTemplate, proveedor.getUsuario(), null,
-//				"Confirmación de solicitud de cuenta como proveedor:  ", null);
+		correoService.enviaReporteNuevo(htmlTemplate, proveedor.getUsuario(), null,
+				"Confirmación de solicitud de cuenta como proveedor:  ", null);
 	}
 
 	@Override
@@ -124,7 +167,7 @@ public class UsuarioServiceImple implements UsuarioService {
 		ServiceResult<String> response = new ServiceResult();
 		try {
 			userRepository.estadoProveedor(proveedor.getIdProveedor(), proveedor.getEstado(), proveedor.getObservacion());
-			if(proveedor.getEstado()==Constantes.ESTADO_APROBADO)
+			if(proveedor.getEstado()==Constantes.ESTADO_COMPROBANTE_APROBADO)
 				//enviarCorreoActivacion(proveedor);
 			response.setEsCorrecto(true);
 			response.setHttpStatus(HttpStatus.OK.value());

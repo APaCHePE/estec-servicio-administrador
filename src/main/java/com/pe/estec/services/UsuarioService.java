@@ -7,6 +7,7 @@ import com.pe.estec.request.ServiceResult;
 
 public interface UsuarioService {
 
+	public ServiceResult<Proveedor> authentication(String usuario, String pass);
 	public ServiceResult<Boolean> validarProveedor(String nroDocumento);
 	public ServiceResult<String> guardarProveedor(Proveedor proveedor );
 	public ServiceResult<List<Proveedor>> listarProveedor(Integer estado, Integer tipoCuenta,

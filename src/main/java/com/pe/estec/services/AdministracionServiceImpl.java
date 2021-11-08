@@ -7,43 +7,42 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.pe.estec.config.Constantes;
-import com.pe.estec.model.Proveedor;
+import com.pe.estec.model.Empleado;
+import com.pe.estec.repository.AdministracionRepository;
 import com.pe.estec.request.ServiceResult;
-import com.pe.estec.repository.AccesosRepository;
-import com.pe.estec.repository.UsuarioRepository;
 
 @Service
-public class AccesosExternoServiceImpl implements AccesosExternoService {
+public class AdministracionServiceImpl implements AdministracionService {
+
+//	@Autowired
+//	private AdministraRepository accesoRepository;
 
 	@Autowired
-	private AccesosRepository accesoRepository;
-
-	@Autowired
-	private UsuarioRepository userDao;
+	private AdministracionRepository administracionRepository;
 
 	@Override
-	public ServiceResult<Proveedor> authentication(String usuario, String pass) {
-		ServiceResult<Proveedor> response = new ServiceResult();
+	public ServiceResult<Empleado> authentication(String usuario, String pass) {
+		ServiceResult<Empleado> response = new ServiceResult();
 		try {
-			List<Proveedor> proveedorAuth = userDao.listarProveedor(null, null, usuario, null, null);
-			if (proveedorAuth.size() == 0) {
+			List<Empleado> empleadoAuth = administracionRepository.listarEmpleado(null, null, usuario, null, null);
+			if (empleadoAuth.size() == 0) {
 				response.setMensajeError("Usuario o contraseña incorrectos.");
 				response.setEsCorrecto(false);
 				response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
-			} else if (proveedorAuth.get(0).getEstado() == Constantes.ESTADO_PENDIENTE) {
+			} else if (empleadoAuth.get(0).getEstado() == Constantes.ESTADO_COMPROBANTE_PENDIENTE) {
 				response.setMensajeError("Su solicitud de acceso está siendo evaluada.");
 				response.setEsCorrecto(false);
 				response.setHttpStatus(HttpStatus.OK.value());
-			} else if (proveedorAuth.get(0).getEstado() == Constantes.ESTADO_APROBADO) {
+			} else if (empleadoAuth.get(0).getEstado() == Constantes.ESTADO_COMPROBANTE_APROBADO) {
 				response.setMensajeError("Para completar el registro debe activar su cuenta.");
 				response.setEsCorrecto(false);
 				response.setHttpStatus(HttpStatus.OK.value());
 			} else {
-				Boolean access = accesoRepository.validarPass(proveedorAuth.get(0).getUsuario(), pass);
+				Boolean access = administracionRepository.validarPass(empleadoAuth.get(0).getUsuario(), pass);
 				System.out.println("acceso " + access);
 				if (access) {
 					response.setHttpStatus(HttpStatus.OK.value());
-					response.setResultado(proveedorAuth.get(0));
+					response.setResultado(empleadoAuth.get(0));
 					response.setEsCorrecto(true);
 				} else {
 					response.setMensajeError("EL usuario o contraseña ingresada es incorrecta.");
@@ -57,4 +56,5 @@ public class AccesosExternoServiceImpl implements AccesosExternoService {
 		}
 		return response;
 	}
+
 }

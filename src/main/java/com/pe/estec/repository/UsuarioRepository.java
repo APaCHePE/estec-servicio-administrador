@@ -18,7 +18,21 @@ public class UsuarioRepository {
 
 	@Autowired
 	JdbcTemplate sqlServer;
-
+	
+	public Boolean validarPass(String usuario, String clave)throws Exception {
+		StringBuilder sql = new StringBuilder();
+		sql.append("Select count(*) from pruebas..proveedor ");
+		sql.append("where 1='1' ");
+		sql.append(" and usuario = ? and pass = ? ");
+		sql.append("  ");
+		Object[] params = new Object[] {usuario, clave};
+		boolean valido =false;
+		Integer resultados = sqlServer.queryForObject(sql.toString(), Integer.class, params);
+		if(resultados>0)
+			valido=true;
+		
+		return valido;
+	}
 	public Boolean validarUsuarioERP(String nroDocumento) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		Boolean existe = false;
@@ -59,7 +73,7 @@ public class UsuarioRepository {
 		sql.append(" select COUNT(*) ");
 		sql.append(" From pruebas..proveedor prov ");
 		sql.append(" left join pruebas..persona per on per.id_persona = prov.id_persona ");
-		sql.append(" where trim(per.NRO_DOCUMENTO) = ? or trim(prov.correo) = ?");
+		sql.append(" where trim(per.NRO_DOCUMENTO) = ? ");
 		Object[] params = new Object[] { nroDocumento };
 		try {
 			Integer cantidad = sqlServer.queryForObject(sql.toString(), Integer.class, params);
@@ -76,13 +90,14 @@ public class UsuarioRepository {
 		Boolean existe = false;
 		sql.append(" select COUNT(*) ");
 		sql.append(" From pruebas..proveedor prov ");
-		sql.append(" where prov.correo = ?");
+		sql.append(" where prov.usuario = ?");
 		Object[] params = new Object[] { usuario };
 		try {
 			Integer cantidad = sqlServer.queryForObject(sql.toString(), Integer.class, params);
 			if (cantidad > 0)
 				existe = true;
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return existe;
 	}
@@ -144,7 +159,7 @@ public class UsuarioRepository {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" update pruebas..proveedor ");
 		sql.append(" set  estado= "+estado+", FEC_MODIFI = GETDATE() ");
-		if(estado==Constantes.ESTADO_DENEGADO && observacion!=null)sql.append(" ,observacion = '"+observacion+"'");
+		if(estado==Constantes.ESTADO_INACTIVO && observacion!=null)sql.append(" ,observacion = '"+observacion+"'");
 		sql.append(" where id_proveedor=? ");
 		Object[] params= new Object[] {idProveedor};
 		sqlServer.update(sql.toString(), params);
