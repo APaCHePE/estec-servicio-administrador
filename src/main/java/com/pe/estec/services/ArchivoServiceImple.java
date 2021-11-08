@@ -59,7 +59,7 @@ public class ArchivoServiceImple implements ArchivoService{
 	
 	
 	@Override
-	public InputStreamResource obtenerEstadoCuentaRep(Integer secuencia, List<Comprobante> listComprobante, Integer igv) {
+	public InputStreamResource obtenerEstadoCuentaRep(Integer secuencia, List<Comprobante> listComprobante, Integer igv, String detraccion) {
 		try {
 		InputStream is = this.getClass().getResourceAsStream("/Reportes/Asiento_contabilidad.jrxml");
 		JasperDesign jasperDesign = JRXmlLoader.load(is);
@@ -80,9 +80,23 @@ public class ArchivoServiceImple implements ArchivoService{
 		params.put("moneda", moneda);
 		params.put("comprobante", listComprobante.get(0).getNumero());
 		params.put("concepto", listComprobante.get(0).getListaComprobanteDetalle().get(0).getDescripcion());
-		params.put("nroSubDiario", "11");
+		if(listComprobante.get(0).getId007TipoComprobante()==26) {
+			params.put("nroSubDiario", "15");
+			params.put("concepSubDiario", "REGISTRO HONORARIOS" );
+		}else {
+			if(detraccion.equals("true")) {
+				params.put("nroSubDiario", "10");
+				params.put("concepSubDiario", "REGISTRO COMPRAS DETRA" );
+			}else {
+				params.put("nroSubDiario", "11");
+				params.put("concepSubDiario", "REGISTRO COMPRAS LOCAL" );
+			}
+			
+		}
+		
+		
 		params.put("ruc", listComprobante.get(0).getProveedorNumeroDocumento());
-		params.put("concepSubDiario", "REGISTRO COMPRAS LOCAL" );
+		
 		//parametros de la tabla 
 		if(igv == 1) {
 		params.put("cuenta", "401111");
