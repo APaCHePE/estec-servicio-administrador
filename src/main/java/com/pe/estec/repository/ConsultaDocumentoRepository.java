@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.pe.estec.config.Constantes;
 import com.pe.estec.model.Archivo;
 import com.pe.estec.model.Asiento;
+import com.pe.estec.model.AsientoDetalle;
 import com.pe.estec.model.Comprobante;
 import com.pe.estec.model.ComprobanteDetalle;
 import com.pe.estec.model.ComprobanteTrazabilidad;
@@ -253,11 +254,30 @@ public class ConsultaDocumentoRepository {
 		sqlServer.update(sql.toString());
 	}
 	
-	public void grabarAsiento(Asiento asiento) throws Exception {
+	public Integer grabarAsiento(Asiento asiento) throws Exception {
 		StringBuilder sql = new StringBuilder();
-		sql.append(" ");
-		sql.append(" ");
-		sqlServer.update(sql.toString());
+		sql.append("INSERT INTO pruebas.dbo.ASIENTO_PROVISION ");
+		sql.append("(id_comprobante,sub_diario,sub_diario_detalle,fecha_asiento,concepto ");
+		sql.append(",moneda,conversion,tipo_conversion,tipo_cambio,estado) ");
+		sql.append("VALUES (?,?,?,?,?,?,?,?,?,?) ");
+		Object[] params = new Object[] { asiento.getId_comprobante(),asiento.getSub_diario(), asiento.getSub_diario_detalle(),asiento.getFecha_asiento(), asiento.getConcepto(),
+				asiento.getMoneda(),asiento.getConversion(), asiento.getTipo_conversion(), asiento.getTipo_cambio(), asiento.getEstado()};
+		sqlServer.update(sql.toString(),params);
+		StringBuilder sql2 = new StringBuilder();
+		sql2.append("select max(id_asiento_provision) from pruebas.dbo.asiento_provision ");
+		Integer Identity = sqlServer.queryForObject(sql2.toString(), Integer.class);
+		return Identity;
+	}
+	public void grabarAsientoDetalle(AsientoDetalle asientoDetalle, Integer idAsiento) throws Exception {
+		StringBuilder sql = new StringBuilder();
+		sql.append("INSERT INTO pruebas.dbo.ASIENTO_PROVISION_DETALLE ");
+		sql.append("(id_asiento_provision,id_asiento_regla,cuenta,anexo,descripcion,cc,tp,debe  ");
+		sql.append(",haber,documento,fecha_asiento_detalle,vencimiento_asiento_detalle,area,estado) ");
+		sql.append("VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?) ");
+		Object[] params = new Object[] { idAsiento, asientoDetalle.getId_asiento_regla(),asientoDetalle.getCuenta(),asientoDetalle.getAnexo(),asientoDetalle.getDescripcion(),
+				asientoDetalle.getCc(), asientoDetalle.getTp(), asientoDetalle.getDebe(),asientoDetalle.getHaber(),asientoDetalle.getDocumento(),asientoDetalle.getFecha_asiento_detalle(),asientoDetalle.getVencimiento_asiento_detalle(),
+				asientoDetalle.getArea(),asientoDetalle.getEstado()};
+		sqlServer.update(sql.toString(),params);
 	}
 	
 
@@ -299,7 +319,7 @@ public class ConsultaDocumentoRepository {
 			sql.append(", '" + comprobante.getOrdenContrato()+"' ");
 		sql.append(", 9 ,  '" + comprobante.getUsuarioResponsable() + "' ");
 		sql.append(", '" + comprobante.getProveedorDireccion() + "', '" + comprobante.getProveedorZona() + "', GETDATE()  ) ");
-		System.out.println(sql.toString());
+		
 		SqlReturning db = new SqlReturning(sqlServer);
 
 		Long idGenerado = db.insertaDataParams(sql.toString());

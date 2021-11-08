@@ -104,21 +104,19 @@ public class UsuarioRepository {
 
 	public Long insertarProveedor(Proveedor proveedor) throws Exception {
 		StringBuilder sql = new StringBuilder();
-		sql.append(" insert into pruebas..proveedor");
-		sql.append(" ( id_persona, usuario, pass, tip_cuenta, "
-				+ " estado, fec_registro) ");
+		sql.append(" insert into pruebas.dbo.proveedor");
+		sql.append(" ( id_persona, usuario, pass, tip_cuenta, estado, fec_registro) ");
 		sql.append(" values(?,?,?,?,?,GETDATE ()) ");
 		Object[] params = new Object[] { proveedor.getPersona().getIdPersona(), proveedor.getUsuario().toUpperCase(),
 				(proveedor.getContrasenia()!= null)?proveedor.getContrasenia().toUpperCase():"123456"
-				, proveedor.getTipoCuenta(), Constantes.ESTADO_PENDIENTE };
+				, proveedor.getTipoCuenta(), Constantes.ESTADO_DESACTIVADO };
 		SqlReturning db = new SqlReturning(sqlServer);
-
 		Long idGenerado = db.insertaData(sql.toString(), params);
 		return idGenerado;
 	}
 	public Long insertarPersona(Persona persona) {
 		StringBuilder sql = new StringBuilder();
-		sql.append(" insert into pruebas..persona");
+		sql.append(" insert into pruebas.dbo.persona");
 		sql.append(" (NRO_DOCUMENTO, TIPO_DOCUMENTO,NOMBRES_COMPLETOS,");
 //		sql.append(" NOMBRES, APE_PATERNO, APE_MATERNO, ");
 		sql.append(" DIRECCION, TELEFONO_PRINCIPAL, ID_SISTEMA_REGISTRO, ESTADO, FEC_REGISTRO) ");

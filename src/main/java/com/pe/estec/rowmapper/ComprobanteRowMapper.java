@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 import com.pe.estec.model.Comprobante;
-import com.pe.estec.model.Facturas;
 
 public class ComprobanteRowMapper implements RowMapper<Comprobante>{
 	@Override

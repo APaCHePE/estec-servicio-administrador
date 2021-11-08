@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pe.estec.model.Catalogo;
+import com.pe.estec.model.CatalogoContabilidad;
 import com.pe.estec.repository.CatalogoRepository;
 @Service
 public class CatalogoServiceImplement implements CatalogoService{
@@ -17,5 +18,10 @@ public class CatalogoServiceImplement implements CatalogoService{
 		List<Catalogo> listaCatalogo = catalogoReposotory.consultaParametro(idParametroTipo);
 		return listaCatalogo;
 	}
+	public List<CatalogoContabilidad> catalogoContabilidad(String idParametro){
+		List<CatalogoContabilidad> listaCatalogo = catalogoReposotory.catalogoContabilidad(idParametro);		
+		return listaCatalogo;
+	}
+	
 
 }

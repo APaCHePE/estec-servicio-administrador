@@ -40,5 +40,23 @@ public class CatalogoController {
 		}
 		return new ResponseEntity(respuesta, status);
 	}
+	
+	@GetMapping("/catalogo-contabilidad")
+	public ResponseEntity<Object> catalogoContabilidad(String idParametro) {
+		Map<String, Object> respuesta = new HashMap<>();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			respuesta.put("result", catalogoService.catalogoContabilidad(idParametro));
+			respuesta.put("status", Boolean.TRUE);
+			respuesta.put("codigo", status.value());
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = HttpStatus.NOT_FOUND;
+			respuesta.put("status", false);
+			respuesta.put("errorMensaje", e.getMessage());
+			respuesta.put("codigo", status.value());
+		}
+		return new ResponseEntity(respuesta, status);
+	}
 
 }
