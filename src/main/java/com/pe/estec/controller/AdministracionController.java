@@ -12,21 +12,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pe.estec.model.Empleado;
 import com.pe.estec.model.Proveedor;
 import com.pe.estec.request.ServiceResult;
-import com.pe.estec.services.AccesosAdminService;
+import com.pe.estec.services.AdministracionService;
 
 @RestController
 @CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET
 		, RequestMethod.DELETE})
 @RequestMapping("api/admin")
-public class AccesosAdmins {
+public class AdministracionController {
 	@Autowired
-	private AccesosAdminService accesoService;
+	private AdministracionService accesoService;
 
 	@GetMapping("login-interno")
 	public ResponseEntity<Object> loginExternos(String user, String clave) {
-		ServiceResult<Proveedor> response = accesoService.authentication(user, clave);
+		ServiceResult<Empleado> response = accesoService.authentication(user, clave);
 		return new ResponseEntity(response, HttpStatus.valueOf(response.getHttpStatus()));
 	}
 }
