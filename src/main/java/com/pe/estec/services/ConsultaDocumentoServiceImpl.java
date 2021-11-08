@@ -70,7 +70,7 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 	
 	@Override
 	public Integer grabarAsiento(Asiento asiento) throws Exception{
-		Integer idAsiento = null;
+		Integer idAsiento = 1;
 		if(asiento.getAfectoTipoComprobante()==26){
 			asiento.setSub_diario(15);
 			asiento.setSub_diario_detalle("REGISTRO HONORARIOS");
