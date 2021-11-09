@@ -61,11 +61,11 @@ public class ConsultaDocumentoRepository {
 		sql.append(" MOVD.OC_DFECENT, OC_CITMPOR, OC_CDSCPOR, OC_CIGVPOR, OC_CISCPOR,  ");
 		sql.append(" OC_NIMPUS AS IMPORTE_SOLES, OC_NIMPMN AS IMPORTE_DOLARES, "
 				+ "	oc_nimpfac, oc_nimpfob, oc_nimpcf, oc_nimpcif  ");
-		sql.append("  FROM RSFACCAR15..CO0002MOVD AS MOVD  ");
-		sql.append("  left outer join RSFACCAR15..CO0002MOVC AS MOVC on MOVC.OC_CNUMORD = MOVD.OC_CNUMORD   ");
-		sql.append("  left outer join RSFACCAR15..AL0002AADV AS AADV on AADV.AV_CCODART = MOVD.OC_CCODIGO      "
+		sql.append("  FROM RSFACCAR_TEST..CO0002MOVD AS MOVD  ");
+		sql.append("  left outer join RSFACCAR_TEST..CO0002MOVC AS MOVC on MOVC.OC_CNUMORD = MOVD.OC_CNUMORD   ");
+		sql.append("  left outer join RSFACCAR_TEST..AL0002AADV AS AADV on AADV.AV_CCODART = MOVD.OC_CCODIGO      "
 				+ "   and AADV.AV_CCODPAI = MOVC.OC_CCOPAIS   ");
-		sql.append("  left outer join RSFACCAR15..AL0002TABL AS TABL on TABL.TG_CCLAVE = AADV.AV_CPARARA  ");
+		sql.append("  left outer join RSFACCAR_TEST..AL0002TABL AS TABL on TABL.TG_CCLAVE = AADV.AV_CPARARA  ");
 		sql.append("  and TABL.TG_CCOD = '78'   ");
 		sql.append("   Where 1=1 ");
 		if (nroOrden != null)
@@ -102,13 +102,13 @@ public class ConsultaDocumentoRepository {
 		sql.append(" movc.oc_ctipord as tipo_orden, ");
 		sql.append(" TB_TIP_ORD.tg_cdescri as DESCRIPCION_ORDEN, MOVC.oc_dfecdoc as fecha_orden,");
 		sql.append(" MOVC.oc_nimpmn as importe_soles, MOVC.oc_csitord as estado ");
-		sql.append("  from RSFACCAR15..CO0002MOVC MOVC  ");
+		sql.append("  from RSFACCAR_TEST..CO0002MOVC MOVC  ");
 		sql.append(
-				"  left outer join RSFACCAR15..AL0002TABL AS TB_TIP_MON on TB_TIP_MON.TG_CCLAVE = MOVC.OC_CCODMON AND TB_TIP_MON.TG_CCOD = '03'  ");
+				"  left outer join RSFACCAR_TEST..AL0002TABL AS TB_TIP_MON on TB_TIP_MON.TG_CCLAVE = MOVC.OC_CCODMON AND TB_TIP_MON.TG_CCOD = '03'  ");
 		sql.append(
-				"  left outer join RSFACCAR15..AL0002TABL AS TB_TIP_ORD on TB_TIP_ORD.TG_CCLAVE = MOVC.oc_ctipord AND TB_TIP_ORD.TG_CCOD = '63'  ");
+				"  left outer join RSFACCAR_TEST..AL0002TABL AS TB_TIP_ORD on TB_TIP_ORD.TG_CCLAVE = MOVC.oc_ctipord AND TB_TIP_ORD.TG_CCOD = '63'  ");
 		sql.append(
-				"  left outer join RSFACCAR15..AL0002TABL AS TB_TIP_DOC on TB_TIP_DOC.TG_CCLAVE = MOVC.OC_CTIPDOC   ");
+				"  left outer join RSFACCAR_TEST..AL0002TABL AS TB_TIP_DOC on TB_TIP_DOC.TG_CCLAVE = MOVC.OC_CTIPDOC   ");
 		sql.append("  WHERE 1=1 ");
 		if (nroDocumento != null)
 			sql.append("  and MOVC.OC_CCODPRO ='" + nroDocumento + "'  ");
@@ -140,7 +140,7 @@ public class ConsultaDocumentoRepository {
 		sql.append(" oc_ctipord as tipo_orden_item, ");
 		sql.append(" oc_csolici as usuario_solicitante, ");
 		sql.append(" oc_dfecdoc as FECHA_ORDEN ");
-		sql.append(" FROM RSFACCAR15..CO0002MOVD ");
+		sql.append(" FROM RSFACCAR_TEST..CO0002MOVD ");
 		sql.append(" where 1=1");
 		if (numeroOrden != null && !numeroOrden.equals("null"))
 			sql.append(" and oc_cnumord = '" + numeroOrden + "' ");
@@ -193,16 +193,16 @@ public class ConsultaDocumentoRepository {
 		sql.append(" CP_CDESCRI AS DESCRIPCION_FACTURA ");
 		sql.append(" From RSCONCAR..CP0002CART PROV  ");
 		sql.append(
-				" LEFT JOIN RSFACCAR15..AL0002TABL TIPDOC ON TIPDOC.TG_cclave =PROV.CP_CTIPDOC  AND TIPDOC.TG_CCOD = '04'  ");
-		sql.append(" LEFT JOIN RSFACCAR15..AL0002TABL SIT ON SIT.TG_cclave = PROV.CP_CSITUAC AND SIT.TG_CCOD = '54'  ");
+				" LEFT JOIN RSFACCAR_TEST..AL0002TABL TIPDOC ON TIPDOC.TG_cclave =PROV.CP_CTIPDOC  AND TIPDOC.TG_CCOD = '04'  ");
+		sql.append(" LEFT JOIN RSFACCAR_TEST..AL0002TABL SIT ON SIT.TG_cclave = PROV.CP_CSITUAC AND SIT.TG_CCOD = '54'  ");
 		sql.append(
-				" LEFT JOIN RSFACCAR15..AL0002TABL CODPAGO ON SIT.TG_cclave = PROV.CP_CDEBHAB AND CODPAGO.TG_CCOD = '52'  ");
+				" LEFT JOIN RSFACCAR_TEST..AL0002TABL CODPAGO ON SIT.TG_cclave = PROV.CP_CDEBHAB AND CODPAGO.TG_CCOD = '52'  ");
 		sql.append(
 				" LEFT JOIN RSCONCAR_TEST..CP0002TAGP DOCREF ON DOCREF.TG_CODIGO = PROV.CP_CTDOCRE AND DOCREF.TG_INDICE = '25'  ");
 		sql.append(
-				" left join RSFACCAR15..AL0002TABL AS TB_TIP_MON on TB_TIP_MON.TG_CCLAVE = CP_CCODMON AND TB_TIP_MON.TG_CCOD = '03'  ");
+				" left join RSFACCAR_TEST..AL0002TABL AS TB_TIP_MON on TB_TIP_MON.TG_CCLAVE = CP_CCODMON AND TB_TIP_MON.TG_CCOD = '03'  ");
 		sql.append(
-				" LEFT JOIN RSFACCAR15..AL0002TABL AREA ON AREA.TG_cclave = PROV.CP_CDEBHAB AND AREA.TG_CCOD = 'R3'  ");
+				" LEFT JOIN RSFACCAR_TEST..AL0002TABL AREA ON AREA.TG_cclave = PROV.CP_CDEBHAB AND AREA.TG_CCOD = 'R3'  ");
 		sql.append(
 				" LEFT JOIN RSCONCAR_TEST..CP0002TAGP CODGASTO ON CODGASTO.TG_CODIGO = PROV.CP_CCOGAST AND CODGASTO.TG_INDICE = '45'  ");
 		sql.append(" where cp_Ctipdoc = ('FT')  ");
