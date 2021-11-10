@@ -161,9 +161,10 @@ public class ConsultaDocumentoRepository {
 	
 	public String obtenerTraObservacion( Integer idComprobante) {
 		StringBuilder sql = new StringBuilder();
-		sql.append(" select usuario_registro from pruebas.dbo.comprobante_trazabilidad ");
+		sql.append(" SELECT TOP 1 usuario_registro from pruebas.dbo.comprobante_trazabilidad ");
 		sql.append(" where id_comprobante = "+idComprobante+" and id_008_estado_trazabilidad= 28 ");
 		String listaContrato = sqlServer.queryForObject(sql.toString(),String.class);
+		
 		return listaContrato;
 	}
 
