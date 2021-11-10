@@ -17,6 +17,7 @@ public interface ConsultaDocumentoService {
 	public List<Orden> consultaOrdenes(Integer tipoDocumento, String nroOrden, 
 			String fecInicio, String fecFin, Integer estado, String nroDocumento);
 	public List<Contrato> getContrato( Integer nroContrato);
+	public String obtenerTraObservacion(Integer idComprobante);
 	public Integer grabarAsiento(Asiento asiento) throws Exception;
 	public List<Facturas> consultaFacturas( String nroOrden, 
 			String fecInicio, String fecFin, Integer estado, String nroDocumento);

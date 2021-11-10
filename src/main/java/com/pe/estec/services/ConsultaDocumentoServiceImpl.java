@@ -69,6 +69,12 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 	}
 	
 	@Override
+	public String obtenerTraObservacion( Integer idComprobante) {
+		String encargado = consultaDocRepository.obtenerTraObservacion(idComprobante);
+		return encargado;
+	}
+	
+	@Override
 	public Integer grabarAsiento(Asiento asiento) throws Exception{
 		Integer idAsiento = 1;
 		if(asiento.getAfectoTipoComprobante()==26){
