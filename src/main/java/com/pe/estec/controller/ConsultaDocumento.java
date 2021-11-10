@@ -71,6 +71,25 @@ public class ConsultaDocumento {
 		}
 		return new ResponseEntity(respuesta, status);
 	}
+	
+	
+	@GetMapping("/consulta-traza-observacion")
+	public ResponseEntity<Object> obtenerTraObservacion( Integer idComprobante) {
+		Map<String, Object> respuesta = new HashMap<>();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			respuesta.put("result",
+					consultaDocumentoServices.obtenerTraObservacion(idComprobante));
+			respuesta.put("status", Boolean.TRUE);
+			respuesta.put("codigo", status.value());
+		} catch (Exception e) {
+			status = HttpStatus.NOT_FOUND;
+			respuesta.put("status", false);
+			respuesta.put("errorMensaje", e.getMessage());
+			respuesta.put("codigo", status.value());
+		}
+		return new ResponseEntity(respuesta, status);
+	}
 
 
 	@GetMapping("/getFacturas")
