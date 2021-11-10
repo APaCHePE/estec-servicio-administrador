@@ -1,5 +1,11 @@
 package com.pe.estec.controller;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Base64;
 import java.util.List;
 
@@ -22,6 +28,8 @@ import com.pe.estec.model.Archivo;
 import com.pe.estec.model.Comprobante;
 import com.pe.estec.services.ArchivoService;
 import com.pe.estec.services.ConsultaDocumentoService;
+
+import net.sf.jasperreports.engine.JasperExportManager;
 
 @RestController
 @CrossOrigin(origins = "*", methods = {RequestMethod.POST, RequestMethod.GET
@@ -114,6 +122,48 @@ public class ArchivoController {
 		}
 	}
 	
-	
+	@GetMapping("/archivo-banco")
+	public ResponseEntity<byte[]> generarArchivoBanco(Integer tipoBanco) {
+		try {
+			String fileName= "consolidado-bbva";
+			String ruta = "/ruta/"+fileName+".txt";
+	        String contenido = "Contenido de ejemplo";
+	        File file = new File(ruta);
+	        byte[] archivoDevolver = null; 
+	        if (!file.exists()) {
+	            file.createNewFile();
+	        }
+	        FileWriter escribir = new FileWriter(file);
+//	        escribir.write("Primera linea");
+	        BufferedWriter bw = new BufferedWriter(escribir);
+//	        BufferedReader le = bw.write(contenido);
+	        bw.write(contenido);
+//	        InputS
+//	        archivoDevolver = bw.
+//	        InputStreamResource fileInputStream = new InputStreamResource(new ByteArrayInputStream(eecc));
+	        bw.close();
+//			List<Comprobante> listComprobante = consultaDocumentoServices.consultarComprobante(null, null, null, null, null, null, idComprobante, null);
+//			InputStreamResource filePdf = fileService.obtenerEstadoCuentaRep(idComprobante, listComprobante, igv, detraccion);
+			HttpHeaders respHeaders = new HttpHeaders();
+			MediaType mediaType = MediaType.parseMediaType("application/pdf");
+			respHeaders.setContentType(mediaType);
+
+			ContentDisposition contentDisposition = ContentDisposition.builder("inline").filename("Asiento-documento.pdf")
+					.build();
+
+			respHeaders.setContentDisposition(contentDisposition);
+			ResponseEntity<byte[]> respuesta = ResponseEntity.ok()
+					.header(HttpHeaders.CONTENT_TYPE,
+							ObtenerContentType(fileName.replace(",", "")))
+					.header(HttpHeaders.CONTENT_DISPOSITION,
+							"inline; filename=" + fileName.replace(",", ""))
+					.body(archivoDevolver);
+			return respuesta;
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+			return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 	
 }
