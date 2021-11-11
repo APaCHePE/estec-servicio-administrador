@@ -1,23 +1,19 @@
 package com.pe.estec.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.pe.estec.comunes.model.bean.CuentaMensaje;
-import com.pe.estec.comunes.model.bean.FileAdjunto;
-import com.pe.estec.comunes.model.bean.Mensaje;
+
 import com.pe.estec.config.Constantes;
+import com.pe.estec.model.CuentaMensaje;
+import com.pe.estec.model.FileAdjunto;
+import com.pe.estec.model.Mensaje;
 import com.pe.estec.util.Util;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
-
-import javax.swing.ImageIcon;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

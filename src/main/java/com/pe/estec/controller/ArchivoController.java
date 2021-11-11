@@ -99,12 +99,12 @@ public class ArchivoController {
 		return contenType;
 	}
 	
-	@GetMapping("/visualizar-asiento/{idComprobante}/{igv}/{detraccion}")
-	public ResponseEntity<InputStreamResource> obtenerEECC(@PathVariable("idComprobante") int idComprobante, @PathVariable("igv") int igv ,@PathVariable("detraccion") String detraccion) {
+	@GetMapping("/visualizar-asiento/{idComprobante}/{igv}/{detraccion}/{distribucioncod}")
+	public ResponseEntity<InputStreamResource> obtenerEECC(@PathVariable("idComprobante") int idComprobante, @PathVariable("igv") int igv ,@PathVariable("detraccion") String detraccion,@PathVariable("distribucioncod") String distribucioncod) {
 		try {
 			System.out.println(idComprobante);
 			List<Comprobante> listComprobante = consultaDocumentoServices.consultarComprobante(null, null, null, null, null, null, idComprobante, null);
-			InputStreamResource filePdf = fileService.obtenerEstadoCuentaRep(idComprobante, listComprobante, igv, detraccion);
+			InputStreamResource filePdf = fileService.obtenerEstadoCuentaRep(idComprobante, listComprobante, igv, detraccion, distribucioncod);
 			HttpHeaders respHeaders = new HttpHeaders();
 			MediaType mediaType = MediaType.parseMediaType("application/pdf");
 			respHeaders.setContentType(mediaType);

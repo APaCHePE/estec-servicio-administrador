@@ -20,6 +20,9 @@
 	<parameter name="totaldebe" class="java.lang.String"/>
 	<parameter name="totalhaber" class="java.lang.String"/>
 	<parameter name="ruc" class="java.lang.String"/>
+	<parameter name="sinIgv" class="java.lang.String"/>
+	<parameter name="cc2" class="java.lang.String"/>
+	<parameter name="cuenta1" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -139,7 +142,14 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="14"/>
+			<band height="14">
+				<line>
+					<reportElement x="0" y="0" width="555" height="1" forecolor="#7D7A7A" uuid="be6a65eb-a03a-4c7a-994b-3bb4f0809c48"/>
+					<graphicElement>
+						<pen lineWidth="0.6"/>
+					</graphicElement>
+				</line>
+			</band>
 		</groupFooter>
 	</group>
 	<title>
@@ -282,13 +292,7 @@
 		<band/>
 	</columnHeader>
 	<detail>
-		<band height="18" splitType="Stretch">
-			<line>
-				<reportElement x="-1" y="13" width="555" height="1" forecolor="#7D7A7A" uuid="be6a65eb-a03a-4c7a-994b-3bb4f0809c48"/>
-				<graphicElement>
-					<pen lineWidth="0.6"/>
-				</graphicElement>
-			</line>
+		<band height="79" splitType="Stretch">
 			<textField>
 				<reportElement x="1" y="-7" width="70" height="20" uuid="602fc5d0-0b5c-4d5b-868f-a8bc2719c73d"/>
 				<textElement>
@@ -352,10 +356,100 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{fechavenci}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="1" y="10" width="70" height="15" uuid="5a7407dc-c9f8-49d6-9a26-cd646f04b702">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cuenta1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="25" width="69" height="15" uuid="e82f8f4e-7df5-4b2b-be07-b5619d64762c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[941101]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="40" width="69" height="15" uuid="9f92be29-13ec-45bc-8fee-210111999289">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[791101]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="190" y="9" width="40" height="20" uuid="0ab243a9-3e4f-4c01-b7a1-5874c89678fe"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cc2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="25" width="60" height="12" uuid="f5808ab2-6f77-4c02-a9a4-1843229a59ef"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sinIgv}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="330" y="37" width="60" height="12" uuid="28894261-b243-40b5-94dd-18b18c39450b"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sinIgv}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="25" width="70" height="20" uuid="4802b249-05c2-4c14-b9b8-0054a2c7dc2d"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{documento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="37" width="70" height="20" uuid="39f3cc47-feda-4aaa-8c5a-2938148f1629"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{documento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="381" y="9" width="70" height="20" uuid="955970c1-6942-4e04-b3a2-de024ba6914b"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{documento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="450" y="9" width="80" height="20" uuid="ab9dc7e4-90ec-4ac3-8991-bd42b29feea5"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechavenci}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="451" y="25" width="80" height="20" uuid="823e8c4c-7227-4528-a0c9-88ab13f91c4e"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechavenci}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="450" y="37" width="80" height="20" uuid="ba858a61-c111-48ae-8706-1446ab9ffa19"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechavenci}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="3"/>
+		<band height="61"/>
 	</columnFooter>
 	<pageFooter>
 		<band splitType="Stretch"/>
