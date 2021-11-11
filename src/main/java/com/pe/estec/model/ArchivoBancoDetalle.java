@@ -1,23 +1,17 @@
 package com.pe.estec.model;
 
-
-import java.util.List;
-
 import lombok.Data;
 
 @Data
-public class ArchivoBanco {
+public class ArchivoBancoDetalle {
 	
+	private Integer idArchivoBancoDetalle;
 	private Integer idArchivoBanco;
 	private Integer id007TipoComprobante;
 	private String fechaProgramacion;
 	private Integer id001Estado;
 	private Integer idUsuarioRegistro;
-	private String usuarioRegistro;
 	private Integer id009Banco;
-	private String fechaCreacion;
+	private String fechaXreacion;
 	private String fechaModificacion;
-	private Integer cantidadRegistros;
-	private List<ArchivoBancoDetalle> listaArchivoBancoDetalle;
-	
 }
