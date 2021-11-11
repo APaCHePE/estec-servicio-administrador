@@ -13,5 +13,5 @@ public interface ArchivoService {
 	public Archivo recuperarEntidadArchivo (int tipoEntidad, int idEntidad, int entidadArchivo, String token);
 	public void guardarFile(List<Archivo> listaArchivos) throws IOException ;
 	public void actualizarTemporal(String token, Integer idEntidad) throws Exception;
-	public InputStreamResource obtenerEstadoCuentaRep(Integer secuencia, List<Comprobante> listComprobante, Integer igv, String detraccion) throws Exception ;
+	public InputStreamResource obtenerEstadoCuentaRep(Integer secuencia, List<Comprobante> listComprobante, Integer igv, String detraccion, String distribucion) throws Exception ;
 }

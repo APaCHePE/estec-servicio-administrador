@@ -59,7 +59,7 @@ public class ArchivoServiceImple implements ArchivoService{
 	
 	
 	@Override
-	public InputStreamResource obtenerEstadoCuentaRep(Integer secuencia, List<Comprobante> listComprobante, Integer igv, String detraccion) {
+	public InputStreamResource obtenerEstadoCuentaRep(Integer secuencia, List<Comprobante> listComprobante, Integer igv, String detraccion,String distribucion) {
 		try {
 		InputStream is = this.getClass().getResourceAsStream("/Reportes/Asiento_contabilidad.jrxml");
 		JasperDesign jasperDesign = JRXmlLoader.load(is);
@@ -79,7 +79,7 @@ public class ArchivoServiceImple implements ArchivoService{
 		params.put("fecHora", fechaActual);
 		params.put("moneda", moneda);
 		params.put("comprobante", listComprobante.get(0).getNumero());
-		params.put("concepto", listComprobante.get(0).getListaComprobanteDetalle().get(0).getDescripcion());
+		params.put("concepto", listComprobante.get(0).getProveedorNombreComercial() + ", " + listComprobante.get(0).getNumero());
 		if(listComprobante.get(0).getId007TipoComprobante()==26) {
 			params.put("nroSubDiario", "15");
 			params.put("concepSubDiario", "REGISTRO HONORARIOS" );
@@ -110,6 +110,9 @@ public class ArchivoServiceImple implements ArchivoService{
 		params.put("fechavenci", fechaActual);
 		params.put("totaldebe", listComprobante.get(0).getImporteTotal().toString());
 		params.put("totalhaber", listComprobante.get(0).getImporteTotal().toString());
+		params.put("sinIgv", listComprobante.get(0).getImporteSubTotal().toString());
+		params.put("cc2", "100");
+		params.put("cuenta1", distribucion);
 		}
 		else {
 		params.put("cuenta", " ");
@@ -122,7 +125,10 @@ public class ArchivoServiceImple implements ArchivoService{
 		params.put("documento", " ");
 		params.put("fechavenci", " ");
 		params.put("totaldebe", " ");
-		params.put("totalhaber", " ");}
+		params.put("totalhaber", " ");
+		params.put("sinIgv", "");
+		params.put("cc2", "");
+		params.put("cuenta1", "");}
 		JasperPrint jasperPrint = JasperFillManager.fillReport(reporteJasper, params, datosReporteJasper);
 		byte[] eecc = JasperExportManager.exportReportToPdf(jasperPrint);
 		InputStreamResource fileInputStream = new InputStreamResource(new ByteArrayInputStream(eecc));
