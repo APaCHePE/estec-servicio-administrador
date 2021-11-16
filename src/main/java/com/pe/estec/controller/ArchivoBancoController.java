@@ -37,6 +37,7 @@ public class ArchivoBancoController {
 		ServiceResult<List<ArchivoBanco>> response = archivoService.obtenerLoteArchivo(idArchivo);
 		return new ResponseEntity(response, HttpStatus.valueOf(response.getHttpStatus()));
 	}
+	
 //	@GetMapping("nuevo-lote")
 //	public ResponseEntity<ServiceResult<>> obtenerLoteArchivoDetalle(@RequestBody ArchivoBanco nuevoArchivo){
 //		ServiceResult<String> response = archivoService.obtenerLoteArchivoDetalle(nuevoArchivo);

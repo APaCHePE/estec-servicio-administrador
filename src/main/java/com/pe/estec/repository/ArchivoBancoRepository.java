@@ -44,8 +44,9 @@ public class ArchivoBancoRepository {
 	
 	public List<ArchivoBancoDetalle> obtenerListaArchivosDetalle(ArchivoBanco archivo) {
 		StringBuilder sql = new StringBuilder();
-		sql.append(" INSERT INTO PRUEBAS..ARCHIVO_REPOSITORIO  ");
-		sql.append(" (ID_ARCHIVO,ARCHIVO) ");
+		sql.append(" INSERT INTO [dbo].[LOTE_ARCHIVO]  ");
+		sql.append(" ([id_007_tipo_comprobante],[fec_programacion],[id_001_estado],[id_usuario_registro],[usuario_registro],[fec_creacion],[id_009_banco]) ");
+		sql.append(" ([id_007_tipo_comprobante],[fec_programacion],[id_001_estado],[id_usuario_registro],[usuario_registro],[fec_creacion],[id_009_banco])");
 		sql.append(" VALUES(?,?) ");
 //		Object[] params = new Object[] { archivo.getIdArchivo(), archivo.getArchivo() };
 //		sqlServer.update(sql.toString(), params);
