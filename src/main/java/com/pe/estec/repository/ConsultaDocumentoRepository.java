@@ -17,6 +17,7 @@ import com.pe.estec.model.Contrato;
 import com.pe.estec.model.Facturas;
 import com.pe.estec.model.Orden;
 import com.pe.estec.model.OrdenDetalle;
+import com.pe.estec.rowmapper.AsientoRowMapper;
 import com.pe.estec.rowmapper.ComprobanteDetalleRowMapper;
 import com.pe.estec.rowmapper.ComprobanteRowMapper;
 import com.pe.estec.rowmapper.ComprobanteTrazabilidadRowMapper;
@@ -159,6 +160,17 @@ public class ConsultaDocumentoRepository {
 		return listaContrato;
 	}
 	
+	
+	public List<Asiento> consultarAsiento(Integer idComprobante) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT id_asiento_provision,id_comprobante,sub_diario,sub_diario_detalle ");
+		sql.append(" ,fecha_asiento,concepto,moneda,conversion,tipo_conversion,tipo_cambio,estado ");
+		sql.append(" from pruebas.dbo.ASIENTO_PROVISION ");
+		sql.append(" where id_comprobante ="+idComprobante);
+		List<Asiento> listaAsiento = sqlServer.query(sql.toString(), new AsientoRowMapper());
+		return listaAsiento;
+	}
+	
 	public String obtenerTraObservacion( Integer idComprobante) {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT TOP 1 usuario_registro from pruebas.dbo.comprobante_trazabilidad ");
@@ -279,6 +291,8 @@ public class ConsultaDocumentoRepository {
 	}
 	public void grabarAsientoDetalle(AsientoDetalle asientoDetalle, Integer idAsiento) throws Exception {
 		StringBuilder sql = new StringBuilder();
+		System.out.println(asientoDetalle);
+		System.out.println(idAsiento);
 		sql.append("INSERT INTO pruebas.dbo.ASIENTO_PROVISION_DETALLE ");
 		sql.append("(id_asiento_provision,id_asiento_regla,cuenta,anexo,descripcion,cc,tp,debe  ");
 		sql.append(",haber,documento,fecha_asiento_detalle,vencimiento_asiento_detalle,area,estado) ");
@@ -286,7 +300,14 @@ public class ConsultaDocumentoRepository {
 		Object[] params = new Object[] { idAsiento, asientoDetalle.getId_asiento_regla(),asientoDetalle.getCuenta(),asientoDetalle.getAnexo(),asientoDetalle.getDescripcion(),
 				asientoDetalle.getCc(), asientoDetalle.getTp(), asientoDetalle.getDebe(),asientoDetalle.getHaber(),asientoDetalle.getDocumento(),asientoDetalle.getFecha_asiento_detalle(),asientoDetalle.getVencimiento_asiento_detalle(),
 				asientoDetalle.getArea(),asientoDetalle.getEstado()};
-		sqlServer.update(sql.toString(),params);
+		System.out.println(sql);
+		try {
+			sqlServer.update(sql.toString(),params);
+		}
+		catch (Exception e) {
+			System.out.println(e.fillInStackTrace());
+			System.out.println(e.getMessage());
+		}
 	}
 	
 
