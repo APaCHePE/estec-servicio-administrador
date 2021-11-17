@@ -18,6 +18,8 @@ public class CatalogoServiceImplement implements CatalogoService{
 		List<Catalogo> listaCatalogo = catalogoReposotory.consultaParametro(idParametroTipo);
 		return listaCatalogo;
 	}
+	
+	@Override
 	public List<CatalogoContabilidad> catalogoContabilidad(String idParametro){
 		List<CatalogoContabilidad> listaCatalogo = catalogoReposotory.catalogoContabilidad(idParametro);		
 		return listaCatalogo;

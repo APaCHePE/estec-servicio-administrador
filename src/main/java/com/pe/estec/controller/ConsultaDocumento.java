@@ -174,5 +174,22 @@ public class ConsultaDocumento {
 		}
 		return new ResponseEntity(respuesta, status);		
 	}
+	
+	@GetMapping("/consultar-asiento")
+	public ResponseEntity<Object> consultarAsiento(Integer idComprobante) {
+		Map<String, Object> respuesta = new HashMap<>();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			respuesta.put("result",consultaDocumentoServices.consultarAsiento(idComprobante));
+			respuesta.put("status", Boolean.TRUE);
+			respuesta.put("codigo", status.value());
+		} catch (Exception e) {
+			status = HttpStatus.NOT_FOUND;
+			respuesta.put("status", false);
+			respuesta.put("errorMensaje", e.getMessage());
+			respuesta.put("codigo", status.value());
+		}
+		return new ResponseEntity(respuesta, status);
+	}
 
 }

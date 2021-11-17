@@ -27,6 +27,7 @@ public interface ConsultaDocumentoService {
 	public ServiceResult<String> guardarComprobante(Comprobante Comprobante);
 	public List<Comprobante> consultarComprobante(String usuariosresponsable, String nroOrden, 
 			String fecInicio, String fecFin, Integer estado, String nroDocumento, Integer idComprobante, Integer tipoComprobante);
+	public List<Asiento> consultarAsiento(Integer idComprobante);
 	public ServiceResult<Map<String, Object>> cargarFilesHonorarios(MultipartFile archivoZip, MultipartFile archivoPdf,
 			MultipartFile  archivoInforme, Integer idDocumento);
 	

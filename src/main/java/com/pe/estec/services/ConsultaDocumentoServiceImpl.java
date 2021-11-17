@@ -75,23 +75,35 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 	}
 	
 	@Override
+	public List<Asiento> consultarAsiento(Integer idComprobante){
+		List<Asiento> listaAsiento = null;
+		try {
+			listaAsiento = consultaDocRepository.consultarAsiento(idComprobante);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listaAsiento;
+	}
+	
+	
+	@Override
 	public Integer grabarAsiento(Asiento asiento) throws Exception{
-		Integer idAsiento = 1;
+		
 		if(asiento.getAfectoTipoComprobante()==26){
 			asiento.setSub_diario(15);
 			asiento.setSub_diario_detalle("REGISTRO HONORARIOS");
-			idAsiento= consultaDocRepository.grabarAsiento(asiento);
 		}else {
 		if(asiento.getAfectoDetraccion()) {
 			asiento.setSub_diario(10);
 			asiento.setSub_diario_detalle("REGISTRO COMPRAS DETRA");
-			idAsiento= consultaDocRepository.grabarAsiento(asiento);
+			
 		}else {
 			asiento.setSub_diario(11);
 			asiento.setSub_diario_detalle("REGISTRO COMPRAS LOCAL");
-			idAsiento= consultaDocRepository.grabarAsiento(asiento);
 		}}
-		
+		//consultar id 
+		Integer idAsiento = consultaDocRepository.grabarAsiento(asiento);
+		System.out.println(asiento);
 		if(asiento.getAfectoTipoComprobante()==26){
 			AsientoDetalle asientodetalle = new AsientoDetalle();
 			asientodetalle.setId_asiento_provision(idAsiento);
@@ -132,7 +144,7 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 		}else {
 			AsientoDetalle asientodetalle = new AsientoDetalle();
 			asientodetalle.setId_asiento_provision(idAsiento);
-			asientodetalle.setId_asiento_regla(null);
+			asientodetalle.setId_asiento_regla(651101);
 			asientodetalle.setAnexo(null);
 			asientodetalle.setArea(null);
 			asientodetalle.setCc(null);
@@ -152,7 +164,7 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 		if(asiento.getAfectoIgv()) {
 			AsientoDetalle asientodetalle = new AsientoDetalle();
 			asientodetalle.setId_asiento_provision(idAsiento);
-			asientodetalle.setId_asiento_regla(null);
+			asientodetalle.setId_asiento_regla(451101);
 			asientodetalle.setAnexo(null);
 			asientodetalle.setArea(null);
 			asientodetalle.setCc(null);
