@@ -41,6 +41,8 @@ public class ArchivoBancoServiceImpl implements ArchivoBancoService{
 			loteArchivo.setIdArchivoBanco(idLoteArchivo);
 			loteArchivo.getListaArchivoBancoDetalle().forEach( item -> {
 				System.out.println("listando");
+				item.setIdArchivoBanco(idLoteArchivo);
+				bancoRepository.crearLoteDetalleArchivo(item);
 			});
 //			try {
 //				enviarCorreoRegistro(proveedor);
@@ -53,8 +55,11 @@ public class ArchivoBancoServiceImpl implements ArchivoBancoService{
 			response.setEsCorrecto(true);
 		} catch (Exception e) {
 			e.printStackTrace();
+			response.setMensajeError("Mensaje de respuesta"+e.fillInStackTrace());
+			response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+			response.setEsCorrecto(false);
 		}
-		return null;
+		return response;
 	}
 
 	@Override
@@ -65,6 +70,7 @@ public class ArchivoBancoServiceImpl implements ArchivoBancoService{
 			List<ArchivoBancoDetalle> listaArchivos = bancoRepository.obtenerListaArchivosDetalle(idArchivo);
 			response.setResultado(listaArchivos);
 			response.setHttpStatus(HttpStatus.OK.value());
+			response.setEsCorrecto(true);
 		}catch (Exception e) {
 			response.setMensajeError("Mensaje de respuesta"+e.fillInStackTrace());
 			response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
