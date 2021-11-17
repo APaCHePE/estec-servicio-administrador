@@ -8,6 +8,7 @@ public class ArchivoBancoDetalle {
 	private Integer idArchivoBancoDetalle;
 	private Integer idArchivoBanco;
 	private Integer id007TipoComprobante;
+	private Integer idComprobante;
 	private String fechaProgramacion;
 	private Integer id001Estado;
 	private Integer idUsuarioRegistro;

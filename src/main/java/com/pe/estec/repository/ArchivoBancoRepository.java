@@ -11,6 +11,7 @@ import com.pe.estec.model.ArchivoBanco;
 import com.pe.estec.model.ArchivoBancoDetalle;
 import com.pe.estec.model.Catalogo;
 import com.pe.estec.rowmapper.ArchivoBancoDetalleRowMapper;
+import com.pe.estec.util.SqlReturning;
 
 @Repository
 public class ArchivoBancoRepository {
@@ -20,12 +21,19 @@ public class ArchivoBancoRepository {
 	
 	public Integer crearLoteArchivo(ArchivoBanco archivo) {
 		StringBuilder sql = new StringBuilder();
-		sql.append(" INSERT INTO PRUEBAS..ARCHIVO_REPOSITORIO  ");
-		sql.append(" (ID_ARCHIVO,ARCHIVO) ");
-		sql.append(" VALUES(?,?) ");
-//		Object[] params = new Object[] { archivo.getIdArchivo(), archivo.getArchivo() };
-//		sqlServer.update(sql.toString(), params);
-		return 1;
+		sql.append(" INSERT INTO PRUEBAS.dbo.LOTE_ARCHIVO ");
+		sql.append(" (id_007_tipo_comprobante, fec_programacion, id_001_estado, ");
+		sql.append(" id_usuario_registro, usuario_registro, fec_creacion, ");
+		sql.append(" id_009_banco) ");
+		sql.append(" VALUES ");
+		sql.append(" (?,?,?,? ,?,?,?,?) ");
+		Object[] params = new Object[] { archivo.getId007TipoComprobante(), archivo.getFechaProgramacion(),
+				archivo.getId001Estado(), archivo.getIdUsuarioRegistro(), archivo.getFechaCreacion(),
+				archivo.getUsuarioRegistro(), archivo.getFechaCreacion(), archivo.getId009Banco()};
+
+		SqlReturning db = new SqlReturning(sqlServer);
+		Long idGenerado = db.insertaData(sql.toString(), params);
+		return idGenerado.intValue();
 	}
 	
 	public List<ArchivoBanco> obtenerListaArchivos(Integer idLoteArchivo) {
@@ -35,23 +43,23 @@ public class ArchivoBancoRepository {
 		sql.append ( " fec_modificacion fechaModificacion,	id_009_banco id009Banco ");
 		sql.append ( " , (select count(*) from  pruebas..lote_archivo_detalle aux where aux.id_lote_archivo = "+idLoteArchivo+" ) as cantidadRegistros ");
 		sql.append ( " from pruebas..lote_archivo la ");
-		sql.append ( " left join pruebas..lote_archivo_detalle lad on lad.id_lote_archivo = la.id_lote_archivo ");
+//		sql.append ( " left join pruebas..lote_archivo_detalle lad on lad.id_lote_archivo = la.id_lote_archivo ");
 //		Object[] params = new Object[] { archivo.getIdArchivo(), archivo.getArchivo() };
 //		sqlServer.update(sql.toString(), params);
 		List<ArchivoBanco> listaArchivos = sqlServer.query(sql.toString(), BeanPropertyRowMapper.newInstance(ArchivoBanco.class));
 		return listaArchivos;
 	}
 	
-	public List<ArchivoBancoDetalle> obtenerListaArchivosDetalle(ArchivoBanco archivo) {
+	public List<ArchivoBancoDetalle> obtenerListaArchivosDetalle(Integer idArchivo) {
 		StringBuilder sql = new StringBuilder();
-		sql.append(" INSERT INTO [dbo].[LOTE_ARCHIVO]  ");
-		sql.append(" ([id_007_tipo_comprobante],[fec_programacion],[id_001_estado],[id_usuario_registro],[usuario_registro],[fec_creacion],[id_009_banco]) ");
-		sql.append(" ([id_007_tipo_comprobante],[fec_programacion],[id_001_estado],[id_usuario_registro],[usuario_registro],[fec_creacion],[id_009_banco])");
-		sql.append(" VALUES(?,?) ");
+		sql.append(" select lad.id_lote_archivo_detalle idArchivoBancoDetalle, lad.id_lote_archivo idArchivoBanco, lad.id_comprobante idComprobante, lad.id_usuario_registro idUsuarioRegistro ");
+		sql.append("  from pruebas..lote_archivo_detalle lad   ");
+		sql.append("  left join pruebas..lote_archivo la on la.id_lote_archivo = lad.id_lote_archivo  ");
+		sql.append("  where lad.id_lote_archivo = "+idArchivo);
 //		Object[] params = new Object[] { archivo.getIdArchivo(), archivo.getArchivo() };
 //		sqlServer.update(sql.toString(), params);
-		List<ArchivoBancoDetalle> listaArchivos = sqlServer.query(sql.toString(),new ArchivoBancoDetalleRowMapper());
-		return null;
+		List<ArchivoBancoDetalle> listaArchivos = sqlServer.query(sql.toString(), BeanPropertyRowMapper.newInstance(ArchivoBancoDetalle.class));
+		return listaArchivos;
 	}
 	
 }

@@ -11,7 +11,7 @@ public class ArchivoBancoDetalleRowMapper implements RowMapper<ArchivoBancoDetal
 
 	@Override
 	public ArchivoBancoDetalle mapRow(ResultSet rs, int rowNum) throws SQLException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
