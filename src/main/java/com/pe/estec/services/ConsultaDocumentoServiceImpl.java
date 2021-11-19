@@ -1,9 +1,6 @@
 package com.pe.estec.services;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -12,8 +9,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,9 +25,9 @@ import com.pe.estec.model.Contrato;
 import com.pe.estec.model.DocumentoOrigen;
 import com.pe.estec.model.Facturas;
 import com.pe.estec.model.Orden;
+import com.pe.estec.model.ReglasDistribucion;
 import com.pe.estec.request.ServiceResult;
 import com.pe.estec.util.FilesUtils;
-import com.pe.estec.util.*;
 import com.pe.estec.repository.ConsultaDocumentoRepository;
 import com.pe.estec.repository.DocumentoOrigenRepository;
 
@@ -76,19 +71,21 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 	
 	@Override
 	public List<Asiento> consultarAsiento(Integer idComprobante){
-		List<Asiento> listaAsiento = null;
-		try {
-			listaAsiento = consultaDocRepository.consultarAsiento(idComprobante);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
+			List<Asiento> listaAsiento = consultaDocRepository.consultarAsiento(idComprobante);
+			for (Asiento asiento : listaAsiento) {
+				asiento.setListAsientoDetalle(consultaDocRepository.consultarAsientoDetalle(asiento.getId_asiento_provision()));
+			}
+			
 		return listaAsiento;
 	}
 	
 	
 	@Override
 	public Integer grabarAsiento(Asiento asiento) throws Exception{
-		
+		String centroCosto = "100";
+		List<ReglasDistribucion> listareglasDistribucion =  consultaDocRepository.consultaDistribucion(centroCosto);
+		//cabecera
 		if(asiento.getAfectoTipoComprobante()==26){
 			asiento.setSub_diario(15);
 			asiento.setSub_diario_detalle("REGISTRO HONORARIOS");
@@ -96,15 +93,14 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 		if(asiento.getAfectoDetraccion()) {
 			asiento.setSub_diario(10);
 			asiento.setSub_diario_detalle("REGISTRO COMPRAS DETRA");
-			
 		}else {
 			asiento.setSub_diario(11);
 			asiento.setSub_diario_detalle("REGISTRO COMPRAS LOCAL");
 		}}
-		//consultar id 
 		Integer idAsiento = consultaDocRepository.grabarAsiento(asiento);
-		System.out.println(asiento);
+		//detalle DE IGV Y DETRACCION
 		if(asiento.getAfectoTipoComprobante()==26){
+			//15	registro honorarios
 			AsientoDetalle asientodetalle = new AsientoDetalle();
 			asientodetalle.setId_asiento_provision(idAsiento);
 			asientodetalle.setId_asiento_regla(null);
@@ -120,7 +116,6 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 			asientodetalle.setFecha_asiento_detalle(null);
 			asientodetalle.setVencimiento_asiento_detalle(null);
 			asientodetalle.setEstado(null);
-			//15	registro honorarios
 			consultaDocRepository.grabarAsientoDetalle( asientodetalle,idAsiento);
 		}
 		if(asiento.getAfectoDetraccion()) {
@@ -159,6 +154,40 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 			asientodetalle.setEstado(null);
 			//11	sin detraccion 
 			consultaDocRepository.grabarAsientoDetalle(asientodetalle, idAsiento);
+			
+			AsientoDetalle asientodetalle2 = new AsientoDetalle();
+			asientodetalle2.setId_asiento_provision(idAsiento);
+			asientodetalle2.setId_asiento_regla(941101);
+			asientodetalle2.setAnexo(null);
+			asientodetalle2.setArea(null);
+			asientodetalle2.setCc(null);
+			asientodetalle2.setCuenta(null);
+			asientodetalle2.setDebe(null);
+			asientodetalle2.setDescripcion(null);
+			asientodetalle2.setTp(null);
+			asientodetalle2.setHaber(null);
+			asientodetalle2.setDocumento(null);
+			asientodetalle2.setFecha_asiento_detalle(null);
+			asientodetalle2.setVencimiento_asiento_detalle(null);
+			asientodetalle2.setEstado(null);
+			consultaDocRepository.grabarAsientoDetalle(asientodetalle2, idAsiento);
+			
+			AsientoDetalle asientodetalle3 = new AsientoDetalle();
+			asientodetalle3.setId_asiento_provision(idAsiento);
+			asientodetalle3.setId_asiento_regla(791101);
+			asientodetalle3.setAnexo(null);
+			asientodetalle3.setArea(null);
+			asientodetalle3.setCc(null);
+			asientodetalle3.setCuenta(null);
+			asientodetalle3.setDebe(null);
+			asientodetalle3.setDescripcion(null);
+			asientodetalle3.setTp(null);
+			asientodetalle3.setHaber(null);
+			asientodetalle3.setDocumento(null);
+			asientodetalle3.setFecha_asiento_detalle(null);
+			asientodetalle3.setVencimiento_asiento_detalle(null);
+			asientodetalle3.setEstado(null);
+			consultaDocRepository.grabarAsientoDetalle(asientodetalle3, idAsiento);
 		}
 		
 		if(asiento.getAfectoIgv()) {
@@ -179,6 +208,7 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 			asientodetalle.setEstado(null);
 			consultaDocRepository.grabarAsientoDetalle(asientodetalle, idAsiento);
 		}
+		
 		
 		return idAsiento;
 	}

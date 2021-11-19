@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.pe.estec.model.ArchivoBanco;
-import com.pe.estec.model.request.ServiceResult;
 import com.pe.estec.repository.ArchivoBancoRepository;
+import com.pe.estec.request.ServiceResult;
 
 @Service
 public class ArchivoBancoServiceImpl implements ArchivoBancoService{

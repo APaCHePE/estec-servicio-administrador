@@ -13,6 +13,7 @@ public class Asiento {
 	private String fecha_asiento;
 	private String concepto;
 	private String moneda;
+	private String monto;
 	private String conversion;
 	private String tipo_conversion;
 	private String tipo_cambio;
@@ -21,4 +22,5 @@ public class Asiento {
 	private Boolean afectoIgv;
 	private Boolean afectoDetraccion;
 	private List<AsientoDetalle> listAsientoDetalle;
+	private List<DetalleDistribucion> listDetalleDistribucion;
 }

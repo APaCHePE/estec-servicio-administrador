@@ -16,6 +16,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 
 import com.pe.estec.model.Archivo;
+import com.pe.estec.model.Asiento;
 import com.pe.estec.model.Comprobante;
 import com.pe.estec.model.ComprobanteDetalle;
 import com.pe.estec.repository.ArchivoRepository;
@@ -59,7 +60,7 @@ public class ArchivoServiceImple implements ArchivoService{
 	
 	
 	@Override
-	public InputStreamResource obtenerEstadoCuentaRep(Integer secuencia, List<Comprobante> listComprobante, Integer igv, String detraccion,String distribucion) {
+	public InputStreamResource obtenerEstadoCuentaRep(Integer secuencia, List<Asiento> listComprobante, Integer tipoComprobante) {
 		try {
 		InputStream is = this.getClass().getResourceAsStream("/Reportes/Asiento_contabilidad.jrxml");
 		JasperDesign jasperDesign = JRXmlLoader.load(is);
@@ -78,13 +79,13 @@ public class ArchivoServiceImple implements ArchivoService{
 		Map<String, Object> params = new HashMap<>();
 		params.put("fecHora", fechaActual);
 		params.put("moneda", moneda);
-		params.put("comprobante", listComprobante.get(0).getNumero());
-		params.put("concepto", listComprobante.get(0).getProveedorNombreComercial() + ", " + listComprobante.get(0).getNumero());
-		if(listComprobante.get(0).getId007TipoComprobante()==26) {
+		params.put("comprobante", listComprobante.get(0).getId_comprobante());
+		params.put("concepto", listComprobante.get(0).getConcepto()+ ", " + listComprobante.get(0).getId_comprobante());
+		if(tipoComprobante ==26) {
 			params.put("nroSubDiario", "15");
 			params.put("concepSubDiario", "REGISTRO HONORARIOS" );
 		}else {
-			if(detraccion.equals("true")) {
+			if(listComprobante.get(0).getAfectoDetraccion().equals("true")) {
 				params.put("nroSubDiario", "10");
 				params.put("concepSubDiario", "REGISTRO COMPRAS DETRA" );
 			}else {
@@ -95,24 +96,25 @@ public class ArchivoServiceImple implements ArchivoService{
 		}
 		
 		
-		params.put("ruc", listComprobante.get(0).getProveedorNumeroDocumento());
+		params.put("ruc", listComprobante.get(0).getListAsientoDetalle().get(0).getAnexo());
 		
 		//parametros de la tabla 
-		if(igv == 1) {
+		Integer numero =  1;
+		if(numero == 1) {
 		params.put("cuenta", "401111");
 		params.put("anexo", " ");
 		params.put("descripcion", " ");
 		params.put("cc", " ");
 		params.put("tp", " ");
-		params.put("debe", listComprobante.get(0).getImporteIgv().toString());
+		params.put("debe", listComprobante.get(0).getListAsientoDetalle().get(0).getDebe().toString());
 		params.put("haber", " ");
 		params.put("documento", "OT 01-3030");
 		params.put("fechavenci", fechaActual);
-		params.put("totaldebe", listComprobante.get(0).getImporteTotal().toString());
-		params.put("totalhaber", listComprobante.get(0).getImporteTotal().toString());
-		params.put("sinIgv", listComprobante.get(0).getImporteSubTotal().toString());
+		params.put("totaldebe", listComprobante.get(0).getListAsientoDetalle().get(0).getDebe().toString());
+		params.put("totalhaber", listComprobante.get(0).getListAsientoDetalle().get(0).getHaber().toString());
+		params.put("sinIgv", listComprobante.get(0).getListAsientoDetalle().get(0).getDebe());
 		params.put("cc2", "100");
-		params.put("cuenta1", distribucion);
+		params.put("cuenta1", listComprobante.get(0).getListAsientoDetalle().get(0).getCuenta());
 		}
 		else {
 		params.put("cuenta", " ");

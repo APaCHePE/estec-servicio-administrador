@@ -28,7 +28,7 @@ public class CatalogoRepository {
 	}
 	public List<CatalogoContabilidad> catalogoContabilidad(String idParametro){
 		StringBuilder sql = new StringBuilder();
-		sql.append("  Select * ,TCOD+TCLAVE AS CadeBus From RSCONCAR.dbo.CT0002TAGP ");
+		sql.append("  Select * ,TCOD+TCLAVE AS CadeBus From pruebas.dbo.DETRACCIONES ");
 		sql.append(" Where TCOD='"+idParametro+"' Order by TCOD+TCLAVE; ");
 		List<CatalogoContabilidad> listaCatalogo=sqlServer.query(sql.toString(),new CatalogoContabilidadRowMappper());
 		return listaCatalogo;

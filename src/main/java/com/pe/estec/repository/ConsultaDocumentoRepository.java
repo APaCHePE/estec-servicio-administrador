@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
-import com.pe.estec.config.Constantes;
 import com.pe.estec.model.Archivo;
 import com.pe.estec.model.Asiento;
 import com.pe.estec.model.AsientoDetalle;
@@ -17,6 +15,8 @@ import com.pe.estec.model.Contrato;
 import com.pe.estec.model.Facturas;
 import com.pe.estec.model.Orden;
 import com.pe.estec.model.OrdenDetalle;
+import com.pe.estec.model.ReglasDistribucion;
+import com.pe.estec.rowmapper.AsientoDetalleRowMapper;
 import com.pe.estec.rowmapper.AsientoRowMapper;
 import com.pe.estec.rowmapper.ComprobanteDetalleRowMapper;
 import com.pe.estec.rowmapper.ComprobanteRowMapper;
@@ -25,6 +25,7 @@ import com.pe.estec.rowmapper.ContratoRowMapper;
 import com.pe.estec.rowmapper.FacturasRowMapper;
 import com.pe.estec.rowmapper.OrdenDetalleRowMapper;
 import com.pe.estec.rowmapper.OrdenesRowMapper;
+import com.pe.estec.rowmapper.ReglasDistribucionesRowMapper;
 import com.pe.estec.util.SqlReturning;
 
 @Repository
@@ -171,6 +172,17 @@ public class ConsultaDocumentoRepository {
 		return listaAsiento;
 	}
 	
+	public List<AsientoDetalle> consultarAsientoDetalle(Integer idAsiento){
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT id_detalle_asiento_provision,id_asiento_provision,id_asiento_regla ");
+		sql.append(" ,cuenta,anexo,descripcion,cc,tp,debe,haber,documento,fecha_asiento_detalle, ");
+		sql.append(" vencimiento_asiento_detalle,area ,estado FROM pruebas.dbo.ASIENTO_PROVISION_DETALLE  ");
+		sql.append(" where id_asiento_provision ="+idAsiento);
+		List<AsientoDetalle> listaAsientodetalle = sqlServer.query(sql.toString(), new AsientoDetalleRowMapper());
+		return listaAsientodetalle;
+	}
+	
+	
 	public String obtenerTraObservacion( Integer idComprobante) {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT TOP 1 usuario_registro from pruebas.dbo.comprobante_trazabilidad ");
@@ -308,6 +320,15 @@ public class ConsultaDocumentoRepository {
 			System.out.println(e.fillInStackTrace());
 			System.out.println(e.getMessage());
 		}
+	}
+	public List<ReglasDistribucion> consultaDistribucion(String centroCosto){
+		StringBuilder sql = new StringBuilder();
+		sql.append(" Select A.*,A.TT_CENCOS+A.TT_CTACAR As CadeBus,B.TDESCRI As Descri ");
+		sql.append(" From RSCONCAR..CT0002TREP A Left Join RSCONCAR..CT0002TAGP B");
+		sql.append(" On '05'+Rtrim(Ltrim(A.TT_CENCOS))=Rtrim(Ltrim(B.TCOD))+Rtrim(LTrim(B.TCLAVE)) ");
+		sql.append("  where TT_CENCOS ='"+centroCosto+"' ");
+		List<ReglasDistribucion> listReglasDistribuciones = sqlServer.query(sql.toString(), new ReglasDistribucionesRowMapper());
+		return listReglasDistribuciones;
 	}
 	
 
