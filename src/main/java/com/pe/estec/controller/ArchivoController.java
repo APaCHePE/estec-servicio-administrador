@@ -1,13 +1,22 @@
 package com.pe.estec.controller;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Base64;
 import java.util.List;
+import java.util.Scanner;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -93,8 +102,8 @@ public class ArchivoController {
 		if (nombreArchivo.toUpperCase().endsWith(".PNG")) {
 			contenType = "image/png";
 		}
-//		if (nombreArchivo.toUpperCase().endsWith(".XML")) {
-//			contenType = "application/xml";
+//		if (nombreArchivo.toUpperCase().endsWith(".TXT")) {
+//			contenType = "application/json; charset=UTF-8";
 //		}
 		return contenType;
 	}
@@ -121,49 +130,5 @@ public class ArchivoController {
 			return new ResponseEntity<InputStreamResource>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	@GetMapping("/archivo-banco")
-	public ResponseEntity<byte[]> generarArchivoBanco(Integer tipoBanco) {
-		try {
-			String fileName= "consolidado-bbva";
-			String ruta = "/ruta/"+fileName+".txt";
-	        String contenido = "Contenido de ejemplo";
-	        File file = new File(ruta);
-	        byte[] archivoDevolver = null; 
-	        if (!file.exists()) {
-	            file.createNewFile();
-	        }
-	        FileWriter escribir = new FileWriter(file);
-//	        escribir.write("Primera linea");
-	        BufferedWriter bw = new BufferedWriter(escribir);
-//	        BufferedReader le = bw.write(contenido);
-	        bw.write(contenido);
-//	        InputS
-//	        archivoDevolver = bw.
-//	        InputStreamResource fileInputStream = new InputStreamResource(new ByteArrayInputStream(eecc));
-	        bw.close();
-//			List<Comprobante> listComprobante = consultaDocumentoServices.consultarComprobante(null, null, null, null, null, null, idComprobante, null);
-//			InputStreamResource filePdf = fileService.obtenerEstadoCuentaRep(idComprobante, listComprobante, igv, detraccion);
-			HttpHeaders respHeaders = new HttpHeaders();
-			MediaType mediaType = MediaType.parseMediaType("application/pdf");
-			respHeaders.setContentType(mediaType);
 
-			ContentDisposition contentDisposition = ContentDisposition.builder("inline").filename("Asiento-documento.pdf")
-					.build();
-
-			respHeaders.setContentDisposition(contentDisposition);
-			ResponseEntity<byte[]> respuesta = ResponseEntity.ok()
-					.header(HttpHeaders.CONTENT_TYPE,
-							ObtenerContentType(fileName.replace(",", "")))
-					.header(HttpHeaders.CONTENT_DISPOSITION,
-							"inline; filename=" + fileName.replace(",", ""))
-					.body(archivoDevolver);
-			return respuesta;
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-			return new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	
 }

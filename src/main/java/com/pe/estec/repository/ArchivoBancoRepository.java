@@ -74,4 +74,15 @@ public class ArchivoBancoRepository {
 		return listaArchivos;
 	}
 	
+	public String cabeceraArchivoBanco(Integer idArchivo) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" select concat( '750', '0011xxxxDCnnnnnnnnnn', 'PEN', '000000000123500', 'F',  ");
+		sql.append(" CONVERT(varchar, fec_programacion, 112), 'B',concat('proveedor', RIGHT('                         '+'', 25-LEN('proveedor') )) , '' ");
+		sql.append(" ) as cabeceraTXT  ");
+		sql.append(" from pruebas..lote_archivo ");
+		sql.append(" where id_lote_archivo = "+idArchivo);
+		
+		return sqlServer.queryForObject(sql.toString(), String.class);
+	}
+	
 }

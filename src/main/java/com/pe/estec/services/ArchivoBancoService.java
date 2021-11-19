@@ -1,5 +1,6 @@
 package com.pe.estec.services;
 
+import java.io.InputStream;
 import java.util.List;
 
 import com.pe.estec.model.ArchivoBanco;
@@ -11,5 +12,6 @@ public interface ArchivoBancoService {
 	public ServiceResult<String> crearLoteArchivo(ArchivoBanco loteArchivo);
 	public ServiceResult<List<ArchivoBanco>> obtenerLoteArchivo(Integer idArhcivo);	
 	public ServiceResult<List<ArchivoBancoDetalle>> obtenerLoteDetalleArchivo(Integer idArhcivo);
+	public ServiceResult<String> generarArchivo(Integer archivoSolicitud);
 	
 }

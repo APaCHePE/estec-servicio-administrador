@@ -1,5 +1,6 @@
 package com.pe.estec.services;
 
+import java.io.InputStream;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,33 @@ public class ArchivoBancoServiceImpl implements ArchivoBancoService{
 			response.setHttpStatus(HttpStatus.OK.value());
 			response.setEsCorrecto(true);
 		}catch (Exception e) {
+			response.setMensajeError("Mensaje de respuesta"+e.fillInStackTrace());
+			response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+			response.setEsCorrecto(false);
+		}
+		
+		return response;
+	}
+
+	@Override
+	public ServiceResult<String> generarArchivo(Integer archivoSolicitud) {
+		ServiceResult<String> response = new ServiceResult<String>();
+		try {
+			StringBuilder detalle = new StringBuilder();
+			detalle.append(bancoRepository.cabeceraArchivoBanco(archivoSolicitud));
+			detalle.append("\n");
+			detalle.append("linea uno");
+			detalle.append("\n");
+			detalle.append("linea dos");
+			detalle.append("\n");
+			detalle.append("linea tres");
+			detalle.append("\n");
+			detalle.append("linea cuatro");
+			response.setResultado(detalle.toString());
+			response.setHttpStatus(HttpStatus.OK.value());
+			response.setEsCorrecto(true);
+		}catch (Exception e) {
+			e.printStackTrace();
 			response.setMensajeError("Mensaje de respuesta"+e.fillInStackTrace());
 			response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
 			response.setEsCorrecto(false);
