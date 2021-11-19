@@ -3,7 +3,7 @@ package com.pe.estec.services;
 import java.util.List;
 
 import com.pe.estec.model.ArchivoBanco;
-import com.pe.estec.model.request.ServiceResult;
+import com.pe.estec.request.ServiceResult;
 
 public interface ArchivoBancoService {
 

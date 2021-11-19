@@ -17,6 +17,7 @@ public class Asiento {
 	private String tipo_conversion;
 	private String tipo_cambio;
 	private Integer estado;
+	private String importeSinDetraccion;
 	private Integer afectoTipoComprobante;
 	private Boolean afectoIgv;
 	private Boolean afectoDetraccion;

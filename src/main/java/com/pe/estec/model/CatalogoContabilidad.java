@@ -10,5 +10,5 @@ public class CatalogoContabilidad {
 	private String TDATE;
 	private String THORA;
 	private String CADEBUS;
-
+	private String TPORC;
 }
