@@ -17,6 +17,7 @@ public class CatalogoContabilidadRowMappper implements RowMapper<CatalogoContabi
 		catalogoContabilidad.setTDATE(rs.getString("TDATE"));
 		catalogoContabilidad.setTHORA(rs.getString("THORA"));
 		catalogoContabilidad.setCADEBUS(rs.getString("CADEBUS"));	
+		catalogoContabilidad.setTPORC(rs.getString("TPORC"));
 		return catalogoContabilidad;
 		
 	}
