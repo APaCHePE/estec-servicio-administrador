@@ -17,6 +17,7 @@ import com.pe.estec.model.Contrato;
 import com.pe.estec.model.Facturas;
 import com.pe.estec.model.Orden;
 import com.pe.estec.model.OrdenDetalle;
+import com.pe.estec.rowmapper.AsientoDetalleRowMapper;
 import com.pe.estec.rowmapper.AsientoRowMapper;
 import com.pe.estec.rowmapper.ComprobanteDetalleRowMapper;
 import com.pe.estec.rowmapper.ComprobanteRowMapper;
@@ -170,6 +171,17 @@ public class ConsultaDocumentoRepository {
 		List<Asiento> listaAsiento = sqlServer.query(sql.toString(), new AsientoRowMapper());
 		return listaAsiento;
 	}
+	
+	public List<AsientoDetalle> consultarAsientoDetalle(Integer idAsiento){
+		StringBuilder sql = new StringBuilder();
+		sql.append(" SELECT id_detalle_asiento_provision,id_asiento_provision,id_asiento_regla ");
+		sql.append(" ,cuenta,anexo,descripcion,cc,tp,debe,haber,documento,fecha_asiento_detalle, ");
+		sql.append(" vencimiento_asiento_detalle,area ,estado FROM pruebas.dbo.ASIENTO_PROVISION_DETALLE  ");
+		sql.append(" where id_asiento_provision ="+idAsiento);
+		List<AsientoDetalle> listaAsientodetalle = sqlServer.query(sql.toString(), new AsientoDetalleRowMapper());
+		return listaAsientodetalle;
+	}
+	
 	
 	public String obtenerTraObservacion( Integer idComprobante) {
 		StringBuilder sql = new StringBuilder();

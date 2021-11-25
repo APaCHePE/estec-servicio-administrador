@@ -79,6 +79,9 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 		List<Asiento> listaAsiento = null;
 		try {
 			listaAsiento = consultaDocRepository.consultarAsiento(idComprobante);
+			for (Asiento asiento : listaAsiento) {
+				asiento.setListAsientoDetalle(consultaDocRepository.consultarAsientoDetalle(asiento.getId_asiento_provision()));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
