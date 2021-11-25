@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pe.estec.model.Archivo;
+import com.pe.estec.model.Asiento;
 import com.pe.estec.model.Comprobante;
 import com.pe.estec.services.ArchivoService;
 import com.pe.estec.services.ConsultaDocumentoService;
@@ -112,8 +113,8 @@ public class ArchivoController {
 	public ResponseEntity<InputStreamResource> obtenerEECC(@PathVariable("idComprobante") int idComprobante, @PathVariable("igv") int igv ,@PathVariable("detraccion") String detraccion,@PathVariable("distribucioncod") String distribucioncod) {
 		try {
 			System.out.println(idComprobante);
-			List<Comprobante> listComprobante = consultaDocumentoServices.consultarComprobante(null, null, null, null, null, null, idComprobante, null);
-			InputStreamResource filePdf = fileService.obtenerEstadoCuentaRep(idComprobante, listComprobante, igv, detraccion, distribucioncod);
+			List<Asiento> listAsiento = consultaDocumentoServices.consultarAsiento(idComprobante);
+			InputStreamResource filePdf = fileService.obtenerEstadoCuentaRep(idComprobante, listAsiento, igv, detraccion, distribucioncod);
 			HttpHeaders respHeaders = new HttpHeaders();
 			MediaType mediaType = MediaType.parseMediaType("application/pdf");
 			respHeaders.setContentType(mediaType);

@@ -16,6 +16,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 
 import com.pe.estec.model.Archivo;
+import com.pe.estec.model.Asiento;
 import com.pe.estec.model.Comprobante;
 import com.pe.estec.model.ComprobanteDetalle;
 import com.pe.estec.repository.ArchivoRepository;
@@ -59,7 +60,7 @@ public class ArchivoServiceImple implements ArchivoService{
 	
 	
 	@Override
-	public InputStreamResource obtenerEstadoCuentaRep(Integer secuencia, List<Comprobante> listComprobante, Integer igv, String detraccion,String distribucion) {
+	public InputStreamResource obtenerEstadoCuentaRep(Integer secuencia, List<Asiento> listAsiento, Integer igv, String detraccion,String distribucion) {
 		try {
 		InputStream is = this.getClass().getResourceAsStream("/Reportes/Asiento_contabilidad.jrxml");
 		JasperDesign jasperDesign = JRXmlLoader.load(is);
@@ -88,9 +89,9 @@ public class ArchivoServiceImple implements ArchivoService{
 		Map<String, Object> params = new HashMap<>();
 		params.put("fecHora", fechaActual);
 		params.put("moneda", moneda);
-		params.put("comprobante", listComprobante.get(0).getNumero());
-		params.put("concepto", listComprobante.get(0).getProveedorNombreComercial() + ", " + listComprobante.get(0).getNumero());
-		if(listComprobante.get(0).getId007TipoComprobante()==26) {
+		params.put("comprobante", listAsiento.get(0).getId_comprobante());
+		params.put("concepto", listAsiento.get(0).getConcepto());
+		if(listAsiento.get(0).getIdTipoComprobante()==26) {
 			params.put("nroSubDiario", "15");
 			params.put("concepSubDiario", "REGISTRO HONORARIOS" );
 		}else {
@@ -104,7 +105,7 @@ public class ArchivoServiceImple implements ArchivoService{
 			
 		}
 		
-		params.put("ruc", listComprobante.get(0).getProveedorNumeroDocumento());
+		params.put("ruc", listAsiento.get(0).getRuc());
 		
 		//parametros de la tabla 
 //		if(igv == 1) {
