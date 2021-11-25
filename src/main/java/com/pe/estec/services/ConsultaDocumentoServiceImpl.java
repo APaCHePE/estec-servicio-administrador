@@ -101,9 +101,19 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 			asiento.setSub_diario(11);
 			asiento.setSub_diario_detalle("REGISTRO COMPRAS LOCAL");
 		}}
-		//consultar id 
+		
 		Integer idAsiento = consultaDocRepository.grabarAsiento(asiento);
-		System.out.println(asiento);
+		asiento.setId_asiento_provision(idAsiento);
+		asiento.getListAsientoDetalle().forEach(item ->{
+			try {
+				System.out.println(item);
+				consultaDocRepository.grabarAsientoDetalle(item, asiento.getId_asiento_provision());
+				completarDistribucion(idAsiento);
+			}catch(Exception e) {
+				e.getMessage();
+				e.fillInStackTrace();
+			}});
+		
 		if(asiento.getAfectoTipoComprobante()==26){
 			AsientoDetalle asientodetalle = new AsientoDetalle();
 			asientodetalle.setId_asiento_provision(idAsiento);
@@ -181,6 +191,52 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 		}
 		
 		return idAsiento;
+	}
+	
+	
+	public void completarDistribucion (Integer idAsiento){
+		try {
+		AsientoDetalle asientodetalle = new AsientoDetalle();
+		asientodetalle.setId_asiento_provision(idAsiento);
+		asientodetalle.setId_asiento_regla(941101);
+		asientodetalle.setAnexo(null);
+		asientodetalle.setArea(null);
+		asientodetalle.setCc(null);
+		asientodetalle.setCuenta(null);
+		asientodetalle.setDebe(null);
+		asientodetalle.setDescripcion(null);
+		asientodetalle.setTp(null);
+		asientodetalle.setHaber(null);
+		asientodetalle.setDocumento(null);
+		asientodetalle.setFecha_asiento_detalle(null);
+		asientodetalle.setVencimiento_asiento_detalle(null);
+		asientodetalle.setEstado(null);
+		consultaDocRepository.grabarAsientoDetalle(asientodetalle, idAsiento);
+		
+		AsientoDetalle asientodetalle2 = new AsientoDetalle();
+		asientodetalle2.setId_asiento_provision(idAsiento);
+		asientodetalle2.setId_asiento_regla(791101);
+		asientodetalle2.setAnexo(null);
+		asientodetalle2.setArea(null);
+		asientodetalle2.setCc(null);
+		asientodetalle2.setCuenta(null);
+		asientodetalle2.setDebe(null);
+		asientodetalle2.setDescripcion(null);
+		asientodetalle2.setTp(null);
+		asientodetalle2.setHaber(null);
+		asientodetalle2.setDocumento(null);
+		asientodetalle2.setFecha_asiento_detalle(null);
+		asientodetalle2.setVencimiento_asiento_detalle(null);
+		asientodetalle2.setEstado(null);
+		consultaDocRepository.grabarAsientoDetalle(asientodetalle2, idAsiento);
+		
+		}catch(Exception e) {
+			e.getMessage();
+			e.printStackTrace();
+		}
+		
+		
+		
 	}
 
 	@Override
