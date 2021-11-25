@@ -8,7 +8,9 @@
 	<parameter name="concepto" class="java.lang.String"/>
 	<parameter name="nroSubDiario" class="java.lang.String"/>
 	<parameter name="concepSubDiario" class="java.lang.String"/>
-	<parameter name="cuenta" class="java.lang.String"/>
+	<parameter name="totaldebe" class="java.lang.String"/>
+	<parameter name="totalhaber" class="java.lang.String"/>
+	<parameter name="id_asiento_regla" class="java.lang.Integer"/>
 	<parameter name="anexo" class="java.lang.String"/>
 	<parameter name="descripcion" class="java.lang.String"/>
 	<parameter name="cc" class="java.lang.String"/>
@@ -16,18 +18,21 @@
 	<parameter name="debe" class="java.lang.String"/>
 	<parameter name="haber" class="java.lang.String"/>
 	<parameter name="documento" class="java.lang.String"/>
-	<parameter name="fechavenci" class="java.lang.String"/>
-	<parameter name="totaldebe" class="java.lang.String"/>
-	<parameter name="totalhaber" class="java.lang.String"/>
-	<parameter name="ruc" class="java.lang.String"/>
-	<parameter name="sinIgv" class="java.lang.String"/>
-	<parameter name="cc2" class="java.lang.String"/>
-	<parameter name="cuenta1" class="java.lang.String"/>
-	<parameter name="id_asiento_regla" class="java.lang.Integer"/>
+	<parameter name="vencimiento_asiento_detalle" class="java.lang.String"/>
+	<parameter name="area" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
 	<field name="id_asiento_regla" class="java.lang.Integer"/>
+	<field name="anexo" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="cc" class="java.lang.String"/>
+	<field name="tp" class="java.lang.String"/>
+	<field name="debe" class="java.lang.String"/>
+	<field name="haber" class="java.lang.String"/>
+	<field name="documento" class="java.lang.String"/>
+	<field name="vencimiento_asiento_detalle" class="java.lang.String"/>
+	<field name="area" class="java.lang.String"/>
 	<group name="DATOS_PAGO" keepTogether="true">
 		<groupHeader>
 			<band height="33">
@@ -116,9 +121,9 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="20">
+			<band height="18">
 				<line>
-					<reportElement x="0" y="0" width="555" height="1" forecolor="#7D7A7A" uuid="be6a65eb-a03a-4c7a-994b-3bb4f0809c48"/>
+					<reportElement x="10" y="0" width="555" height="1" forecolor="#7D7A7A" uuid="be6a65eb-a03a-4c7a-994b-3bb4f0809c48"/>
 					<graphicElement>
 						<pen lineWidth="0.6"/>
 					</graphicElement>
@@ -266,13 +271,76 @@
 		<band/>
 	</columnHeader>
 	<detail>
-		<band height="26" splitType="Stretch">
+		<band height="40" splitType="Stretch">
 			<textField>
 				<reportElement x="1" y="0" width="70" height="20" uuid="602fc5d0-0b5c-4d5b-868f-a8bc2719c73d"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{id_asiento_regla}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="0" width="70" height="20" uuid="134e9d83-4f49-4eeb-9e02-08cd5d50e11e"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{anexo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="0" width="70" height="20" uuid="134e9d83-4f49-4eeb-9e02-08cd5d50e11e"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="0" width="70" height="20" uuid="3ff72a16-84e4-4411-95cd-b34a7107da95"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="271" y="0" width="70" height="20" uuid="9cab18a5-49ae-45fc-bdda-01688c2323b0"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{debe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="327" y="0" width="70" height="20" uuid="7d8922d3-0b73-4eb9-848d-5f8610cef2bf"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{haber}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="0" width="70" height="20" uuid="5aa56738-a553-4920-b2df-25b4d9a20df6"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{documento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="370" y="0" width="70" height="20" uuid="f0246f62-af4a-4c20-9d0f-4ee48dc512e8"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vencimiento_asiento_detalle}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="220" y="0" width="70" height="20" uuid="f0246f62-af4a-4c20-9d0f-4ee48dc512e8"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="505" y="0" width="70" height="20" uuid="f0246f62-af4a-4c20-9d0f-4ee48dc512e8"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{area}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
