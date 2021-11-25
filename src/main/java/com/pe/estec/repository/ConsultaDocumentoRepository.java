@@ -300,14 +300,7 @@ public class ConsultaDocumentoRepository {
 		Object[] params = new Object[] { idAsiento, asientoDetalle.getId_asiento_regla(),asientoDetalle.getCuenta(),asientoDetalle.getAnexo(),asientoDetalle.getDescripcion(),
 				asientoDetalle.getCc(), asientoDetalle.getTp(), asientoDetalle.getDebe(),asientoDetalle.getHaber(),asientoDetalle.getDocumento(),asientoDetalle.getFecha_asiento_detalle(),asientoDetalle.getVencimiento_asiento_detalle(),
 				asientoDetalle.getArea(),asientoDetalle.getEstado()};
-		System.out.println(sql);
-		try {
 			sqlServer.update(sql.toString(),params);
-		}
-		catch (Exception e) {
-			System.out.println(e.fillInStackTrace());
-			System.out.println(e.getMessage());
-		}
 	}
 	
 

@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class CatalogoContabilidad {
+	private Integer idDetraccion;
 	private String TCOD;
 	private String TCLAVE;
 	private String TDESCRI;

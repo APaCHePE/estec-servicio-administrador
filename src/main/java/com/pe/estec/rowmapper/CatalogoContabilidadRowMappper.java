@@ -11,6 +11,7 @@ public class CatalogoContabilidadRowMappper implements RowMapper<CatalogoContabi
 	@Override
 	public CatalogoContabilidad mapRow(ResultSet rs, int rowNum) throws SQLException {
 		CatalogoContabilidad catalogoContabilidad = new CatalogoContabilidad();
+		catalogoContabilidad.setIdDetraccion(rs.getInt("id_detraccion"));
 		catalogoContabilidad.setTCOD(rs.getString("TCOD"));
 		catalogoContabilidad.setTDESCRI(rs.getString("TCLAVE"));
 		catalogoContabilidad.setTCLAVE(rs.getString("TDESCRI"));
