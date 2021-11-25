@@ -23,11 +23,11 @@
 	<parameter name="sinIgv" class="java.lang.String"/>
 	<parameter name="cc2" class="java.lang.String"/>
 	<parameter name="cuenta1" class="java.lang.String"/>
-	<parameter name="cuentaxyz" class="java.lang.String"/>
+	<parameter name="id_asiento_regla" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="cuentaxyz" class="java.lang.String"/>
+	<field name="id_asiento_regla" class="java.lang.Integer"/>
 	<group name="DATOS_PAGO" keepTogether="true">
 		<groupHeader>
 			<band height="33">
@@ -272,7 +272,7 @@
 				<textElement>
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cuentaxyz}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{id_asiento_regla}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

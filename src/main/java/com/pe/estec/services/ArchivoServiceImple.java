@@ -17,12 +17,9 @@ import org.springframework.stereotype.Service;
 
 import com.pe.estec.model.Archivo;
 import com.pe.estec.model.Asiento;
-import com.pe.estec.model.Comprobante;
-import com.pe.estec.model.ComprobanteDetalle;
 import com.pe.estec.repository.ArchivoRepository;
 import com.pe.estec.repository.FileRepository;
 
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -66,20 +63,10 @@ public class ArchivoServiceImple implements ArchivoService{
 		JasperDesign jasperDesign = JRXmlLoader.load(is);
 		JasperReport reporteJasper = JasperCompileManager.compileReport(jasperDesign);
 		List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+
+		listAsiento.forEach(System.out :: println);
 		
-		Map<String, Object> data1 = new HashMap<>();
-		data1.put("cuentaxyz", "prueba");
-		data.add(data1);
-		
-		data1 = new HashMap<>();
-		data1.put("cuentaxyz", "prueba2");
-		data.add(data1);
-		
-		data1 = new HashMap<>();
-		data1.put("cuentaxyz", "prueba3");
-		data.add(data1);
-		
-		JRBeanCollectionDataSource datosReporteJasper = new JRBeanCollectionDataSource(data);
+		JRBeanCollectionDataSource datosReporteJasper = new JRBeanCollectionDataSource(listAsiento.get(0).getListAsientoDetalle());
 		Calendar fecha = new GregorianCalendar();                                                     
         int año = fecha.get(Calendar.YEAR);
         int mes = fecha.get(Calendar.MONTH);
@@ -89,8 +76,9 @@ public class ArchivoServiceImple implements ArchivoService{
 		Map<String, Object> params = new HashMap<>();
 		params.put("fecHora", fechaActual);
 		params.put("moneda", moneda);
-		params.put("comprobante", listAsiento.get(0).getId_comprobante());
+		params.put("comprobante", listAsiento.get(0).getId_comprobante()+"a");
 		params.put("concepto", listAsiento.get(0).getConcepto());
+		listAsiento.get(0).setIdTipoComprobante(24);
 		if(listAsiento.get(0).getIdTipoComprobante()==26) {
 			params.put("nroSubDiario", "15");
 			params.put("concepSubDiario", "REGISTRO HONORARIOS" );
@@ -102,7 +90,6 @@ public class ArchivoServiceImple implements ArchivoService{
 				params.put("nroSubDiario", "11");
 				params.put("concepSubDiario", "REGISTRO COMPRAS LOCAL" );
 			}
-			
 		}
 		
 		params.put("ruc", listAsiento.get(0).getRuc());
