@@ -165,7 +165,7 @@ public class ConsultaDocumentoRepository {
 	public List<Asiento> consultarAsiento(Integer idComprobante) {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" SELECT id_asiento_provision,id_comprobante,sub_diario,sub_diario_detalle ");
-		sql.append(" ,fecha_asiento,concepto,moneda,conversion,tipo_conversion,tipo_cambio,estado , importeSinDetraccion");
+		sql.append(" ,fecha_asiento,concepto,moneda,conversion,tipo_conversion,tipo_cambio,estado , importeSinDetraccion,id_007_tipo_comprobante,proveedor_numero_documento");
 		sql.append(" from pruebas.dbo.ASIENTO_PROVISION ");
 		sql.append(" where id_comprobante ="+idComprobante);
 		List<Asiento> listaAsiento = sqlServer.query(sql.toString(), new AsientoRowMapper());
@@ -291,10 +291,11 @@ public class ConsultaDocumentoRepository {
 		StringBuilder sql = new StringBuilder();
 		sql.append("INSERT INTO pruebas.dbo.ASIENTO_PROVISION ");
 		sql.append("(id_comprobante,sub_diario,sub_diario_detalle,fecha_asiento,concepto ");
-		sql.append(",moneda,conversion,tipo_conversion,tipo_cambio,estado,importeSinDetraccion) ");
-		sql.append("VALUES (?,?,?,?,?,?,?,?,?,?,?) ");
+		sql.append(",moneda,conversion,tipo_conversion,tipo_cambio,estado,importeSinDetraccion,id_007_tipo_comprobante,proveedor_numero_documento) ");
+		sql.append("VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?) ");
 		Object[] params = new Object[] { asiento.getId_comprobante(),asiento.getSub_diario(), asiento.getSub_diario_detalle(),asiento.getFecha_asiento(), asiento.getConcepto(),
-				asiento.getMoneda(),asiento.getConversion(), asiento.getTipo_conversion(), asiento.getTipo_cambio(), asiento.getEstado(), asiento.getImporteSinDetraccion()};
+				asiento.getMoneda(),asiento.getConversion(), asiento.getTipo_conversion(), asiento.getTipo_cambio(), asiento.getEstado(), asiento.getImporteSinDetraccion(),
+				asiento.getIdTipoComprobante(), asiento.getRuc()};
 		sqlServer.update(sql.toString(),params);
 		StringBuilder sql2 = new StringBuilder();
 		sql2.append("select max(id_asiento_provision) from pruebas.dbo.asiento_provision ");

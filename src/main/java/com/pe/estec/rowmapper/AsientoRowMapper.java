@@ -25,6 +25,8 @@ public class AsientoRowMapper implements RowMapper<Asiento> {
 		asiento.setTipo_cambio(rs.getString("tipo_cambio"));
 		asiento.setEstado(rs.getInt("estado"));
 		asiento.setImporteSinDetraccion(rs.getString("importeSinDetraccion"));
+		asiento.setId_comprobante(rs.getInt("id_007_tipo_comprobante"));
+		asiento.setRuc(rs.getString("proveedor_numero_documento"));
 		return asiento;
 	}
 }
