@@ -21,5 +21,7 @@ public class Asiento {
 	private Integer afectoTipoComprobante;
 	private Boolean afectoIgv;
 	private Boolean afectoDetraccion;
+	private Integer idTipoComprobante;
+	private String ruc;
 	private List<AsientoDetalle> listAsientoDetalle;
 }
