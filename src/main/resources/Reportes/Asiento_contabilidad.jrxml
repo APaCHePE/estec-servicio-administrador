@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
+<!-- Created with Jaspersoft Studio version 6.18.1.final using JasperReports Library version 6.18.1-9d75d1969e774d4f179fb3be8401e98a0e6d1611  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="mm-recibo-pago-tributo" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="8952d9ca-15ac-4641-bc48-350ec2f920db">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="fecHora" class="java.lang.String"/>
@@ -23,12 +23,14 @@
 	<parameter name="sinIgv" class="java.lang.String"/>
 	<parameter name="cc2" class="java.lang.String"/>
 	<parameter name="cuenta1" class="java.lang.String"/>
+	<parameter name="cuentaxyz" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
+	<field name="cuentaxyz" class="java.lang.String"/>
 	<group name="DATOS_PAGO" keepTogether="true">
 		<groupHeader>
-			<band height="50">
+			<band height="33">
 				<line>
 					<reportElement x="1" y="26" width="553" height="1" forecolor="#7D7A7A" uuid="5befe245-17ad-441d-b1d2-616e86df3255"/>
 					<graphicElement>
@@ -111,38 +113,10 @@
 					</textElement>
 					<text><![CDATA[<style isBold="true">H A B E R        DOCUMENTO</style>]]></text>
 				</staticText>
-				<staticText>
-					<reportElement x="0" y="30" width="50" height="20" uuid="792bcc75-8f49-4af6-a600-a3597e1c1ed8"/>
-					<textElement>
-						<font size="9"/>
-					</textElement>
-					<text><![CDATA[421201]]></text>
-				</staticText>
-				<textField>
-					<reportElement x="60" y="30" width="50" height="20" uuid="31f143c4-7f7f-49d5-937b-ea755d532cef"/>
-					<textElement>
-						<font size="9"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{ruc}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="381" y="27" width="70" height="20" uuid="b41374af-1732-4204-84d9-db00ce8e5f25"/>
-					<textElement>
-						<font size="9"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{documento}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="451" y="27" width="80" height="20" uuid="b338d8aa-7de0-4cac-b0d0-c67ecec6cddc"/>
-					<textElement>
-						<font size="9"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$P{fechavenci}]]></textFieldExpression>
-				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="14">
+			<band height="20">
 				<line>
 					<reportElement x="0" y="0" width="555" height="1" forecolor="#7D7A7A" uuid="be6a65eb-a03a-4c7a-994b-3bb4f0809c48"/>
 					<graphicElement>
@@ -292,159 +266,13 @@
 		<band/>
 	</columnHeader>
 	<detail>
-		<band height="79" splitType="Stretch">
+		<band height="26" splitType="Stretch">
 			<textField>
-				<reportElement x="1" y="-7" width="70" height="20" uuid="602fc5d0-0b5c-4d5b-868f-a8bc2719c73d"/>
+				<reportElement x="1" y="0" width="70" height="20" uuid="602fc5d0-0b5c-4d5b-868f-a8bc2719c73d"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{cuenta}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="61" y="-7" width="80" height="20" uuid="4ac6e615-ad0a-4ecd-a241-8ab3e241c7d8"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{anexo}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="119" y="-7" width="80" height="20" uuid="c0dcd985-95a9-4233-8d05-64a6cfcc27a7"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{descripcion}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="191" y="-7" width="40" height="20" uuid="8a34350a-8abe-4c20-b416-22b7dff39fe3"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{cc}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="221" y="-7" width="50" height="20" uuid="1074d3ea-2759-4041-873b-bae3b2cf668a"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{tp}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="279" y="-7" width="64" height="20" uuid="985fa11e-0a8d-48ff-9125-a3e51037dd1d"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{debe}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="331" y="-7" width="60" height="20" uuid="17cc9ae2-b243-4dbc-9726-76e9a6f4affa"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{haber}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="381" y="-7" width="70" height="20" uuid="0edf9ae2-da98-484c-8474-e581728e3c18"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{documento}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="451" y="-7" width="80" height="20" uuid="62d068e0-73a2-4d31-aa88-f8de9d37f044"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{fechavenci}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="1" y="10" width="70" height="15" uuid="5a7407dc-c9f8-49d6-9a26-cd646f04b702">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{cuenta1}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="2" y="25" width="69" height="15" uuid="e82f8f4e-7df5-4b2b-be07-b5619d64762c">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[941101]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="2" y="40" width="69" height="15" uuid="9f92be29-13ec-45bc-8fee-210111999289">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[791101]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="190" y="9" width="40" height="20" uuid="0ab243a9-3e4f-4c01-b7a1-5874c89678fe"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{cc2}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="279" y="25" width="60" height="12" uuid="f5808ab2-6f77-4c02-a9a4-1843229a59ef"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{sinIgv}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="330" y="37" width="60" height="12" uuid="28894261-b243-40b5-94dd-18b18c39450b"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{sinIgv}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="380" y="25" width="70" height="20" uuid="4802b249-05c2-4c14-b9b8-0054a2c7dc2d"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{documento}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="380" y="37" width="70" height="20" uuid="39f3cc47-feda-4aaa-8c5a-2938148f1629"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{documento}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="381" y="9" width="70" height="20" uuid="955970c1-6942-4e04-b3a2-de024ba6914b"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{documento}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="450" y="9" width="80" height="20" uuid="ab9dc7e4-90ec-4ac3-8991-bd42b29feea5"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{fechavenci}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="451" y="25" width="80" height="20" uuid="823e8c4c-7227-4528-a0c9-88ab13f91c4e"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{fechavenci}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="450" y="37" width="80" height="20" uuid="ba858a61-c111-48ae-8706-1446ab9ffa19"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{fechavenci}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cuentaxyz}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

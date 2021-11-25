@@ -65,9 +65,19 @@ public class ArchivoServiceImple implements ArchivoService{
 		JasperDesign jasperDesign = JRXmlLoader.load(is);
 		JasperReport reporteJasper = JasperCompileManager.compileReport(jasperDesign);
 		List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+		
 		Map<String, Object> data1 = new HashMap<>();
-		data1.put("factId", "");
+		data1.put("cuentaxyz", "prueba");
 		data.add(data1);
+		
+		data1 = new HashMap<>();
+		data1.put("cuentaxyz", "prueba2");
+		data.add(data1);
+		
+		data1 = new HashMap<>();
+		data1.put("cuentaxyz", "prueba3");
+		data.add(data1);
+		
 		JRBeanCollectionDataSource datosReporteJasper = new JRBeanCollectionDataSource(data);
 		Calendar fecha = new GregorianCalendar();                                                     
         int año = fecha.get(Calendar.YEAR);
@@ -94,41 +104,40 @@ public class ArchivoServiceImple implements ArchivoService{
 			
 		}
 		
-		
 		params.put("ruc", listComprobante.get(0).getProveedorNumeroDocumento());
 		
 		//parametros de la tabla 
-		if(igv == 1) {
-		params.put("cuenta", "401111");
-		params.put("anexo", " ");
-		params.put("descripcion", " ");
-		params.put("cc", " ");
-		params.put("tp", " ");
-		params.put("debe", listComprobante.get(0).getImporteIgv().toString());
-		params.put("haber", " ");
-		params.put("documento", "OT 01-3030");
-		params.put("fechavenci", fechaActual);
-		params.put("totaldebe", listComprobante.get(0).getImporteTotal().toString());
-		params.put("totalhaber", listComprobante.get(0).getImporteTotal().toString());
-		params.put("sinIgv", listComprobante.get(0).getImporteSubTotal().toString());
-		params.put("cc2", "100");
-		params.put("cuenta1", distribucion);
-		}
-		else {
-		params.put("cuenta", " ");
-		params.put("anexo", " ");
-		params.put("descripcion", " ");
-		params.put("cc", " ");
-		params.put("tp", " ");
-		params.put("debe"," ");
-		params.put("haber", " ");
-		params.put("documento", " ");
-		params.put("fechavenci", " ");
-		params.put("totaldebe", " ");
-		params.put("totalhaber", " ");
-		params.put("sinIgv", "");
-		params.put("cc2", "");
-		params.put("cuenta1", "");}
+//		if(igv == 1) {
+//		params.put("cuenta", "401111");
+//		params.put("anexo", " ");
+//		params.put("descripcion", " ");
+//		params.put("cc", " ");
+//		params.put("tp", " ");
+//		params.put("debe", listComprobante.get(0).getImporteIgv().toString());
+//		params.put("haber", " ");
+//		params.put("documento", "OT 01-3030");
+//		params.put("fechavenci", fechaActual);
+//		params.put("totaldebe", listComprobante.get(0).getImporteTotal().toString());
+//		params.put("totalhaber", listComprobante.get(0).getImporteTotal().toString());
+//		params.put("sinIgv", listComprobante.get(0).getImporteSubTotal().toString());
+//		params.put("cc2", "100");
+//		params.put("cuenta1", distribucion);
+//		}
+//		else {
+//		params.put("cuenta", " ");
+//		params.put("anexo", " ");
+//		params.put("descripcion", " ");
+//		params.put("cc", " ");
+//		params.put("tp", " ");
+//		params.put("debe"," ");
+//		params.put("haber", " ");
+//		params.put("documento", " ");
+//		params.put("fechavenci", " ");
+//		params.put("totaldebe", " ");
+//		params.put("totalhaber", " ");
+//		params.put("sinIgv", "");
+//		params.put("cc2", "");
+//		params.put("cuenta1", "");}
 		JasperPrint jasperPrint = JasperFillManager.fillReport(reporteJasper, params, datosReporteJasper);
 		byte[] eecc = JasperExportManager.exportReportToPdf(jasperPrint);
 		InputStreamResource fileInputStream = new InputStreamResource(new ByteArrayInputStream(eecc));

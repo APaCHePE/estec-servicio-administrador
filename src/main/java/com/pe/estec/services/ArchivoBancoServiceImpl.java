@@ -88,13 +88,9 @@ public class ArchivoBancoServiceImpl implements ArchivoBancoService{
 			StringBuilder detalle = new StringBuilder();
 			detalle.append(bancoRepository.cabeceraArchivoBanco(archivoSolicitud));
 			detalle.append("\n");
-			detalle.append("linea uno");
+			detalle.append("002R20601331188 I00219300253014208916JUNTA PROPIETARIOS CENTRO INDUSTRIAL LA 000000000143000F3127        N                                                                                                                         00000000000000000000000000000000                  ");
 			detalle.append("\n");
-			detalle.append("linea dos");
-			detalle.append("\n");
-			detalle.append("linea tres");
-			detalle.append("\n");
-			detalle.append("linea cuatro");
+			detalle.append("002R10103093517 P00110372000200433622BERASTAIN RODRIGUEZ RUSTY ARTURO        000000001420480F53          N                                                                                                                         00000000000000000000000000000000                  ");
 			response.setResultado(detalle.toString());
 			response.setHttpStatus(HttpStatus.OK.value());
 			response.setEsCorrecto(true);
@@ -104,9 +100,7 @@ public class ArchivoBancoServiceImpl implements ArchivoBancoService{
 			response.setHttpStatus(HttpStatus.BAD_REQUEST.value());
 			response.setEsCorrecto(false);
 		}
-		
 		return response;
 	}
 
-	
 }
