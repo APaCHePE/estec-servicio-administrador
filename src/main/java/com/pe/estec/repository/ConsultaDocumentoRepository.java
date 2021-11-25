@@ -302,6 +302,7 @@ public class ConsultaDocumentoRepository {
 		Integer Identity = sqlServer.queryForObject(sql2.toString(), Integer.class);
 		return Identity;
 	}
+	
 	public void grabarAsientoDetalle(AsientoDetalle asientoDetalle, Integer idAsiento) throws Exception {
 		StringBuilder sql = new StringBuilder();
 		System.out.println(asientoDetalle);

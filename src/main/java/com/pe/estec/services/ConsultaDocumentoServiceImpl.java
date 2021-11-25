@@ -30,9 +30,11 @@ import com.pe.estec.model.Contrato;
 import com.pe.estec.model.DocumentoOrigen;
 import com.pe.estec.model.Facturas;
 import com.pe.estec.model.Orden;
+import com.pe.estec.model.ReglasDistribucion;
 import com.pe.estec.request.ServiceResult;
 import com.pe.estec.util.FilesUtils;
 import com.pe.estec.util.*;
+import com.pe.estec.repository.CatalogoRepository;
 import com.pe.estec.repository.ConsultaDocumentoRepository;
 import com.pe.estec.repository.DocumentoOrigenRepository;
 
@@ -44,6 +46,9 @@ import com.pe.estec.repository.DocumentoOrigenRepository;
 public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 	@Autowired
 	private ConsultaDocumentoRepository consultaDocRepository;
+	
+	@Autowired
+	private CatalogoRepository catalogoRepository;
 
 	@Autowired
 	private DocumentoOrigenRepository docOriginRep;
@@ -108,10 +113,18 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 		Integer idAsiento = consultaDocRepository.grabarAsiento(asiento);
 		asiento.setId_asiento_provision(idAsiento);
 		asiento.getListAsientoDetalle().forEach(item ->{
+			String anexo = asiento.getRuc();
+			item.setAnexo(anexo);
 			try {
-				System.out.println(item);
 				consultaDocRepository.grabarAsientoDetalle(item, asiento.getId_asiento_provision());
-				completarDistribucion(idAsiento);
+				System.out.println(item);
+				List<ReglasDistribucion> distribucion = catalogoRepository.consultaDistribucion(item.getCc().toString());
+				Integer monto = Integer.parseInt(item.getDebe());
+				distribucion.forEach(items ->{
+					Integer porcentaje = Integer.parseInt(items.getTT_FACTOR());
+					Integer montoDistribucion = (monto/100)* porcentaje;
+					completarDistribucion(montoDistribucion, idAsiento, anexo);
+				});
 			}catch(Exception e) {
 				e.getMessage();
 				e.fillInStackTrace();
@@ -197,40 +210,40 @@ public class ConsultaDocumentoServiceImpl implements ConsultaDocumentoService {
 	}
 	
 	
-	public void completarDistribucion (Integer idAsiento){
+	public void completarDistribucion (Integer montoDistribucion, Integer idAsiento, String anexo){
 		try {
 		AsientoDetalle asientodetalle = new AsientoDetalle();
 		asientodetalle.setId_asiento_provision(idAsiento);
 		asientodetalle.setId_asiento_regla(941101);
-		asientodetalle.setAnexo(null);
-		asientodetalle.setArea(null);
-		asientodetalle.setCc(null);
-		asientodetalle.setCuenta(null);
-		asientodetalle.setDebe(null);
-		asientodetalle.setDescripcion(null);
-		asientodetalle.setTp(null);
-		asientodetalle.setHaber(null);
-		asientodetalle.setDocumento(null);
-		asientodetalle.setFecha_asiento_detalle(null);
-		asientodetalle.setVencimiento_asiento_detalle(null);
-		asientodetalle.setEstado(null);
+		asientodetalle.setAnexo(anexo);
+		asientodetalle.setArea("");
+		asientodetalle.setCc("");
+		asientodetalle.setCuenta("");
+		asientodetalle.setDebe(montoDistribucion.toString());
+		asientodetalle.setDescripcion("");
+		asientodetalle.setTp("");
+		asientodetalle.setHaber("");
+		asientodetalle.setDocumento("");
+		asientodetalle.setFecha_asiento_detalle("");
+		asientodetalle.setVencimiento_asiento_detalle("");
+		asientodetalle.setEstado(1);
 		consultaDocRepository.grabarAsientoDetalle(asientodetalle, idAsiento);
 		
 		AsientoDetalle asientodetalle2 = new AsientoDetalle();
 		asientodetalle2.setId_asiento_provision(idAsiento);
 		asientodetalle2.setId_asiento_regla(791101);
-		asientodetalle2.setAnexo(null);
-		asientodetalle2.setArea(null);
-		asientodetalle2.setCc(null);
-		asientodetalle2.setCuenta(null);
-		asientodetalle2.setDebe(null);
-		asientodetalle2.setDescripcion(null);
-		asientodetalle2.setTp(null);
-		asientodetalle2.setHaber(null);
-		asientodetalle2.setDocumento(null);
-		asientodetalle2.setFecha_asiento_detalle(null);
-		asientodetalle2.setVencimiento_asiento_detalle(null);
-		asientodetalle2.setEstado(null);
+		asientodetalle2.setAnexo(anexo);
+		asientodetalle2.setArea("");
+		asientodetalle2.setCc("");
+		asientodetalle2.setCuenta("");
+		asientodetalle2.setDebe("");
+		asientodetalle2.setDescripcion("");
+		asientodetalle2.setTp("");
+		asientodetalle2.setHaber(montoDistribucion.toString());
+		asientodetalle2.setDocumento("");
+		asientodetalle2.setFecha_asiento_detalle("");
+		asientodetalle2.setVencimiento_asiento_detalle("");
+		asientodetalle2.setEstado(1);
 		consultaDocRepository.grabarAsientoDetalle(asientodetalle2, idAsiento);
 		
 		}catch(Exception e) {

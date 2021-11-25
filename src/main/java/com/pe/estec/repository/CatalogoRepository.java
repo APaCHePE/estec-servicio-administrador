@@ -8,8 +8,10 @@ import org.springframework.stereotype.Repository;
 
 import com.pe.estec.model.Catalogo;
 import com.pe.estec.model.CatalogoContabilidad;
+import com.pe.estec.model.ReglasDistribucion;
 import com.pe.estec.rowmapper.CatalogoContabilidadRowMappper;
 import com.pe.estec.rowmapper.CatalogoRowMapper;
+import com.pe.estec.rowmapper.ReglasDistribucionesRowMapper;
 
 @Repository
 public class CatalogoRepository {
@@ -32,5 +34,16 @@ public class CatalogoRepository {
 		sql.append(" Where TCOD='"+idParametro+"' Order by TCOD+TCLAVE; ");
 		List<CatalogoContabilidad> listaCatalogo=sqlServer.query(sql.toString(),new CatalogoContabilidadRowMappper());
 		return listaCatalogo;
+	}
+	
+	public List<ReglasDistribucion> consultaDistribucion(String centroCosto){
+		StringBuilder sql = new StringBuilder();
+		sql.append(" Select A.*,A.TT_CENCOS+A.TT_CTACAR As CadeBus,B.TDESCRI As Descri ");
+		sql.append(" From RSCONCAR..CT0002TREP A Left Join RSCONCAR..CT0002TAGP B");
+		sql.append(" On '05'+Rtrim(Ltrim(A.TT_CENCOS))=Rtrim(Ltrim(B.TCOD))+Rtrim(LTrim(B.TCLAVE)) ");
+		sql.append("  where TT_CENCOS ='"+centroCosto+"' ");
+		List<ReglasDistribucion> listReglasDistribuciones = sqlServer.query(sql.toString(), new ReglasDistribucionesRowMapper());
+		System.out.println(sql);
+		return listReglasDistribuciones;
 	}
 }

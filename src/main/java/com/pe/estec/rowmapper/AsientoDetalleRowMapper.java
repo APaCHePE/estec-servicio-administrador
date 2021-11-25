@@ -16,7 +16,7 @@ public class AsientoDetalleRowMapper  implements RowMapper<AsientoDetalle>{
 		asientoDetalle.setCuenta(rs.getString("cuenta"));
 		asientoDetalle.setAnexo(rs.getString("anexo"));
 		asientoDetalle.setDescripcion(rs.getString("descripcion"));
-		asientoDetalle.setCc(rs.getInt("cc"));
+		asientoDetalle.setCc(rs.getString("cc"));
 		asientoDetalle.setTp(rs.getString("tp"));
 		asientoDetalle.setDebe(rs.getString("debe"));
 		asientoDetalle.setHaber(rs.getString("haber"));

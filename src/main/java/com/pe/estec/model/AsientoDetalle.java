@@ -11,7 +11,7 @@ public class AsientoDetalle {
 	private String anexo;
 	private String descripcion;
 	private String tp;
-	private Integer cc;
+	private String cc;
 	private String debe;
 	private String haber;
 	private String documento;
